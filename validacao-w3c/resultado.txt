@@ -1,0 +1,21 @@
+VALIDAÇÃO W3C — PROJETO NOVO LAR
+Última validação: 13/09/2026
+
+Primeira verificação
+- index.html: nenhum erro e nenhum aviso.
+- projetos.html: nenhum erro e nenhum aviso.
+- cadastro.html: um erro relacionado ao valor street-address no atributo autocomplete do campo de endereço.
+
+Correção realizada
+- O valor autocomplete="street-address" foi substituído por autocomplete="address-line1" no campo de endereço.
+
+Verificação final
+- index.html: nenhum erro e nenhum aviso.
+- projetos.html: nenhum erro e nenhum aviso.
+- cadastro.html: nenhum erro e nenhum aviso.
+
+Os três documentos foram reenviados ao Nu Html Checker do W3C após a correção e não apresentaram mensagens de erro ou de advertência.
+Após a inclusão do submenu e do menu hambúrguer, os três arquivos foram validados novamente e permaneceram sem erros ou avisos.
+Após a inclusão dos badges, alertas e toast, uma nova validação confirmou novamente zero erro e zero aviso nos três documentos HTML.
+Após a conversão do index.html em uma SPA com templates e rotas por hash, os três documentos foram novamente enviados ao Nu Html Checker e permaneceram com zero erro e zero aviso.
+Após a integração assíncrona da biblioteca IMask, os três documentos foram validados mais uma vez e permaneceram com zero erro e zero aviso.

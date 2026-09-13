@@ -1,0 +1,224 @@
+GUIA DE PREENCHIMENTO — PROJETO NOVO LAR
+
+1. UPLOAD DOS ASSETS
+Anexar separadamente:
+- animal-resgatado.jpg
+- animal-resgatado.webp
+
+2. DIRETÓRIOS
+
+Nome do diretório: html
+Arquivos: index.html, projetos.html e cadastro.html.
+
+Nome do diretório: css
+Arquivos: estilos.css.
+
+Nome do diretório: js
+Arquivos: menu.js, formulario.js, componentes.js, persistencia.js e spa.js.
+
+Nome do diretório: imagens
+Arquivos: animal-resgatado.jpg e animal-resgatado.webp.
+
+Nome do diretório: validacao-w3c
+Arquivos: index.json, projetos.json, cadastro.json e resultado.txt.
+
+Nome do diretório: capturas
+Arquivos: componentes-feedback.png, badges-nos-projetos.png e alerta-no-formulario.png.
+
+3. CÓDIGO-FONTE
+O arquivo codigo-html-consolidado.txt reúne os três documentos HTML atualizados. O index.html contém a estrutura da SPA e os modelos das rotas; por isso, o conteúdo consolidado ultrapassa 10.000 caracteres. Em um campo com esse limite, prefira entregar o arquivo ZIP ou um link para o código em vez de retirar partes necessárias da aplicação.
+
+4. RESULTADO DA VALIDAÇÃO W3C
+
+Submeti os três arquivos HTML ao Nu Html Checker do W3C. Na primeira verificação, index.html e projetos.html não apresentaram erros ou avisos. O arquivo cadastro.html apresentou um erro no atributo autocomplete do campo de endereço, pois o valor street-address não era aceito naquele contexto.
+
+Corrigi o campo substituindo autocomplete="street-address" por autocomplete="address-line1". Depois da alteração, enviei novamente os três documentos ao validador. Na verificação final, index.html, projetos.html e cadastro.html foram aprovados sem erros nem avisos. Também conferi os vínculos entre os rótulos e os campos do formulário, os identificadores e os caminhos dos arquivos locais.
+
+5. MENU DROPDOWN E HAMBÚRGUER
+
+A navegação foi construída com os seletores .cabecalho, .navegacao, .menu, .item-com-submenu e .submenu. Em telas maiores, o submenu de Projetos permanece recolhido com opacity: 0, visibility: hidden e pointer-events: none. O JavaScript abre o conteúdo ao alterar aria-expanded para true, acionando o seletor .controle-submenu[aria-expanded="true"] + .submenu. A transição combina opacity e transform para tornar a abertura mais suave.
+
+No breakpoint @media (max-width: 768px), o botão .controle-menu é exibido e o menu passa a ser vertical. A navegação fechada utiliza max-height: 0, opacity: 0, visibility: hidden e overflow: hidden. Quando aria-expanded recebe true, o seletor .controle-menu[aria-expanded="true"] + .navegacao revela os links e transforma as três linhas do ícone em um X.
+
+Foram usados elementos button para permitir a operação por teclado e tecnologias assistivas. O menu também pode ser fechado com a tecla Esc, por clique fora do cabeçalho ou após a escolha de um link. A regra prefers-reduced-motion desativa as transições para pessoas sensíveis a movimento. Se o JavaScript não carregar, a navegação continua visível para que nenhum link fique inacessível.
+
+6. ESTADOS INTERATIVOS E VALIDAÇÃO VISUAL
+
+Nos botões, a classe .botao possui transições de 0.2s para cores, borda, sombra e opacidade, além de 0.1s para o deslocamento. Em :hover, o fundo passa para a cor de destaque, a borda acompanha essa cor, surge uma pequena sombra e o botão sobe 2px. Em :focus-visible, aparecem um anel amarelo e um contorno verde-escuro, deixando claro qual controle está selecionado pelo teclado. Em :active, a sombra diminui e o botão desce 1px, simulando o toque. Já :disabled utiliza fundo neutro, opacidade de 60%, cursor not-allowed e retira a sombra e o deslocamento.
+
+Os controles do menu também escurecem em :hover e diminuem levemente em :active. Nos cartões, :hover e :focus-within reforçam a borda, acrescentam sombra e elevam o bloco em 3px. Assim, a resposta visual não depende apenas do uso do mouse, pois também aparece quando um link interno recebe foco pelo teclado.
+
+No formulário, os campos usam uma transição suave para fundo, borda e sombra. Em :hover, a borda fica verde-escura e, em :focus-visible, surge um anel de foco. Depois da interação, o JavaScript alterna .campo-valido e .campo-invalido: o primeiro aplica fundo verde-claro, borda verde e uma mensagem de confirmação; o segundo usa fundo avermelhado, borda vermelha e uma orientação específica. A mensagem é um elemento small real, ligado ao campo por aria-describedby. As pseudo-classes :user-valid e :user-invalid permanecem como alternativa quando o JavaScript não carrega. A regra prefers-reduced-motion remove transições e deslocamentos para quem prefere menos animações.
+
+7. CAPTURAS DOS COMPONENTES DE FEEDBACK
+
+Imagem recomendada para comprovar todos os componentes:
+Título: Componentes de feedback — badges, alertas e toast
+Arquivo: componentes-feedback.png
+
+Capturas complementares:
+Título: Badges aplicados aos projetos
+Arquivo: badges-nos-projetos.png
+
+Título: Alerta informativo no formulário
+Arquivo: alerta-no-formulario.png
+
+A primeira captura reúne a categorização por badges, os alertas informativo, de sucesso e de erro, além do toast de confirmação. As outras duas mostram os componentes inseridos nas páginas reais do projeto.
+
+8. SINGLE PAGE APPLICATION E MANIPULAÇÃO DO DOM
+
+Adotei o roteamento por hash com as rotas #/inicio, #/projetos e #/cadastro. Também foram criadas subrotas para resgate, voluntariado e doações. Essa escolha permite que o Projeto Novo Lar funcione como uma Single Page Application em hospedagem estática, sem exigir configurações especiais no servidor. Cada alteração do hash fica registrada no histórico, mantendo o funcionamento dos botões Voltar e Avançar.
+
+Os links internos possuem o atributo data-rota, mas conservam endereços HTML reais no href como alternativa caso o JavaScript não carregue. Um listener central identifica somente esses links, usa preventDefault() e atualiza location.hash. Links de e-mail, telefone, downloads ou externos não são interceptados.
+
+Trecho principal:
+
+document.addEventListener("click", (evento) => {
+  const link = evento.target.closest("a[data-rota]");
+  if (!link) return;
+  evento.preventDefault();
+  window.location.hash = link.dataset.rota;
+});
+
+window.addEventListener("hashchange", () => renderizarRota());
+
+function renderizarRota() {
+  const rotaSolicitada = obterRota();
+  const nomeRota = rotaSolicitada.desconhecida ? "inicio" : rotaSolicitada.nome;
+  const configuracao = rotas[nomeRota];
+  conteudo.className = configuracao.classe;
+  conteudo.replaceChildren(criarFragmento(configuracao));
+  document.title = configuracao.titulo;
+  atualizarNavegacao(nomeRota);
+}
+
+A função real do projeto interpreta o hash, escolhe a configuração correspondente e cria um fragmento a partir do conteúdo inicial ou de elementos template. O método replaceChildren() remove o conteúdo anterior do main#conteudo antes de inserir o novo fragmento. Desse modo, as páginas não se acumulam e os identificadores não ficam duplicados no DOM ativo.
+
+Após a renderização, também são atualizados o título do documento, a meta description, o aria-current do menu e uma região de status para leitores de tela. Nas subrotas, o foco é levado ao título da seção solicitada. O formulário utiliza delegação de eventos no document, permitindo que validação, alerta e toast continuem funcionando mesmo quando o Cadastro é inserido dinamicamente.
+
+Mantive o cabeçalho, o menu e o rodapé como estrutura fixa. Apenas o conteúdo central é substituído, oferecendo uma navegação rápida, histórico funcional e gerenciamento de foco sem retirar as alternativas estáticas para quem estiver sem JavaScript.
+
+9. SISTEMA DE TEMPLATES E COMPONENTES DINÂMICOS
+
+No Projeto Novo Lar, usei o elemento HTML5 template para manter uma única estrutura reutilizável para os cartões de Voluntariado e Doações. Os conteúdos ficam separados no array dadosAcoes. Cada objeto reúne categoria, título, descrição, badges, itens e link de ação, sem repetir toda a marcação HTML.
+
+Quando a rota de Projetos é exibida, o JavaScript percorre o array com forEach. Para cada objeto, a função criarCartao() copia o modelo com cloneNode(true), localiza os campos pelos atributos data-campo e insere os textos com textContent. As badges e os itens das listas são criados com document.createElement().
+
+Trecho principal:
+
+const lote = document.createDocumentFragment();
+
+dadosAcoes.forEach((dados) => {
+  const cartao = criarCartao(dados, modelo);
+  lote.append(cartao);
+});
+
+lista.replaceChildren(lote);
+
+O DocumentFragment reúne todos os cartões antes da inserção. Assim, o DOM é atualizado de uma só vez, deixando a renderização mais organizada. O uso de textContent, em vez de innerHTML, impede que os dados sejam interpretados como marcação e reduz o risco de inserir código indevido. Para criar um novo cartão, basta adicionar outro objeto ao array; a estrutura, as classes e os atributos acessíveis continuam sendo aplicados pelo mesmo template.
+
+10. VERIFICAÇÃO DE CONSISTÊNCIA DO FORMULÁRIO
+
+No Projeto Novo Lar, centralizei a verificação nas funções validarCampo() e validarFormulario(). Todos os campos são obrigatórios e valores formados apenas por espaços são rejeitados com trim(). Nome, endereço e cidade também possuem tamanhos mínimos. O e-mail utiliza type="email" e a propriedade validity.typeMismatch, enquanto a data de nascimento recebe como limite máximo a data atual, impedindo datas futuras.
+
+Os formatos específicos são avaliados com expressões regulares. O CPF segue /^\d{3}\.\d{3}\.\d{3}-\d{2}$/, o telefone usa /^\(\d{2}\) \d{4,5}-\d{4}$/, o CEP usa /^\d{5}-\d{3}$/ e a UF precisa corresponder a /^[A-Z]{2}$/. Além do formato, o CPF tem os dígitos verificadores calculados e a UF é comparada com a lista das unidades federativas brasileiras. Essas verificações são locais e não consultam bases externas.
+
+Ao carregar o formulário, o script cria para cada input um elemento small com document.createElement(). Essa mensagem recebe um identificador, aria-live="polite" e é ligada ao campo por aria-describedby. O conteúdo é inserido com textContent. Conforme o resultado, o código atualiza aria-invalid e alterna as classes .campo-invalido e .campo-valido, exibindo borda, fundo e texto de orientação ou confirmação. Assim, o retorno não depende somente da cor.
+
+No evento focusout, o campo é marcado como já utilizado e validado. Depois disso, input repete a verificação em tempo real enquanto a pessoa corrige o valor. No submit, preventDefault() impede o envio convencional, todos os campos são revisados e, se houver falhas, o alerta geral informa quantos campos precisam de correção e o foco vai para o primeiro inválido. Quando tudo está consistente, o alerta é ocultado e o toast de sucesso aparece.
+
+Os listeners usam delegação no document e, por isso, também funcionam quando o formulário é inserido pela SPA. O JavaScript ativa noValidate apenas durante sua execução para assumir o fluxo personalizado; se o script falhar ou estiver desativado, os atributos required, type, minlength e pattern mantêm a validação nativa do navegador.
+
+11. PERSISTÊNCIA COM LOCALSTORAGE
+
+No Projeto Novo Lar, utilizei o localStorage somente para guardar a navegação recente. Nenhum dado pessoal do formulário — como nome, CPF, telefone, e-mail, nascimento ou endereço — é armazenado. Essa decisão protege o utilizador, pois o conteúdo do localStorage não é criptografado e pode continuar no dispositivo mesmo depois que o navegador é fechado.
+
+As informações são organizadas em um objeto com três propriedades: versao, ultimaRota e historico. O histórico é um array limitado às oito navegações mais recentes, e cada item contém somente a rota e a data e hora do acesso. A versão permite que a estrutura seja reconhecida e atualizada com segurança no futuro.
+
+Sempre que uma rota válida é renderizada, registrarRota() atualiza o objeto. JSON.stringify() converte a estrutura em texto e localStorage.setItem() grava o resultado na chave projeto-novo-lar:navegacao:v1. Se a nova rota for igual à última, apenas o horário é atualizado; caso contrário, uma entrada é adicionada. O uso de slice(-8) impede que o histórico cresça indefinidamente.
+
+Na abertura da aplicação, localStorage.getItem() recupera o texto e JSON.parse() o transforma novamente em objeto. Antes de usar os dados, o código confirma a versão, verifica se ultimaRota pertence à lista de rotas permitidas e filtra o histórico para aceitar apenas itens com rota e data válidas. Quando o endereço não contém uma rota explícita, a SPA restaura a última página visitada; na ausência de dados válidos, abre /inicio.
+
+Todas as operações ficam dentro de try/catch. Assim, JSON corrompido, armazenamento bloqueado ou falta de espaço não interrompem a aplicação. Nessas situações, o histórico é ignorado e o site continua com o comportamento padrão. Dessa forma, a persistência oferece continuidade sem guardar informações sensíveis.
+
+12. INTEGRAÇÃO DE BIBLIOTECA EXTERNA
+
+No Projeto Novo Lar, integrei a biblioteca IMask 7.6.1 para facilitar o preenchimento dos campos de CPF, telefone e CEP. Ela foi carregada por CDN com a versão fixada e o atributo async, enquanto o arquivo local integracoes.js usa defer. Assim, uma conexão lenta não impede que os demais recursos do site sejam executados.
+
+As máscaras foram configuradas como 000.000.000-00 para CPF e 00000-000 para CEP. No telefone, usei uma máscara dinâmica com os formatos (00) 0000-0000 e (00) 00000-0000; a função dispatch escolhe o modelo adequado conforme a quantidade de dígitos. A inicialização fica isolada em uma IIFE no arquivo integracoes.js, evitando variáveis globais desnecessárias. Um WeakMap registra os campos já preparados e impede que a mesma máscara seja aplicada duas vezes.
+
+Como o projeto funciona como SPA e o formulário pode ser inserido dinamicamente no DOM, a função iniciarMascaras() é chamada após o evento personalizado novolar:rota-renderizada. Ela também responde ao evento load do script externo, cobrindo o caso em que a CDN termina de carregar depois do código local. Dessa forma, os recursos são ativados sempre que a rota de cadastro é aberta, inclusive depois de outras navegações.
+
+Antes de iniciar, o código verifica se window.IMask está disponível. Se a CDN não carregar, a aplicação continua funcionando: os campos permanecem utilizáveis e o JavaScript próprio ainda verifica obrigatoriedade, formato, dígitos do CPF, telefone e CEP. Portanto, a biblioteca melhora a experiência de digitação, mas não substitui a validação nem compromete o funcionamento principal do sistema.
+
+13. ORGANIZAÇÃO MODULAR DO JAVASCRIPT
+
+Organizei o JavaScript do Projeto Novo Lar em arquivos menores, cada um com uma responsabilidade bem definida. O menu.js controla o menu responsivo e os submenus; o formulario.js concentra a validação e os retornos visuais; o componentes.js gera os cartões repetitivos; o persistencia.js cuida do histórico de navegação no localStorage; o integracoes.js inicializa as máscaras de CPF, telefone e CEP; e o spa.js coordena as rotas e a troca do conteúdo principal.
+
+Essa divisão mantém alta coesão, pois cada arquivo reúne somente funções ligadas ao mesmo objetivo, e reduz o acoplamento. Todas as implementações ficam protegidas por IIFEs, evitando que variáveis e funções internas disputem o escopo global. Quando uma função precisa ser compartilhada, o arquivo expõe apenas uma pequena API no objeto window, protegida com Object.freeze().
+
+O spa.js, por exemplo, acessa renderizarCartoesAjuda() e as funções de persistência por meio das APIs NovoLarComponentes e NovoLarPersistencia. Usei optional chaining nessas chamadas, de modo que elas só ocorram quando o recurso estiver disponível. O roteador não precisa conhecer os detalhes internos da criação dos cartões nem do armazenamento.
+
+Também adotei comunicação por eventos. Depois de inserir uma rota no DOM, o spa.js dispara o evento personalizado novolar:rota-renderizada. O formulario.js e o integracoes.js escutam esse aviso e preparam os elementos recém-inseridos. Dessa forma, a SPA apenas comunica que a tela mudou, sem depender diretamente da implementação desses recursos.
+
+Os scripts locais utilizam defer, preservando a ordem declarada no HTML e aguardando a análise do documento. A biblioteca IMask usa async e possui verificação de disponibilidade e fallback, por isso seu carregamento não bloqueia os demais scripts.
+
+Não utilizei import e export porque este é um projeto estático pequeno, preparado para abrir diretamente pelo arquivo index.html, sem servidor ou empacotador. Nesse cenário, scripts separados, IIFEs, APIs mínimas e eventos personalizados oferecem modularidade suficiente, mantêm o código simples de executar e permitem alterar uma funcionalidade sem interferir nas demais.
+
+14. PRINCIPAIS PROBLEMAS, DIAGNÓSTICOS E SOLUÇÕES
+
+PROBLEMA 1
+
+Problema:
+Ao abrir o cadastro pela navegação SPA, os campos apareciam, mas a validação e as máscaras podiam não ser ativadas porque o formulário era inserido depois da carga inicial.
+
+Técnica de diagnóstico:
+Usei o console e pontos de interrupção para comparar a ordem dos eventos. A inspeção do DOM mostrou que a preparação ocorria antes de os novos campos existirem.
+
+Solução:
+Mantive os eventos de input e submit por delegação no document e passei a emitir novolar:rota-renderizada após cada troca de tela. O formulario.js e o integracoes.js escutam esse aviso e preparam os elementos recém-inseridos, mantendo os comportamentos ativos em todas as visitas ao cadastro.
+
+PROBLEMA 2
+
+Problema:
+Em conexões lentas, a biblioteca IMask podia terminar de carregar depois do script local, deixando CPF, telefone e CEP temporariamente sem máscara.
+
+Técnica de diagnóstico:
+Simulei lentidão e falha da CDN no painel Rede e acompanhei window.IMask no console. O teste confirmou que a ordem variava conforme o tempo da requisição.
+
+Solução:
+Configurei a biblioteca com carregamento assíncrono e incluí uma verificação de disponibilidade antes da inicialização. A função também responde ao evento load da biblioteca e ao evento de mudança de rota. Se a CDN falhar, o formulário continua disponível e a validação própria permanece ativa.
+
+PROBLEMA 3
+
+Problema:
+A primeira máscara de telefone podia posicionar o hífen incorretamente ao alternar entre números brasileiros com dez e onze dígitos.
+
+Técnica de diagnóstico:
+Testei digitação, colagem, exclusão e alternância entre dez e onze dígitos. O acompanhamento do valor no console revelou a escolha incorreta do padrão.
+
+Solução:
+Troquei o padrão único por duas máscaras, uma para telefone fixo e outra para celular. A função dispatch considera somente a quantidade de dígitos e seleciona dinamicamente o formato correto. Um WeakMap impede inicializações repetidas quando a pessoa retorna à rota de cadastro.
+
+PROBLEMA 4
+
+Problema:
+Dados corrompidos no localStorage ou o bloqueio do armazenamento pelo navegador podiam interromper a restauração da última rota visitada.
+
+Técnica de diagnóstico:
+Inseri um JSON inválido no armazenamento e simulei falhas de leitura e gravação. O console e os testes automatizados localizaram a exceção durante a recuperação.
+
+Solução:
+Protegi a leitura, a conversão e a gravação com try e catch. O conteúdo recuperado é validado por versão, estrutura e lista de rotas permitidas. Valores inválidos são descartados e a aplicação volta para a página inicial. O histórico permanece limitado a oito registros e não armazena dados pessoais.
+
+15. REFLEXÃO SOBRE A APRENDIZAGEM
+
+Ao longo do desenvolvimento do Projeto Novo Lar, consegui transformar conceitos estudados em uma aplicação funcional e organizada. No início, meu principal desafio foi compreender como as diferentes partes do JavaScript poderiam trabalhar juntas sem tornar o código confuso. Com a evolução do projeto, passei a enxergar melhor a relação entre estrutura, comportamento e experiência do usuário.
+
+Considero que meus principais pontos fortes foram a organização do código e a integração das funcionalidades. Separei responsabilidades entre navegação SPA, componentes dinâmicos, validação de formulários, persistência de dados, menu responsivo e máscaras de entrada. Também utilizei manipulação do DOM, eventos delegados e um evento personalizado para preparar conteúdos inseridos depois da troca de rota. Essa abordagem permitiu manter as partes independentes e facilitou a identificação de falhas.
+
+Outro aprendizado importante foi perceber que uma aplicação não deve funcionar apenas no cenário ideal. Por isso, preparei validações visuais, tratamento de dados inválidos no localStorage e alternativas para quando a biblioteca externa não estiver disponível. Os testes de navegação, formulário, persistência e integração ajudaram a confirmar o funcionamento e mostraram a importância de investigar problemas com método antes de alterar o código.
+
+Apesar dos bons resultados, reconheço oportunidades de melhoria. Quero aprofundar meus conhecimentos em ES Modules, testes automatizados mais completos e integração com APIs reais. Também pretendo desenvolver ainda mais minha capacidade de documentar decisões técnicas de forma curta e acessível para pessoas com diferentes níveis de conhecimento.
+
+Avalio meu desempenho como Excelente não por considerar o projeto perfeito, mas porque consegui aplicar os conteúdos com autonomia, corrigir problemas encontrados e justificar as escolhas realizadas. Essa experiência fortaleceu minha capacidade de dividir problemas complexos em etapas menores, buscar soluções resilientes e desenvolver interfaces pensando tanto na qualidade técnica quanto nas necessidades das pessoas. São competências que levarei para futuros projetos acadêmicos e profissionais.

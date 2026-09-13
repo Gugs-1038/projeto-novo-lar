@@ -1,0 +1,32 @@
+PROJETO NOVO LAR
+Projeto acadêmico fictício de uma ONG de proteção animal.
+
+ESTRUTURA
+- html/index.html: estrutura principal da SPA, página inicial e modelos das rotas.
+- html/projetos.html: alternativa estática para projetos, voluntariado e doações.
+- html/cadastro.html: alternativa estática para o formulário de voluntários.
+- css/estilos.css: apresentação visual e adaptação para telas menores.
+- js/menu.js: controla o submenu e o menu hambúrguer responsivo.
+- js/formulario.js: valida os campos em tempo real, cria mensagens acessíveis e controla alertas e toast por delegação.
+- js/componentes.js: cria os cartões de ajuda a partir de dados e de um único template HTML reutilizável.
+- js/persistencia.js: guarda a última rota e um histórico curto de navegação no localStorage.
+- js/integracoes.js: inicializa as máscaras de CPF, telefone e CEP com a biblioteca IMask.
+- js/spa.js: intercepta a navegação, interpreta as rotas por hash e atualiza o conteúdo principal pelo DOM.
+- imagens/animal-resgatado.jpg: imagem de compatibilidade.
+- imagens/animal-resgatado.webp: versão otimizada da mesma imagem.
+- capturas/componentes-feedback.png: visão conjunta de badges, alertas e toast.
+- capturas/badges-nos-projetos.png: badges aplicados à página de projetos.
+- capturas/alerta-no-formulario.png: alerta informativo aplicado ao cadastro.
+
+COMO ABRIR
+Abra o arquivo html/index.html em um navegador. As rotas #/inicio, #/projetos e #/cadastro são exibidas sem recarregar o documento.
+Ao reabrir a aplicação sem informar uma rota, a última página válida é restaurada quando o armazenamento local está disponível.
+
+OBSERVAÇÃO
+Os nomes, o e-mail e o telefone apresentados são fictícios e foram usados apenas para fins acadêmicos.
+O menu permanece visível como alternativa caso o JavaScript não seja carregado.
+Os links conservam endereços HTML reais como alternativa caso o roteador da SPA não seja executado.
+Na rota de projetos, os cartões repetitivos são gerados com cloneNode, textContent e DocumentFragment.
+Por privacidade, nenhum dado pessoal preenchido no formulário é salvo no localStorage.
+A biblioteca IMask 7.6.1 é carregada de forma assíncrona por CDN somente para orientar a digitação; a validação própria continua ativa e o formulário permanece utilizável se a conexão falhar.
+Cada script local possui uma responsabilidade própria e fica isolado por IIFE; quando uma comunicação é necessária, utiliza uma API pública pequena e congelada ou o evento novolar:rota-renderizada.
