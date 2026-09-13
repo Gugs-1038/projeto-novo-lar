@@ -264,3 +264,63 @@ v1.0.0
 
 Descrição e justificativa:
 Marca a primeira versão estável na main e está associada ao commit release: publicar versao 1.0.0. Adotei MAJOR.MINOR.PATCH: mudanças incompatíveis elevam MAJOR, novas funções compatíveis elevam MINOR e correções compatíveis elevam PATCH.
+
+18. ISSUES, MILESTONE E PULL REQUESTS
+
+Observação de transparência:
+O repositório do Projeto Novo Lar foi desenvolvido localmente e não possui conexão com uma plataforma remota. Por isso, os itens abaixo são registros retrospectivos de tarefas e integrações reais. Os PRs correspondem a merges comprovados no histórico Git.
+
+REGISTRO 1
+
+Tipo:
+Issue
+
+Título:
+Documentar a estratégia GitFlow
+
+Descrição:
+Registro retrospectivo da tarefa concluída na branch feature/documentacao-gitflow. O commit 6063428 criou o arquivo FLUXO-GIT.md e explicou o papel de main, develop, feature, release e hotfix.
+
+REGISTRO 2
+
+Tipo:
+Issue
+
+Título:
+Organizar commits e releases
+
+Descrição:
+Registro retrospectivo da padronização dos commits e do versionamento semântico. A tarefa foi realizada na branch feature/registro-commits-releases e integrada à develop.
+
+REGISTRO 3
+
+Tipo:
+Milestone
+
+Título:
+Primeira entrega estável v1.0.0
+
+Descrição:
+Marco retrospectivo da primeira versão estável. A branch release/1.0.0 preparou o CHANGELOG, foi integrada em main e develop e originou a tag v1.0.0.
+
+REGISTRO 4
+
+Tipo:
+PR
+
+Título:
+Integrar documentação do GitFlow em develop
+
+Descrição:
+Registro equivalente a um PR local entre feature/documentacao-gitflow e develop. O merge 1d6ae3f incorporou a documentação após a revisão, sem alterar diretamente a branch permanente.
+
+REGISTRO 5
+
+Tipo:
+PR
+
+Título:
+Integrar registro de commits e releases em develop
+
+Descrição:
+Registro equivalente a um PR local entre feature/registro-commits-releases e develop. O merge cec41d0 reuniu as regras de commits e versionamento após a revisão.
