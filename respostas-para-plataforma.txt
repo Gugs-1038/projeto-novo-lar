@@ -230,3 +230,37 @@ A partir desta etapa, organizei o repositório do Projeto Novo Lar com um fluxo 
 Para registrar uma alteração real, criei feature/documentacao-gitflow a partir de develop. Depois da revisão, essa funcionalidade foi integrada novamente à develop por um merge explícito. Quando o conjunto ficou estável, abri release/1.0.0 para os testes finais e a preparação da primeira versão.
 
 Após a aprovação, a release foi incorporada à main, marcada com a tag v1.0.0 e também devolvida à develop, mantendo as duas linhas atualizadas. Caso surja uma falha urgente em produção, a política será criar uma branch hotfix a partir de main, aplicar e testar a correção e depois integrá-la tanto à main quanto à develop. Mesmo trabalhando individualmente, esse fluxo tornou as alterações mais organizadas, rastreáveis e seguras.
+
+17. REGISTROS DE COMMITS E RELEASE
+
+REGISTRO 1
+
+Mensagem de commit ou tag da release:
+chore: registrar versao inicial do projeto
+
+Descrição e justificativa:
+Criou a base completa do Projeto Novo Lar com HTML, CSS, JavaScript modular, imagens, capturas e validações. O tipo chore identifica uma tarefa estrutural que não representa uma funcionalidade ou correção isolada.
+
+REGISTRO 2
+
+Mensagem de commit ou tag da release:
+docs: documentar fluxo de branches
+
+Descrição e justificativa:
+Adicionou FLUXO-GIT.md e registrou as funções de main, develop, feature, release e hotfix. O tipo docs mostra que a alteração ficou concentrada na documentação do projeto.
+
+REGISTRO 3
+
+Mensagem de commit ou tag da release:
+docs: preparar lancamento 1.0.0
+
+Descrição e justificativa:
+Criou CHANGELOG.md com o resumo das funcionalidades e verificações da primeira entrega. O tipo docs indica a documentação usada para preparar e conferir o lançamento.
+
+REGISTRO 4
+
+Mensagem de commit ou tag da release:
+v1.0.0
+
+Descrição e justificativa:
+Marca a primeira versão estável na main e está associada ao commit release: publicar versao 1.0.0. Adotei MAJOR.MINOR.PATCH: mudanças incompatíveis elevam MAJOR, novas funções compatíveis elevam MINOR e correções compatíveis elevam PATCH.
