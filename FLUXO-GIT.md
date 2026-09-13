@@ -18,3 +18,9 @@ O GitFlow foi adotado a partir da etapa de versionamento do projeto.
 Uma nova funcionalidade nasce em uma branch feature criada a partir de develop. Depois da revisão, ela retorna para develop por um merge explícito. Quando o conjunto está pronto, uma branch release recebe os ajustes finais e é integrada em main e develop. A versão publicada em main recebe uma tag.
 
 Branches de hotfix não são criadas preventivamente. Quando necessárias, partem de main e retornam tanto para main quanto para develop após a validação da correção.
+
+## Commits e versões
+
+As mensagens utilizam a estrutura tipo: descrição. Os tipos chore e docs identificam, respectivamente, tarefas estruturais e mudanças de documentação. Mensagens de merge e release registram movimentos administrativos do GitFlow.
+
+A tag v1.0.0 identifica a primeira entrega estável. O projeto adota MAJOR.MINOR.PATCH: mudanças incompatíveis elevam MAJOR, novas funcionalidades compatíveis elevam MINOR e correções compatíveis elevam PATCH.
