@@ -222,3 +222,11 @@ Outro aprendizado importante foi perceber que uma aplicação não deve funciona
 Apesar dos bons resultados, reconheço oportunidades de melhoria. Quero aprofundar meus conhecimentos em ES Modules, testes automatizados mais completos e integração com APIs reais. Também pretendo desenvolver ainda mais minha capacidade de documentar decisões técnicas de forma curta e acessível para pessoas com diferentes níveis de conhecimento.
 
 Avalio meu desempenho como Excelente não por considerar o projeto perfeito, mas porque consegui aplicar os conteúdos com autonomia, corrigir problemas encontrados e justificar as escolhas realizadas. Essa experiência fortaleceu minha capacidade de dividir problemas complexos em etapas menores, buscar soluções resilientes e desenvolver interfaces pensando tanto na qualidade técnica quanto nas necessidades das pessoas. São competências que levarei para futuros projetos acadêmicos e profissionais.
+
+16. ESTRUTURA DE BRANCHES COM GITFLOW
+
+A partir desta etapa, organizei o repositório do Projeto Novo Lar com um fluxo inspirado no GitFlow. A branch main representa somente versões estáveis e prontas para entrega, enquanto a develop concentra o desenvolvimento contínuo.
+
+Para registrar uma alteração real, criei feature/documentacao-gitflow a partir de develop. Depois da revisão, essa funcionalidade foi integrada novamente à develop por um merge explícito. Quando o conjunto ficou estável, abri release/1.0.0 para os testes finais e a preparação da primeira versão.
+
+Após a aprovação, a release foi incorporada à main, marcada com a tag v1.0.0 e também devolvida à develop, mantendo as duas linhas atualizadas. Caso surja uma falha urgente em produção, a política será criar uma branch hotfix a partir de main, aplicar e testar a correção e depois integrá-la tanto à main quanto à develop. Mesmo trabalhando individualmente, esse fluxo tornou as alterações mais organizadas, rastreáveis e seguras.
