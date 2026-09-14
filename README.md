@@ -36,6 +36,7 @@ Não foram usados framework, empacotador, banco de dados ou back end. Se a bibli
 - validacao-w3c: resultados da validação dos documentos HTML.
 - FLUXO-GIT.md: política de branches, commits e versões.
 - GESTAO-REPOSITORIO.md: tarefas e integrações documentadas.
+- ACESSIBILIDADE.md: landmarks, estados WAI-ARIA e estratégias de foco.
 - respostas-para-plataforma.txt: textos de apoio para a entrega acadêmica.
 
 ## Pré requisitos
@@ -70,6 +71,8 @@ A verificação manual inclui navegação entre rotas, botões Voltar e Avançar
 ## Acessibilidade e privacidade
 
 A interface utiliza estrutura semântica, foco visível, navegação por teclado, mensagens com aria-live, rótulos associados aos campos e redução de movimentos quando solicitada pelo sistema. Nenhum dado pessoal do formulário é salvo no localStorage ou enviado a um servidor.
+
+Os detalhes dos landmarks e dos estados WAI-ARIA estão documentados em ACESSIBILIDADE.md.
 
 ## Versionamento e colaboração
 
