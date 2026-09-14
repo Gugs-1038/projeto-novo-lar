@@ -94,7 +94,7 @@ function renderizarRota() {
 
 A função real do projeto interpreta o hash, escolhe a configuração correspondente e cria um fragmento a partir do conteúdo inicial ou de elementos template. O método replaceChildren() remove o conteúdo anterior do main#conteudo antes de inserir o novo fragmento. Desse modo, as páginas não se acumulam e os identificadores não ficam duplicados no DOM ativo.
 
-Após a renderização, também são atualizados o título do documento, a meta description, o aria-current do menu e uma região de status para leitores de tela. Nas subrotas, o foco é levado ao título da seção solicitada. O formulário utiliza delegação de eventos no document, permitindo que validação, alerta e toast continuem funcionando mesmo quando o Cadastro é inserido dinamicamente.
+Após a renderização, também são atualizados o título do documento, a meta description, o aria-current do menu e uma região de status para leitores de tela. Nas subrotas, o foco é levado ao título da secção solicitada. O formulário utiliza delegação de eventos no document, permitindo que validação, alerta e toast continuem funcionando mesmo quando o Cadastro é inserido dinamicamente.
 
 Mantive o cabeçalho, o menu e o rodapé como estrutura fixa. Apenas o conteúdo central é substituído, oferecendo uma navegação rápida, histórico funcional e gerenciamento de foco sem retirar as alternativas estáticas para quem estiver sem JavaScript.
 
@@ -325,59 +325,59 @@ Integrar registro de commits e releases em develop
 Descrição:
 Registro equivalente a um PR local entre feature/registro-commits-releases e develop. O merge cec41d0 reuniu as regras de commits e versionamento após a revisão.
 
-19. SEÇÕES DO README E EXECUÇÃO LOCAL
+19. SECÇÕES DO README E EXECUÇÃO LOCAL
 
-SEÇÃO 1
+SECÇÃO 1
 
-Nome da seção:
-Visão geral
+Nome da secção:
+Apresentação do projeto
 
 Descrição e tecnologias mencionadas:
-Apresenta o Projeto Novo Lar como uma SPA acadêmica sobre proteção animal. Explica a navegação dinâmica pelo DOM e a existência de páginas HTML independentes como alternativa.
+Apresenta o Projeto Novo Lar, uma SPA acadêmica de proteção animal desenvolvida com HTML5, CSS3 e JavaScript. Resume o objetivo da aplicação e as formas de participação.
 
-SEÇÃO 2
+SECÇÃO 2
 
-Nome da seção:
+Nome da secção:
 Funcionalidades principais
 
 Descrição e tecnologias mencionadas:
 Resume as rotas por hash, menu responsivo, templates HTML, componentes dinâmicos, validação do formulário, máscaras de entrada, localStorage e retornos visuais acessíveis.
 
-SEÇÃO 3
+SECÇÃO 3
 
-Nome da seção:
+Nome da secção:
 Tecnologias utilizadas
 
 Descrição e tecnologias mencionadas:
 Detalha o uso de HTML5, CSS3, JavaScript puro, DOM, eventos, Web Storage e IMask 7.6.1 por CDN. Também informa que o projeto não utiliza framework, banco de dados ou back end.
 
-SEÇÃO 4
+SECÇÃO 4
 
-Nome da seção:
+Nome da secção:
 Estrutura do projeto
 
 Descrição e tecnologias mencionadas:
 Explica a função das pastas html, css, js, imagens, capturas e validacao-w3c. Também apresenta os documentos de versionamento, gestão e apoio à entrega.
 
-SEÇÃO 5
+SECÇÃO 5
 
-Nome da seção:
+Nome da secção:
 Execução, build e testes
 
 Descrição e tecnologias mencionadas:
 Mostra como abrir html/index.html ou iniciar um servidor local com Python. Esclarece que não há build nem suíte automatizada e descreve as verificações manuais e a validação W3C.
 
-SEÇÃO 6
+SECÇÃO 6
 
-Nome da seção:
+Nome da secção:
 Acessibilidade e privacidade
 
 Descrição e tecnologias mencionadas:
 Registra semântica HTML, teclado, foco visível, aria-live e redução de movimentos. Explica que dados pessoais não são enviados nem armazenados no localStorage.
 
-SEÇÃO 7
+SECÇÃO 7
 
-Nome da seção:
+Nome da secção:
 Versionamento e colaboração
 
 Descrição e tecnologias mencionadas:
