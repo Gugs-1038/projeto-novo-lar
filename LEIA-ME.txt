@@ -15,6 +15,7 @@ ESTRUTURA
 - js/spa.js: intercepta a navegação, interpreta as rotas por hash e atualiza o conteúdo principal pelo DOM.
 - FLUXO-GIT.md: registra as branches, os merges e a política de versionamento adotada no projeto.
 - GESTAO-REPOSITORIO.md: registra retrospectivamente as tarefas, o marco da versão e as integrações equivalentes a pull requests.
+- ACESSIBILIDADE.md: documenta os landmarks, os estados WAI-ARIA e a gestão de foco.
 - imagens/animal-resgatado.jpg: imagem de compatibilidade.
 - imagens/animal-resgatado.webp: versão otimizada da mesma imagem.
 - capturas/componentes-feedback.png: visão conjunta de badges, alertas e toast.

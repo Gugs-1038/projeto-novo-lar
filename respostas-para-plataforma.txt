@@ -390,3 +390,69 @@ O projeto é estático e não exige instalação de pacotes. Extraia a pasta man
 Não há etapa de build, pois HTML, CSS e JavaScript são executados diretamente. A única biblioteca externa é IMask 7.6.1, carregada por CDN. Sem internet, as máscaras não aparecem, mas o formulário e sua validação continuam funcionando.
 
 Para verificar a aplicação, visite Início, Projetos e Cadastro, teste o menu, os botões, o histórico do navegador, valores válidos e inválidos no formulário e a restauração da última rota. Os resultados da validação HTML estão em validacao-w3c/resultado.txt. Não há suíte automatizada nesta versão; os testes atuais são manuais e documentados.
+
+20. ALTERAÇÕES SEMÂNTICAS E WAI-ARIA
+
+REGISTO 1
+
+Elemento modificado ou tag implementada:
+header, nav, main e footer
+
+Justificação e impacto na acessibilidade:
+Usei landmarks semânticos para separar o cabeçalho, a navegação, o conteúdo principal e o rodapé. Esta estrutura permite que leitores de ecrã identifiquem as áreas da página e avancem diretamente para a informação pretendida.
+
+REGISTO 2
+
+Elemento modificado ou tag implementada:
+nav com aria-label e links com aria-current
+
+Justificação e impacto na acessibilidade:
+A navegação recebeu um nome acessível e o link da página ativa é marcado com aria-current. Na SPA, esse estado é atualizado em cada mudança de rota, ajudando o utilizador a compreender onde se encontra.
+
+REGISTO 3
+
+Elemento modificado ou tag implementada:
+Botões de menu com aria-expanded e aria-controls
+
+Justificação e impacto na acessibilidade:
+Os botões do menu principal e do submenu indicam qual elemento controlam e comunicam se estão abertos ou fechados. O JavaScript atualiza aria-expanded após cada interação, tornando o estado percetível para tecnologias de apoio.
+
+REGISTO 4
+
+Elemento modificado ou tag implementada:
+section, cartões e aside com aria-labelledby
+
+Justificação e impacto na acessibilidade:
+Associei cada bloco relevante ao respetivo título por meio de aria-labelledby. A relação fornece um nome acessível para as secções, os cartões de projetos e o aviso sobre dados, facilitando a compreensão do conteúdo.
+
+REGISTO 5
+
+Elemento modificado ou tag implementada:
+Formulário com label, fieldset, legend, aria-describedby e aria-invalid
+
+Justificação e impacto na acessibilidade:
+Cada campo possui um label associado. fieldset e legend agrupam dados pessoais, contacto e endereço. Em caso de erro, aria-describedby liga o campo com a mensagem explicativa e aria-invalid comunica a falha.
+
+REGISTO 6
+
+Elemento modificado ou tag implementada:
+Mensagens com role alert, role status e aria-live
+
+Justificação e impacto na acessibilidade:
+Os erros do formulário usam role alert para anúncio imediato. Mudanças de rota e confirmações usam role status e aria-live polite, oferecendo retorno sem interromper desnecessariamente a leitura.
+
+REGISTO 7
+
+Elemento modificado ou tag implementada:
+Ícones decorativos com aria-hidden
+
+Justificação e impacto na acessibilidade:
+Corações, setas e outros símbolos puramente visuais receberam aria-hidden true. Assim, os leitores de ecrã ignoram informação decorativa e apresentam apenas os nomes acessíveis dos controlos e conteúdos.
+
+REGISTO 8
+
+Elemento modificado ou tag implementada:
+h1 e main com tabindex negativo e ligação para saltar
+
+Justificação e impacto na acessibilidade:
+Após a navegação na SPA, o título do novo conteúdo recebe tabindex negativo e foco temporário. A ligação para saltar ao conteúdo permite ignorar o menu e conduz utilizadores de teclado diretamente para o main.
