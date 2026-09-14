@@ -1,5 +1,14 @@
 # Histórico de versões
 
+## Em desenvolvimento
+
+### Acessibilidade visual
+
+- Modo escuro automático conforme a preferência do sistema operativo.
+- Perfil de alto contraste e suporte a cores forçadas.
+- Bordas funcionais, marcadores de posição e estados de foco reforçados.
+- Verificação automatizada de 25 pares cromáticos segundo a fórmula WCAG 2.1.
+
 ## 1.0.0
 
 Primeira versão estável do Projeto Novo Lar.

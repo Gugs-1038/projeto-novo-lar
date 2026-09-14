@@ -1,10 +1,14 @@
 :root {
+  color-scheme: light;
+
   /* Cores da marca */
   --cor-primaria: #12372a;
   --cor-primaria-escura: #0b281e;
   --cor-secundaria: #9b4300;
-  --cor-apoio: #c64c36;
+  --cor-apoio: #b63b2d;
   --cor-destaque: #ffb703;
+  --cor-sobre-primaria: #ffffff;
+  --cor-sobre-destaque: #0b281e;
 
   /* Cores neutras e de estado */
   --cor-texto: #17211c;
@@ -12,8 +16,8 @@
   --cor-fundo: #f7faf8;
   --cor-superficie: #ffffff;
   --cor-superficie-suave: #e7f3ec;
-  --cor-borda: #c9d8d0;
-  --cor-borda-forte: #72867b;
+  --cor-borda: #72867b;
+  --cor-borda-forte: #52675c;
   --cor-sucesso: #1b6e37;
   --cor-sucesso-fundo: #eff9f2;
   --cor-atencao-fundo: #fff7e6;
@@ -82,7 +86,7 @@ input:focus-visible {
   left: var(--espaco-4);
   z-index: 10;
   padding: var(--espaco-3) var(--espaco-4);
-  color: var(--cor-superficie);
+  color: var(--cor-sobre-primaria);
   background: var(--cor-primaria);
   border-radius: var(--raio-pequeno);
 }
@@ -140,7 +144,7 @@ input:focus-visible {
   gap: var(--espaco-3);
   min-height: 44px;
   padding: var(--espaco-2) var(--espaco-3);
-  color: var(--cor-superficie);
+  color: var(--cor-sobre-primaria);
   background: var(--cor-primaria);
   border: 2px solid var(--cor-primaria);
   border-radius: var(--raio-pequeno);
@@ -283,7 +287,7 @@ input:focus-visible {
 .menu a[aria-current="page"],
 .controle-submenu:hover,
 .controle-submenu[aria-expanded="true"] {
-  color: var(--cor-superficie);
+  color: var(--cor-sobre-primaria);
   background: var(--cor-primaria);
 }
 
@@ -395,7 +399,7 @@ h2 {
 .botao {
   display: inline-block;
   padding: var(--espaco-3) var(--espaco-4);
-  color: var(--cor-superficie);
+  color: var(--cor-sobre-primaria);
   background: var(--cor-primaria);
   border: 2px solid var(--cor-primaria);
   border-radius: 0.45rem;
@@ -407,7 +411,7 @@ h2 {
 }
 
 .botao:hover {
-  color: var(--cor-primaria-escura);
+  color: var(--cor-sobre-destaque);
   background: var(--cor-destaque);
   border-color: var(--cor-destaque);
   box-shadow: 0 4px 0 var(--cor-primaria-escura);
@@ -425,7 +429,7 @@ h2 {
 }
 
 .botao:disabled {
-  color: var(--cor-superficie);
+  color: var(--cor-sobre-primaria);
   background: var(--cor-borda-forte);
   border-color: var(--cor-borda-forte);
   box-shadow: none;
@@ -636,6 +640,11 @@ input {
   transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+input::placeholder {
+  color: var(--cor-texto-suave);
+  opacity: 1;
+}
+
 input:hover:not(:disabled) {
   border-color: var(--cor-primaria);
 }
@@ -759,7 +768,7 @@ input:disabled {
   place-items: center;
   width: 1.9rem;
   height: 1.9rem;
-  color: var(--cor-superficie);
+  color: var(--cor-sobre-primaria);
   background: var(--cor-sucesso);
   border-radius: 50%;
   font-weight: 900;
@@ -790,7 +799,7 @@ input:disabled {
 
 .rodape {
   padding: var(--espaco-7) max(var(--espaco-5), calc((100% - var(--largura-conteudo)) / 2 + var(--espaco-5)));
-  color: var(--cor-superficie);
+  color: var(--cor-sobre-primaria);
   background: var(--cor-primaria);
 }
 
@@ -983,6 +992,131 @@ input:disabled {
   .imagem-principal,
   .imagem-projeto {
     box-shadow: 10px 10px 0 var(--cor-destaque);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --cor-primaria: #a7d8bc;
+    --cor-primaria-escura: #7fc49d;
+    --cor-secundaria: #ffb37a;
+    --cor-apoio: #ff9c89;
+    --cor-destaque: #ffd166;
+    --cor-sobre-primaria: #08110d;
+    --cor-sobre-destaque: #08110d;
+    --cor-texto: #f4f8f5;
+    --cor-texto-suave: #c3d0c9;
+    --cor-fundo: #08110d;
+    --cor-superficie: #102019;
+    --cor-superficie-suave: #173127;
+    --cor-borda: #6f897a;
+    --cor-borda-forte: #9eb3a7;
+    --cor-sucesso: #8ae6a5;
+    --cor-sucesso-fundo: #12351f;
+    --cor-atencao-fundo: #3b2915;
+    --cor-erro: #ffaaa3;
+    --cor-erro-fundo: #3a1717;
+  }
+
+  .submenu,
+  .cartao,
+  .toast {
+    box-shadow: 0 16px 38px rgba(0, 0, 0, 0.45);
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    color-scheme: dark;
+    --cor-primaria: #00ffff;
+    --cor-primaria-escura: #ffff00;
+    --cor-secundaria: #ffff00;
+    --cor-apoio: #ff8080;
+    --cor-destaque: #ffff00;
+    --cor-sobre-primaria: #000000;
+    --cor-sobre-destaque: #000000;
+    --cor-texto: #ffffff;
+    --cor-texto-suave: #ffffff;
+    --cor-fundo: #000000;
+    --cor-superficie: #000000;
+    --cor-superficie-suave: #000000;
+    --cor-borda: #ffffff;
+    --cor-borda-forte: #ffffff;
+    --cor-sucesso: #00ff66;
+    --cor-sucesso-fundo: #000000;
+    --cor-atencao-fundo: #000000;
+    --cor-erro: #ff8080;
+    --cor-erro-fundo: #000000;
+  }
+
+  .submenu,
+  .cartao,
+  .cartao:hover,
+  .cartao:focus-within,
+  .formulario,
+  .alerta,
+  .toast,
+  fieldset,
+  input {
+    border-width: 2px;
+    box-shadow: none;
+  }
+
+  .menu a[aria-current="page"] {
+    outline: 2px solid var(--cor-destaque);
+    outline-offset: 2px;
+  }
+}
+
+@media (forced-colors: active) {
+  :root {
+    --cor-primaria: LinkText;
+    --cor-primaria-escura: Highlight;
+    --cor-secundaria: LinkText;
+    --cor-apoio: LinkText;
+    --cor-destaque: Highlight;
+    --cor-sobre-primaria: Canvas;
+    --cor-sobre-destaque: HighlightText;
+    --cor-texto: CanvasText;
+    --cor-texto-suave: CanvasText;
+    --cor-fundo: Canvas;
+    --cor-superficie: Canvas;
+    --cor-superficie-suave: Canvas;
+    --cor-borda: CanvasText;
+    --cor-borda-forte: CanvasText;
+    --cor-sucesso: CanvasText;
+    --cor-sucesso-fundo: Canvas;
+    --cor-atencao-fundo: Canvas;
+    --cor-erro: CanvasText;
+    --cor-erro-fundo: Canvas;
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible {
+    outline: 3px solid Highlight;
+    box-shadow: none;
+  }
+
+  .pular-conteudo,
+  .controle-menu,
+  .controle-menu:hover,
+  .botao,
+  .rodape,
+  .menu a:hover,
+  .menu a[aria-current="page"],
+  .controle-submenu:hover,
+  .controle-submenu[aria-expanded="true"] {
+    color: HighlightText;
+    background: Highlight;
+    border-color: Highlight;
+  }
+
+  .imagem-principal,
+  .imagem-projeto {
+    border: 2px solid CanvasText;
+    box-shadow: none;
   }
 }
 

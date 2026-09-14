@@ -6,7 +6,7 @@ ESTRUTURA
 - html/index.html: estrutura principal da SPA, página inicial e modelos das rotas.
 - html/projetos.html: alternativa estática para projetos, voluntariado e doações.
 - html/cadastro.html: alternativa estática para o formulário de voluntários.
-- css/estilos.css: apresentação visual e adaptação para telas menores.
+- css/estilos.css: apresentação visual, adaptação para ecrãs menores e perfis de cor.
 - js/menu.js: controla o submenu e o menu hambúrguer responsivo.
 - js/formulario.js: valida os campos em tempo real, cria mensagens acessíveis e controla alertas e toast por delegação.
 - js/componentes.js: cria os cartões de ajuda a partir de dados e de um único template HTML reutilizável.
@@ -16,6 +16,8 @@ ESTRUTURA
 - FLUXO-GIT.md: registra as branches, os merges e a política de versionamento adotada no projeto.
 - GESTAO-REPOSITORIO.md: registra retrospectivamente as tarefas, o marco da versão e as integrações equivalentes a pull requests.
 - ACESSIBILIDADE.md: documenta os landmarks, os estados WAI-ARIA e a gestão de foco.
+- CONTRASTE.md: documenta os modos claro, escuro, alto contraste e cores forçadas.
+- validacao-contraste: contém o verificador local e o relatório de 25 pares cromáticos.
 - imagens/animal-resgatado.jpg: imagem de compatibilidade.
 - imagens/animal-resgatado.webp: versão otimizada da mesma imagem.
 - capturas/componentes-feedback.png: visão conjunta de badges, alertas e toast.
@@ -35,3 +37,4 @@ Por privacidade, nenhum dado pessoal preenchido no formulário é salvo no local
 A biblioteca IMask 7.6.1 é carregada de forma assíncrona por CDN somente para orientar a digitação; a validação própria continua ativa e o formulário permanece utilizável se a conexão falhar.
 Cada script local possui uma responsabilidade própria e fica isolado por IIFE; quando uma comunicação é necessária, utiliza uma API pública pequena e congelada ou o evento novolar:rota-renderizada.
 O repositório adota main para versões estáveis, develop para integração contínua e branches feature, release e hotfix para trabalhos temporários.
+Os modos escuro e de alto contraste acompanham as preferências do sistema operativo. O perfil de cores forçadas também respeita a paleta escolhida pelo utilizador.

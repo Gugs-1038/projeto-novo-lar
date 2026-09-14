@@ -32,6 +32,12 @@ Quando o formulário contém erros, o foco vai para o primeiro campo inválido. 
 
 As imagens relevantes possuem alt descritivo. Corações, setas e ícones meramente visuais recebem aria-hidden true, evitando anúncios sem valor informativo para leitores de ecrã.
 
+## Perfis de cor e contraste
+
+As cores ficam centralizadas em variáveis CSS. O modo escuro acompanha prefers-color-scheme: dark, o perfil de alto contraste acompanha prefers-contrast: more e o modo de cores forçadas utiliza as cores semânticas do sistema operativo.
+
+Textos normais alcançam pelo menos 4,5:1. Bordas funcionais e indicadores visuais superam 3:1. O foco combina contorno e realce, e as mensagens apresentam texto, ícone ou borda para não depender apenas da cor. Os 25 pares avaliados e a forma de repetir o teste estão documentados em CONTRASTE.md.
+
 ## Limites da implementação
 
 O projeto não possui modal, dialog ou aria-modal. Esses recursos não são citados como implementados. A documentação descreve somente elementos confirmados nos ficheiros HTML e JavaScript.

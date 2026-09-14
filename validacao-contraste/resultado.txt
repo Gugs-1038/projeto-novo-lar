@@ -1,0 +1,29 @@
+VALIDAÇÃO DE CONTRASTE WCAG 2.1
+
+Claro | Texto principal | #17211C sobre #F7FAF8 | 15,73:1 | mínimo 4,5:1 | APROVADO
+Claro | Texto secundário | #4D5C54 sobre #F7FAF8 | 6,72:1 | mínimo 4,5:1 | APROVADO
+Claro | Títulos | #12372A sobre #F7FAF8 | 12,45:1 | mínimo 4,5:1 | APROVADO
+Claro | Botões | #FFFFFF sobre #12372A | 13,08:1 | mínimo 4,5:1 | APROVADO
+Claro | Atenção | #9B4300 sobre #FFF7E6 | 6,16:1 | mínimo 4,5:1 | APROVADO
+Claro | Sucesso | #1B6E37 sobre #EFF9F2 | 5,85:1 | mínimo 4,5:1 | APROVADO
+Claro | Erro | #B42318 sobre #FFF3F1 | 6,06:1 | mínimo 4,5:1 | APROVADO
+Claro | Bordas funcionais | #72867B sobre #FFFFFF | 3,88:1 | mínimo 3:1 | APROVADO
+Claro | Indicador de foco | #0B281E sobre #FFB703 | 9,00:1 | mínimo 3:1 | APROVADO
+Escuro | Texto principal | #F4F8F5 sobre #08110D | 17,87:1 | mínimo 4,5:1 | APROVADO
+Escuro | Texto em superfície | #F4F8F5 sobre #102019 | 15,77:1 | mínimo 4,5:1 | APROVADO
+Escuro | Texto secundário | #C3D0C9 sobre #08110D | 12,03:1 | mínimo 4,5:1 | APROVADO
+Escuro | Títulos | #A7D8BC sobre #08110D | 12,03:1 | mínimo 4,5:1 | APROVADO
+Escuro | Botões | #08110D sobre #A7D8BC | 12,03:1 | mínimo 4,5:1 | APROVADO
+Escuro | Hover de botão | #08110D sobre #7FC49D | 9,38:1 | mínimo 4,5:1 | APROVADO
+Escuro | Destaques | #FFB37A sobre #08110D | 10,93:1 | mínimo 4,5:1 | APROVADO
+Escuro | Bordas | #6F897A sobre #102019 | 4,45:1 | mínimo 3:1 | APROVADO
+Escuro | Sucesso | #8AE6A5 sobre #12351F | 8,97:1 | mínimo 4,5:1 | APROVADO
+Escuro | Erro | #FFAAA3 sobre #3A1717 | 8,77:1 | mínimo 4,5:1 | APROVADO
+Alto contraste | Texto | #FFFFFF sobre #000000 | 21,00:1 | mínimo 4,5:1 | APROVADO
+Alto contraste | Títulos | #00FFFF sobre #000000 | 16,75:1 | mínimo 4,5:1 | APROVADO
+Alto contraste | Botões | #000000 sobre #00FFFF | 16,75:1 | mínimo 4,5:1 | APROVADO
+Alto contraste | Foco | #000000 sobre #FFFF00 | 19,56:1 | mínimo 3:1 | APROVADO
+Alto contraste | Sucesso | #00FF66 sobre #000000 | 15,50:1 | mínimo 4,5:1 | APROVADO
+Alto contraste | Erro | #FF8080 sobre #000000 | 8,65:1 | mínimo 4,5:1 | APROVADO
+
+Resultado: todos os pares foram aprovados
