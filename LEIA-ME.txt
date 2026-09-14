@@ -2,6 +2,7 @@ PROJETO NOVO LAR
 Projeto acadêmico fictício de uma ONG de proteção animal.
 
 ESTRUTURA
+- README.md: documentação principal com visão geral, tecnologias, execução, testes e limitações.
 - html/index.html: estrutura principal da SPA, página inicial e modelos das rotas.
 - html/projetos.html: alternativa estática para projetos, voluntariado e doações.
 - html/cadastro.html: alternativa estática para o formulário de voluntários.
