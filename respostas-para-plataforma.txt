@@ -456,3 +456,69 @@ h1 e main com tabindex negativo e ligação para saltar
 
 Justificação e impacto na acessibilidade:
 Após a navegação na SPA, o título do novo conteúdo recebe tabindex negativo e foco temporário. A ligação para saltar ao conteúdo permite ignorar o menu e conduz utilizadores de teclado diretamente para o main.
+
+21. COMPONENTES AJUSTADOS PARA TECLADO E LEITORES DE ECRÃ
+
+REGISTO 1
+
+Nome do componente:
+Ligação para saltar ao conteúdo
+
+Descrição do ajuste ou problema retificado:
+Foi colocada como primeiro elemento focável e só fica visível ao receber foco. Na SPA, ativa o main com tabindex negativo, permitindo ignorar o cabeçalho e chegar ao conteúdo principal sem percorrer todos os links.
+
+REGISTO 2
+
+Nome do componente:
+Menu principal e submenu
+
+Descrição do ajuste ou problema retificado:
+Os controlos são botões nativos, acionáveis por Enter e Espaço. aria-controls associa cada botão ao menu, aria-expanded comunica o estado e Escape fecha o menu ou submenu, devolvendo o foco ao controlo correspondente.
+
+REGISTO 3
+
+Nome do componente:
+Ordem de foco no documento
+
+Descrição do ajuste ou problema retificado:
+A sequência do DOM segue atalho, marca, controlos de navegação, links, conteúdo principal e rodapé. Não foram usados valores positivos de tabindex nem reposicionamento visual por CSS, mantendo Tab e Shift Tab previsíveis.
+
+REGISTO 4
+
+Nome do componente:
+Indicador visual de foco
+
+Descrição do ajuste ou problema retificado:
+Links, botões e campos recebem contorno de 3 px com afastamento e anel de contraste em focus-visible. Nos cartões, focus-within também reforça a borda e a sombra, tornando o foco percetível sem depender do rato.
+
+REGISTO 5
+
+Nome do componente:
+Navegação dinâmica da SPA
+
+Descrição do ajuste ou problema retificado:
+Após cada mudança de rota, o h1 ou a secção solicitada recebe tabindex negativo e foco programático. A região role status anuncia a nova página, e aria-current identifica o link ativo sem alterar a ordem de tabulação.
+
+REGISTO 6
+
+Nome do componente:
+Formulário de voluntariado
+
+Descrição do ajuste ou problema retificado:
+Os campos têm label, e fieldset com legend organiza os grupos. No envio inválido, o foco vai para o primeiro campo com erro. aria-invalid e aria-describedby ligam o estado e a orientação ao campo, com anúncio educado por aria-live.
+
+REGISTO 7
+
+Nome do componente:
+Alertas e mensagens de estado
+
+Descrição do ajuste ou problema retificado:
+O resumo de falhas usa role alert para aviso imediato. A confirmação usa role status, aria-live polite e aria-atomic true. O toast possui botão nativo com nome acessível para encerramento sem depender de clique com rato.
+
+REGISTO 8
+
+Nome do componente:
+Imagens e ícones
+
+Descrição do ajuste ou problema retificado:
+Imagens informativas possuem texto alternativo, enquanto corações, setas e ícones decorativos recebem aria-hidden true. Isso reduz anúncios repetitivos e mantém a verbalização concentrada no conteúdo e nos controlos.

@@ -24,6 +24,10 @@ O alerta geral do formulário utiliza role alert. A mudança de rota e o toast d
 
 A ligação para saltar ao conteúdo permite ignorar a navegação repetida. Após uma mudança de rota, o título do novo conteúdo recebe tabindex negativo e foco temporário. A tecla Escape fecha os menus e devolve o foco ao controlo apropriado.
 
+Links, botões e campos seguem a ordem natural do DOM, sem tabindex positivo. Tab e Shift Tab percorrem os elementos interativos na mesma sequência em que aparecem visualmente. O CSS aplica focus-visible com contorno, espaçamento e sombra de alto contraste.
+
+Quando o formulário contém erros, o foco vai para o primeiro campo inválido. O resumo é anunciado por role alert e cada orientação fica associada ao campo. O toast e as mudanças de rota usam regiões de estado para comunicar atualizações sem deslocar o foco.
+
 ## Imagens e elementos decorativos
 
 As imagens relevantes possuem alt descritivo. Corações, setas e ícones meramente visuais recebem aria-hidden true, evitando anúncios sem valor informativo para leitores de ecrã.
