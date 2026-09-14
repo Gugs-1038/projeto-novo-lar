@@ -2,7 +2,7 @@
 
 Projeto acadêmico de uma organização fictícia dedicada à proteção animal. A aplicação apresenta ações de resgate, adoção, voluntariado e doações, além de um formulário demonstrativo para pessoas interessadas em colaborar.
 
-## Visão geral
+## Apresentação do projeto
 
 O site funciona como uma Single Page Application estática. A navegação principal troca o conteúdo pelo DOM sem recarregar o documento inteiro, mas conserva páginas HTML independentes como alternativa caso o JavaScript não seja executado.
 
