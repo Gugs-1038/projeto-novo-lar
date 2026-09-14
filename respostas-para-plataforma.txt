@@ -324,3 +324,69 @@ Integrar registro de commits e releases em develop
 
 Descrição:
 Registro equivalente a um PR local entre feature/registro-commits-releases e develop. O merge cec41d0 reuniu as regras de commits e versionamento após a revisão.
+
+19. SEÇÕES DO README E EXECUÇÃO LOCAL
+
+SEÇÃO 1
+
+Nome da seção:
+Visão geral
+
+Descrição e tecnologias mencionadas:
+Apresenta o Projeto Novo Lar como uma SPA acadêmica sobre proteção animal. Explica a navegação dinâmica pelo DOM e a existência de páginas HTML independentes como alternativa.
+
+SEÇÃO 2
+
+Nome da seção:
+Funcionalidades principais
+
+Descrição e tecnologias mencionadas:
+Resume as rotas por hash, menu responsivo, templates HTML, componentes dinâmicos, validação do formulário, máscaras de entrada, localStorage e retornos visuais acessíveis.
+
+SEÇÃO 3
+
+Nome da seção:
+Tecnologias utilizadas
+
+Descrição e tecnologias mencionadas:
+Detalha o uso de HTML5, CSS3, JavaScript puro, DOM, eventos, Web Storage e IMask 7.6.1 por CDN. Também informa que o projeto não utiliza framework, banco de dados ou back end.
+
+SEÇÃO 4
+
+Nome da seção:
+Estrutura do projeto
+
+Descrição e tecnologias mencionadas:
+Explica a função das pastas html, css, js, imagens, capturas e validacao-w3c. Também apresenta os documentos de versionamento, gestão e apoio à entrega.
+
+SEÇÃO 5
+
+Nome da seção:
+Execução, build e testes
+
+Descrição e tecnologias mencionadas:
+Mostra como abrir html/index.html ou iniciar um servidor local com Python. Esclarece que não há build nem suíte automatizada e descreve as verificações manuais e a validação W3C.
+
+SEÇÃO 6
+
+Nome da seção:
+Acessibilidade e privacidade
+
+Descrição e tecnologias mencionadas:
+Registra semântica HTML, teclado, foco visível, aria-live e redução de movimentos. Explica que dados pessoais não são enviados nem armazenados no localStorage.
+
+SEÇÃO 7
+
+Nome da seção:
+Versionamento e colaboração
+
+Descrição e tecnologias mencionadas:
+Apresenta o GitFlow com main, develop e branches de apoio, além das mensagens padronizadas, do CHANGELOG e da tag v1.0.0 usada para identificar a primeira entrega estável.
+
+PASSO A PASSO DE INSTALAÇÃO LOCAL
+
+O projeto é estático e não exige instalação de pacotes. Extraia a pasta mantendo html, css, js e imagens na mesma estrutura. Em seguida, abra html/index.html em um navegador atualizado. Se preferir um servidor local, execute py -m http.server 8000 na raiz e acesse http://localhost:8000/html/index.html. Caso py não esteja disponível, use python -m http.server 8000.
+
+Não há etapa de build, pois HTML, CSS e JavaScript são executados diretamente. A única biblioteca externa é IMask 7.6.1, carregada por CDN. Sem internet, as máscaras não aparecem, mas o formulário e sua validação continuam funcionando.
+
+Para verificar a aplicação, visite Início, Projetos e Cadastro, teste o menu, os botões, o histórico do navegador, valores válidos e inválidos no formulário e a restauração da última rota. Os resultados da validação HTML estão em validacao-w3c/resultado.txt. Não há suíte automatizada nesta versão; os testes atuais são manuais e documentados.
