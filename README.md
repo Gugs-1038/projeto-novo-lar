@@ -19,7 +19,7 @@ O site funciona como uma Single Page Application estática. A navegação princi
 ## Tecnologias utilizadas
 
 - HTML5 para estrutura semântica e templates.
-- CSS3 para apresentação, responsividade e estados visuais.
+- CSS3 para apresentação, responsividade, estados visuais e modos de cor adaptáveis.
 - JavaScript puro para SPA, DOM, eventos, validação e persistência.
 - Web Storage para guardar somente o histórico recente de rotas.
 - IMask 7.6.1 por CDN para auxiliar a digitação de campos formatados.
@@ -34,9 +34,11 @@ Não foram usados framework, empacotador, banco de dados ou back end. Se a bibli
 - imagens: versões JPG e WebP da imagem principal.
 - capturas: evidências visuais dos componentes.
 - validacao-w3c: resultados da validação dos documentos HTML.
+- validacao-contraste: verificador local e relatório dos rácios de contraste.
 - FLUXO-GIT.md: política de branches, commits e versões.
 - GESTAO-REPOSITORIO.md: tarefas e integrações documentadas.
 - ACESSIBILIDADE.md: landmarks, estados WAI-ARIA e estratégias de foco.
+- CONTRASTE.md: perfis claro, escuro, alto contraste e cores forçadas.
 - respostas-para-plataforma.txt: textos de apoio para a entrega acadêmica.
 
 ## Pré requisitos
@@ -45,6 +47,7 @@ Não foram usados framework, empacotador, banco de dados ou back end. Se a bibli
 - Nenhuma instalação de pacote é obrigatória.
 - Conexão com a internet é opcional e serve apenas para carregar a IMask.
 - Python 3 é opcional caso seja usado um servidor local.
+- Node.js é opcional e serve somente para repetir a validação de contraste.
 
 ## Execução local
 
@@ -64,15 +67,17 @@ Depois, acesse:
 
 ## Build e testes
 
-O projeto não possui etapa de build, pois HTML, CSS e JavaScript são executados diretamente. Também não existe uma suíte automatizada ou um comando de teste neste estágio.
+O projeto não possui etapa de build, pois HTML, CSS e JavaScript são executados diretamente. A navegação e o formulário são verificados manualmente. Os rácios de contraste possuem uma verificação local automatizada:
 
-A verificação manual inclui navegação entre rotas, botões Voltar e Avançar, menu responsivo, formulário válido e inválido, restauração da última rota e funcionamento sem a CDN. Os resultados do Nu Html Checker estão em validacao-w3c/resultado.txt.
+    node validacao-contraste/verificar-contraste.js
+
+A verificação manual inclui navegação entre rotas, botões Voltar e Avançar, menu responsivo, formulário válido e inválido, restauração da última rota e funcionamento sem a CDN. Os resultados do Nu Html Checker estão em validacao-w3c/resultado.txt e os resultados cromáticos em validacao-contraste/resultado.txt.
 
 ## Acessibilidade e privacidade
 
-A interface utiliza estrutura semântica, foco visível, navegação por teclado, mensagens com aria-live, rótulos associados aos campos e redução de movimentos quando solicitada pelo sistema. Nenhum dado pessoal do formulário é salvo no localStorage ou enviado a um servidor.
+A interface utiliza estrutura semântica, foco visível, navegação por teclado, mensagens com aria-live, rótulos associados aos campos, redução de movimentos, modo escuro, alto contraste e cores forçadas quando solicitados pelo sistema. Nenhum dado pessoal do formulário é salvo no localStorage ou enviado a um servidor.
 
-Os detalhes dos landmarks e dos estados WAI-ARIA estão documentados em ACESSIBILIDADE.md.
+Os detalhes dos landmarks e dos estados WAI-ARIA estão documentados em ACESSIBILIDADE.md. A estratégia cromática e os rácios verificados estão em CONTRASTE.md.
 
 ## Versionamento e colaboração
 

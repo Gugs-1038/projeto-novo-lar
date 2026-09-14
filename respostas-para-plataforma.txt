@@ -522,3 +522,125 @@ Imagens e ícones
 
 Descrição do ajuste ou problema retificado:
 Imagens informativas possuem texto alternativo, enquanto corações, setas e ícones decorativos recebem aria-hidden true. Isso reduz anúncios repetitivos e mantém a verbalização concentrada no conteúdo e nos controlos.
+
+22. MODOS DE COR E CONTRASTE
+
+ESTRATÉGIA IMPLEMENTADA
+
+Centralizei as cores em variáveis CSS para que os três perfis visuais partilhem a mesma estrutura. O modo claro permanece como padrão. Quando o sistema indica o tema escuro, a regra prefers-color-scheme: dark altera o fundo, as superfícies, os textos, os estados e as bordas sem modificar o HTML. Para quem solicita mais contraste, prefers-contrast: more ativa fundo preto, texto branco, títulos em ciano e foco amarelo. A regra forced-colors: active respeita ainda as cores definidas pelo sistema operativo.
+
+Não foi necessário JavaScript nem armazenamento local, pois a interface acompanha automaticamente as preferências do dispositivo. Também defini cores próprias para o texto dos botões e dos campos de entrada, reforcei as bordas funcionais e tornei a cor dos marcadores de posição explícita. O amarelo nunca comunica um estado sozinho: o foco combina contorno e realce, enquanto as mensagens apresentam texto, ícone ou borda.
+
+Validei os pares com um verificador local que aplica a fórmula de luminância relativa da WCAG 2.1. Os textos normais alcançam pelo menos 4,5:1 e as bordas ou os indicadores visuais superam 3:1. O texto principal atinge 15,73:1 no modo claro, 17,87:1 no modo escuro e 21:1 no perfil de alto contraste.
+
+ELEMENTOS VISUAIS VERIFICADOS
+
+REGISTO 1
+
+Elemento:
+Texto principal no modo claro
+
+Cores utilizadas e rácio obtido:
+Texto #17211C sobre fundo #F7FAF8. Rácio 15,73:1, superior ao mínimo de 4,5:1.
+
+Ferramenta de validação utilizada:
+Verificador local pela fórmula WCAG 2.1
+
+REGISTO 2
+
+Elemento:
+Texto secundário e marcadores de posição
+
+Cores utilizadas e rácio obtido:
+Texto #4D5C54 sobre fundo #F7FAF8. Rácio 6,72:1, adequado ao nível AA.
+
+Ferramenta de validação utilizada:
+Verificador local pela fórmula WCAG 2.1
+
+REGISTO 3
+
+Elemento:
+Títulos no modo claro
+
+Cores utilizadas e rácio obtido:
+Títulos #12372A sobre fundo #F7FAF8. Rácio 12,45:1, adequado ao nível AAA.
+
+Ferramenta de validação utilizada:
+Verificador local pela fórmula WCAG 2.1
+
+REGISTO 4
+
+Elemento:
+Botões principais no modo claro
+
+Cores utilizadas e rácio obtido:
+Texto #FFFFFF sobre botão #12372A. Rácio 13,08:1, adequado ao nível AAA.
+
+Ferramenta de validação utilizada:
+Verificador local pela fórmula WCAG 2.1
+
+REGISTO 5
+
+Elemento:
+Mensagens de sucesso e erro
+
+Cores utilizadas e rácio obtido:
+Sucesso #1B6E37 sobre #EFF9F2: 5,85:1. Erro #B42318 sobre #FFF3F1: 6,06:1. Ambos cumprem AA.
+
+Ferramenta de validação utilizada:
+Verificador local pela fórmula WCAG 2.1
+
+REGISTO 6
+
+Elemento:
+Bordas e indicador de foco
+
+Cores utilizadas e rácio obtido:
+Borda #72867B sobre #FFFFFF: 3,88:1. Contorno #0B281E com realce #FFB703: 9,00:1.
+
+Ferramenta de validação utilizada:
+Verificador local pela fórmula WCAG 2.1
+
+REGISTO 7
+
+Elemento:
+Texto principal no modo escuro
+
+Cores utilizadas e rácio obtido:
+Texto #F4F8F5 sobre fundo #08110D. Rácio 17,87:1, adequado ao nível AAA.
+
+Ferramenta de validação utilizada:
+Verificador local pela fórmula WCAG 2.1
+
+REGISTO 8
+
+Elemento:
+Títulos e botões no modo escuro
+
+Cores utilizadas e rácio obtido:
+Texto #08110D sobre botão #A7D8BC: 12,03:1. Títulos #A7D8BC sobre #08110D: 12,03:1.
+
+Ferramenta de validação utilizada:
+Verificador local pela fórmula WCAG 2.1
+
+REGISTO 9
+
+Elemento:
+Texto no perfil de alto contraste
+
+Cores utilizadas e rácio obtido:
+Texto #FFFFFF sobre fundo #000000. Rácio máximo de 21:1.
+
+Ferramenta de validação utilizada:
+Verificador local pela fórmula WCAG 2.1
+
+REGISTO 10
+
+Elemento:
+Títulos e foco no alto contraste
+
+Cores utilizadas e rácio obtido:
+Títulos #00FFFF sobre #000000: 16,75:1. Texto #000000 sobre foco #FFFF00: 19,56:1.
+
+Ferramenta de validação utilizada:
+Verificador local pela fórmula WCAG 2.1
