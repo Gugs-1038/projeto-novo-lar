@@ -43,6 +43,7 @@ Não foram usados framework, banco de dados ou back end. A aplicação continua 
 - GESTAO-REPOSITORIO.md: tarefas e integrações documentadas.
 - ACESSIBILIDADE.md: landmarks, estados WAI-ARIA e estratégias de foco.
 - CONTRASTE.md: perfis claro, escuro, alto contraste e cores forçadas.
+- OTIMIZACAO-IMAGENS.md: formatos, dimensões, responsividade e impacto estimado das imagens.
 - respostas-para-plataforma.txt: textos de apoio para a entrega acadêmica.
 
 ## Pré requisitos
