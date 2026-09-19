@@ -77,7 +77,7 @@ Os ficheiros fonte continuam legíveis em html, css e js. Para criar a versão d
     npm ci
     npm run build
 
-A build gera a pasta dist. O esbuild reúne os scripts de cada página e minifica CSS e JavaScript. O html-minifier-terser minifica os três documentos HTML. As imagens são copiadas sem alteração, e dist/relatorio-build.txt apresenta tanto a redução dos ficheiros únicos como a redução agregada por carregamento de página.
+A build gera a pasta dist. O esbuild reúne os scripts de cada página e minifica CSS e JavaScript. O html-minifier-terser minifica os três documentos HTML. As imagens são copiadas sem alteração. O relatório normaliza os finais de linha dos textos para que a medição seja igual em diferentes sistemas operativos e apresenta tanto a redução dos ficheiros únicos como a redução agregada por carregamento de página.
 
 Depois da build, faça a verificação estrutural e a validação de contraste:
 

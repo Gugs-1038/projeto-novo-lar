@@ -653,7 +653,7 @@ Utilizei o esbuild 0.25.11, executado por npm run build. O ficheiro scripts/buil
 
 PERCENTAGEM DE REDUÇÃO APÓS A MINIFICAÇÃO
 
-Considerando cada ficheiro HTML, CSS e JavaScript apenas uma vez, a build passou de 72788 para 61035 bytes: 11753 bytes a menos, ou 16,15 por cento. Num cenário agregado de uma visita a cada uma das três páginas, em que o CSS partilhado é contado em cada carregamento, o total caiu de 137232 para 99531 bytes, uma redução de 27,47 por cento. Por página, a redução foi de 29,93 por cento em Início, 27,99 por cento em Cadastro e 22,05 por cento em Projetos. As imagens ficaram fora do cálculo por serem copiadas sem minificação. Os valores estão em dist/relatorio-build.txt.
+Considerando cada ficheiro HTML, CSS e JavaScript apenas uma vez, a build passou de 71638 para 61035 bytes: 10603 bytes a menos, ou 14,80 por cento. Num cenário agregado de uma visita a cada uma das três páginas, em que o CSS partilhado é contado em cada carregamento, o total caiu de 133782 para 99531 bytes, uma redução de 25,60 por cento. Por página, a redução foi de 28,58 por cento em Início, 26,08 por cento em Cadastro e 19,13 por cento em Projetos. As imagens ficaram fora do cálculo por serem copiadas sem minificação. O relatório normaliza os finais de linha para manter a medição igual em qualquer sistema operativo.
 
 DESAFIOS PARA PRESERVAR A LÓGICA
 

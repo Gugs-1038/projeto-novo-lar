@@ -1,6 +1,6 @@
 const { build } = require("esbuild");
 const { minify } = require("html-minifier-terser");
-const { cp, mkdir, readFile, rm, stat, writeFile } = require("node:fs/promises");
+const { cp, mkdir, readFile, rm, writeFile } = require("node:fs/promises");
 const path = require("node:path");
 
 const raiz = path.resolve(__dirname, "..");
@@ -44,7 +44,9 @@ function caminhoNaRaiz(caminhoRelativo) {
 }
 
 async function tamanho(caminhoRelativo) {
-  return (await stat(caminhoNaRaiz(caminhoRelativo))).size;
+  const conteudo = await readFile(caminhoNaRaiz(caminhoRelativo), "utf8");
+  const normalizado = conteudo.replace(/\r\n?/g, "\n");
+  return Buffer.byteLength(normalizado, "utf8");
 }
 
 function arredondar(valor) {
@@ -201,6 +203,8 @@ async function executar() {
   );
   const relatorio = {
     ferramenta: "esbuild e html-minifier-terser",
+    criterioTamanho:
+      "ficheiros de texto normalizados com finais de linha LF; imagens excluídas",
     css: "css/estilos.css para dist/css/estilos.min.css",
     ficheirosUnicos,
     paginas: paginasResumidas,
@@ -217,6 +221,7 @@ async function executar() {
     "RELATÓRIO DE BUILD DE PRODUÇÃO",
     "",
     "Ferramentas: esbuild e html-minifier-terser",
+    "Critério: ficheiros de texto normalizados com finais de linha LF; imagens excluídas",
     "",
     `Ficheiros únicos: ${ficheirosUnicos.bytesOrigem} bytes para ${ficheirosUnicos.bytesDistribuicao} bytes, redução de ${ficheirosUnicos.reducaoPercentual}%`,
     "",
