@@ -17,6 +17,7 @@ ESTRUTURA
 - GESTAO-REPOSITORIO.md: registra retrospectivamente as tarefas, o marco da versão e as integrações equivalentes a pull requests.
 - ACESSIBILIDADE.md: documenta os landmarks, os estados WAI-ARIA e a gestão de foco.
 - CONTRASTE.md: documenta os modos claro, escuro, alto contraste e cores forçadas.
+- OTIMIZACAO-IMAGENS.md: documenta os formatos, as dimensões e o impacto estimado das imagens.
 - validacao-contraste: contém o verificador local e o relatório de 25 pares cromáticos.
 - package.json e package-lock.json: registam as dependências e os comandos da build.
 - scripts/build.js: gera a pasta dist com HTML, CSS e JavaScript minificados.

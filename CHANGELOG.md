@@ -15,6 +15,12 @@
 - Pasta dist com bundles por página, imagens copiadas e relatório de tamanho.
 - Verificação automatizada das referências da versão de produção.
 
+### Otimização de imagens
+
+- WebP preferencial com JPEG como alternativa de compatibilidade.
+- Dimensões intrínsecas e apresentação fluida sem deformação.
+- Redução de 57,07 por cento no recurso e impacto de transferência documentado.
+
 ## 1.0.0
 
 Primeira versão estável do Projeto Novo Lar.

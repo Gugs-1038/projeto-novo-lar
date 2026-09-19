@@ -658,3 +658,17 @@ Considerando cada ficheiro HTML, CSS e JavaScript apenas uma vez, a build passou
 DESAFIOS PARA PRESERVAR A LÓGICA
 
 O principal desafio foi preservar a ordem de execução dos módulos, pois a SPA partilha eventos, templates, rotas por hash, localStorage, mensagens WAI-ARIA e APIs públicas entre os scripts. A IMask, carregada de forma assíncrona por CDN, também poderia ficar disponível antes ou depois do bundle. Para evitar falhas, configurei uma entrada separada para cada página, na mesma ordem do HTML de origem. O módulo de integrações verifica se a IMask já existe e volta a iniciar as máscaras no evento load. Após a build, npm run test:build confirma referências, bundles, imagens e redução de tamanho. npm run test:contraste mantém a validação cromática independente.
+
+24. OTIMIZAÇÃO DE IMAGENS
+
+FORMATOS UTILIZADOS E JUSTIFICAÇÃO
+
+Foram utilizados WebP como formato principal e JPEG como alternativa de compatibilidade. O elemento picture apresenta primeiro animal-resgatado.webp e mantém animal-resgatado.jpg no elemento img para navegadores que não suportem WebP. A escolha é adequada a uma fotografia com muitos tons e detalhes: WebP oferece compressão com perda eficiente e conserva boa qualidade visual, enquanto JPEG assegura compatibilidade alargada. Ambos os ficheiros têm 1536 por 1024 píxeis, na proporção 3:2. O WebP ocupa 66468 bytes, contra 154823 bytes do JPEG, o que representa menos 88355 bytes e uma redução de 57,07 por cento sem alteração percetível de nitidez no uso previsto.
+
+GESTÃO DA RESOLUÇÃO FACE AO VIEWPORT
+
+A resolução visual é gerida de forma fluida. O HTML declara width 1536 e height 1024, permitindo ao navegador reservar antecipadamente um espaço com proporção 3:2 e reduzir deslocações do conteúdo. No CSS, as classes imagem-principal e imagem-projeto usam width 100% e height auto, pelo que a imagem acompanha a largura disponível sem ser deformada. A imagem principal ocupa seis colunas. A imagem de Projetos ocupa cinco colunas em ecrãs largos, seis até 1024 píxeis e doze abaixo de 768 píxeis. O conteúdo também recebe limites de largura e margens internas progressivas. Não foram criadas variantes de resolução com srcset e sizes, portanto o mesmo ficheiro de 1536 por 1024 é descarregado em qualquer viewport. Uma evolução possível seria gerar versões de 480, 768, 1024 e 1536 píxeis.
+
+IMPACTO ESTIMADO NO CARREGAMENTO
+
+A conversão de JPEG para WebP reduziu a imagem de 154823 para 66468 bytes, poupando 88355 bytes, ou 57,07 por cento. Como o mesmo endereço é reutilizado, o navegador tende a descarregar a imagem apenas uma vez e a servi-la pela cache nas restantes ocorrências da página. Somando o código minificado da página inicial, o volume local estimado baixa de 197523 para 109168 bytes, uma redução de 44,73 por cento. Na página Projetos, a redução estimada é de 49,18 por cento. Numa ligação de 1 megabit por segundo, a poupança de transferência equivale teoricamente a cerca de 0,71 segundos; a 4 megabits por segundo, cerca de 0,18 segundos. O resultado real depende da latência, cache, servidor e dispositivo, pelo que estes valores representam uma estimativa de rede e não um ensaio Lighthouse.
