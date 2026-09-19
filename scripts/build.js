@@ -119,6 +119,27 @@ async function gerarHtml(pagina) {
   );
 }
 
+async function gerarEntradaPublicacao() {
+  const entrada = [
+    "<!doctype html>",
+    '<html lang="pt-BR">',
+    "<head>",
+    '<meta charset="utf-8">',
+    '<meta name="viewport" content="width=device-width,initial-scale=1">',
+    '<meta http-equiv="refresh" content="0; url=html/index.html">',
+    "<title>Projeto Novo Lar</title>",
+    '<script>window.location.replace("html/index.html"+window.location.search+window.location.hash);</script>',
+    "</head>",
+    '<body><p>A abrir o Projeto Novo Lar. <a href="html/index.html">Continuar</a></p></body>',
+    "</html>",
+  ].join("");
+
+  await Promise.all([
+    writeFile(path.join(distribuicao, "index.html"), entrada, "utf8"),
+    writeFile(path.join(distribuicao, ".nojekyll"), "", "utf8"),
+  ]);
+}
+
 async function resumirPagina(pagina) {
   const origem = [`html/${pagina.nome}.html`, "css/estilos.css", ...pagina.scriptsFonte];
   const distribuicaoPagina = [
@@ -187,6 +208,7 @@ async function executar() {
   await cp(caminhoNaRaiz("imagens"), path.join(distribuicao, "imagens"), {
     recursive: true,
   });
+  await gerarEntradaPublicacao();
 
   const paginasResumidas = await Promise.all(paginas.map(resumirPagina));
   const ficheirosUnicos = await resumirConjunto(

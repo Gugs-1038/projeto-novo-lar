@@ -672,3 +672,17 @@ A resolução visual é gerida de forma fluida. O HTML declara width 1536 e heig
 IMPACTO ESTIMADO NO CARREGAMENTO
 
 A conversão de JPEG para WebP reduziu a imagem de 154823 para 66468 bytes, poupando 88355 bytes, ou 57,07 por cento. Como o mesmo endereço é reutilizado, o navegador tende a descarregar a imagem apenas uma vez e a servi-la pela cache nas restantes ocorrências da página. Somando o código minificado da página inicial, o volume local estimado baixa de 197523 para 109168 bytes, uma redução de 44,73 por cento. Na página Projetos, a redução estimada é de 49,18 por cento. Numa ligação de 1 megabit por segundo, a poupança de transferência equivale teoricamente a cerca de 0,71 segundos; a 4 megabits por segundo, cerca de 0,18 segundos. O resultado real depende da latência, cache, servidor e dispositivo, pelo que estes valores representam uma estimativa de rede e não um ensaio Lighthouse.
+
+25. DEPLOY E CÓDIGO FONTE FINAL
+
+PLATAFORMA DE ALOJAMENTO E JUSTIFICAÇÃO
+
+A plataforma escolhida para o deploy é o GitHub Pages. A automatização ficou preparada, mas a publicação ainda depende da criação e ligação de um repositório remoto GitHub. Esta opção adequa-se ao Projeto Novo Lar por ser uma aplicação estática, sem servidor, base de dados ou processamento no back end. A pasta dist contém HTML, CSS, JavaScript e imagens preparados para produção. O serviço oferece alojamento gratuito, HTTPS, distribuição por CDN, integração com o histórico Git e atualização automática após alterações aprovadas na branch main. Isto facilita auditoria, releases e reversão. As referências relativas e a entrada dist/index.html permitem executar a aplicação no endereço próprio do repositório. A IMask continua externa e possui alternativa funcional caso a CDN falhe.
+
+CONFIGURAÇÃO DO AMBIENTE E CI/CD
+
+A configuração local inclui o workflow .github/workflows/deploy-pages.yml, acionado por alterações integradas na branch main ou manualmente. A rotina obtém o código, configura Node.js 24, executa npm ci, npm run build, npm run test:build e npm run test:contraste. Se todas as verificações forem aprovadas, configura o GitHub Pages, envia a pasta dist como artefacto e publica-a. As permissões são contents read, pages write e id-token write, usando o GITHUB_TOKEN temporário do GitHub, sem credenciais no código. Depois de criar o repositório remoto, é necessário enviar main, develop e as tags e selecionar GitHub Actions em Settings, Pages e Source. Uma falha interrompe o fluxo antes do deploy. Como ainda não existe remote configurado, não apresento um endereço público inexistente.
+
+CÓDIGO FONTE FINAL VERSIONADO
+
+Na terceira caixa, cole todo o conteúdo de CODIGO-FONTE-FINAL.txt. A versão atual tem 94502 dos 100000 caracteres permitidos. O ficheiro reúne os HTML, CSS, JavaScript, scripts de build e testes, package.json e workflow. Os separadores identificam o caminho de cada ficheiro. package-lock.json, imagens, documentação e dist não foram duplicados porque não são código fonte legível necessário para este campo e fariam o conteúdo ultrapassar o limite. As aspas e sinais existentes no código devem ser mantidos.

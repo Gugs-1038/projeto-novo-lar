@@ -1,0 +1,3417 @@
+PROJETO NOVO LAR - CÓDIGO FONTE FINAL VERSIONADO
+Conteúdo consolidado para o campo de entrega da plataforma.
+Cada bloco indica o caminho original do respetivo ficheiro.
+
+===== FICHEIRO: .github/workflows/deploy-pages.yml =====
+
+name: Publicar no GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Obter código
+        uses: actions/checkout@v7
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Gerar build de produção
+        run: npm run build
+
+      - name: Verificar build
+        run: npm run test:build
+
+      - name: Verificar contraste
+        run: npm run test:contraste
+
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v6
+
+      - name: Enviar artefacto do site
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: ./dist
+          include-hidden-files: true
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publicar GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
+
+===== FICHEIRO: .gitignore =====
+
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.log
+node_modules/
+.npm-cache/
+
+===== FICHEIRO: package.json =====
+
+{
+  "name": "projeto-novo-lar",
+  "version": "1.1.0",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "node scripts/build.js",
+    "codigo:final": "node scripts/gerar-codigo-final.js",
+    "test:build": "node scripts/verificar-build.js",
+    "test:contraste": "node validacao-contraste/verificar-contraste.js"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.11",
+    "html-minifier-terser": "^7.2.0"
+  }
+}
+
+===== FICHEIRO: html/index.html =====
+
+<!doctype html>
+<html lang="pt-BR" class="sem-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Conheça o Projeto Novo Lar e suas ações de proteção e adoção responsável de animais.">
+  <title>Início | Projeto Novo Lar</title>
+  <link rel="stylesheet" href="../css/estilos.css">
+  <script id="biblioteca-imask" src="https://unpkg.com/imask@7.6.1/dist/imask.min.js" async></script>
+  <script src="../js/menu.js" defer></script>
+  <script src="../js/formulario.js" defer></script>
+  <script src="../js/componentes.js" defer></script>
+  <script src="../js/persistencia.js" defer></script>
+  <script src="../js/integracoes.js" defer></script>
+  <script src="../js/spa.js" defer></script>
+</head>
+<body>
+  <a class="pular-conteudo" href="#conteudo">Pular para o conteúdo principal</a>
+
+  <header class="cabecalho">
+    <a class="marca" href="index.html" data-rota="/inicio" aria-label="Projeto Novo Lar — página inicial">
+      <span aria-hidden="true">♥</span> Projeto Novo Lar
+    </a>
+
+    <button class="controle-menu" type="button" aria-expanded="false" aria-controls="navegacao-principal" aria-label="Abrir menu principal">
+      <span>Menu</span>
+      <span class="icone-menu" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+    </button>
+
+    <nav id="navegacao-principal" class="navegacao" aria-label="Menu principal">
+      <ul class="menu">
+        <li><a aria-current="page" href="index.html" data-rota="/inicio">Início</a></li>
+        <li class="item-com-submenu">
+          <a href="projetos.html" data-rota="/projetos">Projetos</a>
+          <button class="controle-submenu" type="button" aria-expanded="false" aria-controls="submenu-projetos" aria-label="Abrir submenu de Projetos">
+            <span class="seta-submenu" aria-hidden="true">▾</span>
+          </button>
+          <ul id="submenu-projetos" class="submenu">
+            <li><a href="projetos.html#acoes-titulo" data-rota="/projetos/resgate">Resgate e adoção</a></li>
+            <li><a href="projetos.html#voluntariado" data-rota="/projetos/voluntariado">Voluntariado</a></li>
+            <li><a href="projetos.html#doacoes" data-rota="/projetos/doacoes">Doações</a></li>
+          </ul>
+        </li>
+        <li><a href="cadastro.html" data-rota="/cadastro">Seja voluntário</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="conteudo" tabindex="-1">
+    <section class="apresentacao">
+      <div>
+        <p class="destaque">Proteção e adoção responsável</p>
+        <h1>Todo animal merece cuidado e um novo lar</h1>
+        <p>O Projeto Novo Lar acolhe animais abandonados, acompanha sua recuperação e ajuda cada um deles a encontrar uma família responsável.</p>
+        <div class="acoes">
+          <a class="botao" href="projetos.html" data-rota="/projetos">Conheça nossas ações</a>
+          <a class="botao botao-secundario" href="cadastro.html" data-rota="/cadastro">Quero ajudar</a>
+        </div>
+      </div>
+
+      <picture>
+        <source srcset="../imagens/animal-resgatado.webp" type="image/webp">
+        <img class="imagem-principal" src="../imagens/animal-resgatado.jpg" alt="Voluntária cuidando de um cachorro resgatado em um abrigo" width="1536" height="1024">
+      </picture>
+    </section>
+
+    <section class="secao" aria-labelledby="sobre-titulo">
+      <p class="destaque">Quem somos</p>
+      <h2 id="sobre-titulo">Cuidado que aproxima</h2>
+      <p>Somos uma organização fictícia criada para este projeto acadêmico. Nosso trabalho representa ações de resgate, cuidados básicos, campanhas de adoção e conscientização sobre a proteção dos animais.</p>
+    </section>
+
+    <section class="secao secao-colorida" aria-labelledby="participar-titulo">
+      <div>
+        <p class="destaque">Participe</p>
+        <h2 id="participar-titulo">Existem diferentes maneiras de ajudar</h2>
+        <p>Você pode colaborar em eventos, divulgar animais disponíveis para adoção ou contribuir com ração, medicamentos e materiais de higiene.</p>
+      </div>
+      <a class="botao" href="projetos.html#como-ajudar" data-rota="/projetos/como-ajudar">Veja como participar</a>
+    </section>
+  </main>
+
+  <p id="aviso-rota" class="visualmente-oculto" role="status" aria-live="polite" aria-atomic="true"></p>
+
+  <template id="pagina-projetos">
+    <header class="titulo-pagina">
+      <p class="destaque">Nossa atuação</p>
+      <h1>Projetos e formas de ajudar</h1>
+      <p>Conheça as principais frentes de atuação e escolha a melhor maneira de participar.</p>
+    </header>
+
+    <section class="secao bloco-projeto" aria-labelledby="acoes-titulo">
+      <div>
+        <p class="destaque">Projetos e ações</p>
+        <div class="grupo-badges" role="group" aria-label="Status e categorias do projeto">
+          <span class="badge badge-sucesso">Projeto ativo</span>
+          <span class="badge">Resgate</span>
+          <span class="badge">Adoção</span>
+        </div>
+        <h2 id="acoes-titulo">Do resgate à adoção</h2>
+        <p>O atendimento começa com o acolhimento do animal, seguido por avaliação, cuidados básicos e divulgação responsável para adoção.</p>
+      </div>
+      <picture>
+        <source srcset="../imagens/animal-resgatado.webp" type="image/webp">
+        <img class="imagem-projeto" src="../imagens/animal-resgatado.jpg" alt="Voluntária oferecendo cuidado a um cachorro resgatado" width="1536" height="1024">
+      </picture>
+    </section>
+
+    <div id="como-ajudar" class="grade-ajuda" data-lista-ajuda></div>
+  </template>
+
+  <template id="modelo-cartao-ajuda">
+    <section class="cartao">
+      <p class="destaque" data-campo="categoria">Categoria</p>
+      <div class="grupo-badges" data-campo="badges" role="group" aria-label="Categoria e status">
+        <span class="badge">Status</span>
+      </div>
+      <h2 data-campo="titulo">Forma de ajudar</h2>
+      <p data-campo="descricao">Descrição da forma de ajuda.</p>
+      <ul data-campo="itens">
+        <li>Item necessário.</li>
+      </ul>
+      <a class="botao" data-campo="acao" href="#">Conhecer ação</a>
+    </section>
+  </template>
+
+  <template id="pagina-cadastro">
+    <header class="titulo-pagina">
+      <p class="destaque">Participe</p>
+      <h1>Cadastro de voluntário</h1>
+      <p>Preencha seus dados para demonstrar interesse em participar das ações. Os campos marcados com * são obrigatórios.</p>
+    </header>
+
+    <aside class="alerta alerta-informativo" aria-labelledby="aviso-dados-titulo">
+      <span class="alerta-icone" aria-hidden="true">i</span>
+      <div>
+        <strong id="aviso-dados-titulo">Cuidado com seus dados</strong>
+        <p>Neste projeto acadêmico, o formulário apenas demonstra o cadastro e não envia informações para um servidor.</p>
+      </div>
+    </aside>
+
+    <div id="retorno-formulario" class="alerta alerta-erro" role="alert" hidden>
+      <span class="alerta-icone" aria-hidden="true">!</span>
+      <div>
+        <strong>Não foi possível concluir</strong>
+        <p>Revise os campos destacados antes de enviar o cadastro.</p>
+      </div>
+    </div>
+
+    <form class="formulario" action="#" method="post">
+      <fieldset>
+        <legend>Dados pessoais</legend>
+        <div class="grade-campos">
+          <div class="campo campo-largo">
+            <label for="nome">Nome completo *</label>
+            <input type="text" id="nome" name="nome" autocomplete="name" minlength="3" required>
+          </div>
+          <div class="campo">
+            <label for="nascimento">Data de nascimento *</label>
+            <input type="date" id="nascimento" name="nascimento" autocomplete="bday" required>
+          </div>
+          <div class="campo">
+            <label for="cpf">CPF *</label>
+            <input type="text" id="cpf" name="cpf" inputmode="numeric" autocomplete="off" maxlength="14" pattern="[0-9]{3}\.[0-9]{3}\.[0-9]{3}-[0-9]{2}" placeholder="000.000.000-00" title="Digite o CPF no formato 000.000.000-00" required>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Contato</legend>
+        <div class="grade-campos">
+          <div class="campo">
+            <label for="email">E-mail *</label>
+            <input type="email" id="email" name="email" autocomplete="email" required>
+          </div>
+          <div class="campo">
+            <label for="telefone">Telefone *</label>
+            <input type="text" id="telefone" name="telefone" inputmode="tel" autocomplete="tel" maxlength="15" pattern="\([0-9]{2}\) [0-9]{4,5}-[0-9]{4}" placeholder="(00) 00000-0000" title="Digite o telefone no formato (00) 00000-0000" required>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Endereço</legend>
+        <div class="grade-campos">
+          <div class="campo campo-largo">
+            <label for="endereco">Endereço *</label>
+            <input type="text" id="endereco" name="endereco" autocomplete="address-line1" minlength="3" required>
+          </div>
+          <div class="campo">
+            <label for="cidade">Cidade *</label>
+            <input type="text" id="cidade" name="cidade" autocomplete="address-level2" minlength="2" required>
+          </div>
+          <div class="campo">
+            <label for="estado">Estado *</label>
+            <input type="text" id="estado" name="estado" autocomplete="address-level1" minlength="2" maxlength="2" pattern="[A-Za-z]{2}" autocapitalize="characters" placeholder="UF" title="Digite uma UF válida com duas letras, como SP" required>
+          </div>
+          <div class="campo">
+            <label for="cep">CEP *</label>
+            <input type="text" id="cep" name="cep" inputmode="numeric" autocomplete="postal-code" maxlength="9" pattern="[0-9]{5}-[0-9]{3}" placeholder="00000-000" title="Digite o CEP no formato 00000-000" required>
+          </div>
+        </div>
+      </fieldset>
+
+      <button class="botao" type="submit">Enviar cadastro</button>
+    </form>
+
+    <div id="toast-cadastro" class="toast" role="status" aria-live="polite" aria-atomic="true" aria-hidden="true">
+      <span class="toast-icone" aria-hidden="true">✓</span>
+      <div>
+        <strong>Cadastro recebido</strong>
+        <p>Obrigado pelo interesse! Em uma aplicação real, a equipe entraria em contato.</p>
+      </div>
+      <button class="toast-fechar" type="button" aria-label="Fechar notificação">×</button>
+    </div>
+  </template>
+
+  <footer class="rodape">
+    <p><strong>Projeto Novo Lar</strong></p>
+    <p>E-mail: <a href="mailto:contato@exemplo.org">contato@exemplo.org</a></p>
+    <p>Telefone: <a href="tel:+5500000000000">(00) 00000-0000</a></p>
+    <p><small>&copy; 2026 Projeto Novo Lar. Projeto acadêmico fictício.</small></p>
+  </footer>
+</body>
+</html>
+
+===== FICHEIRO: html/projetos.html =====
+
+<!doctype html>
+<html lang="pt-BR" class="sem-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Veja os projetos, as formas de voluntariado e as campanhas de doação do Projeto Novo Lar.">
+  <title>Projetos | Projeto Novo Lar</title>
+  <link rel="stylesheet" href="../css/estilos.css">
+  <script src="../js/menu.js" defer></script>
+</head>
+<body>
+  <a class="pular-conteudo" href="#conteudo">Pular para o conteúdo principal</a>
+
+  <header class="cabecalho">
+    <a class="marca" href="index.html" aria-label="Projeto Novo Lar — página inicial">
+      <span aria-hidden="true">♥</span> Projeto Novo Lar
+    </a>
+
+    <button class="controle-menu" type="button" aria-expanded="false" aria-controls="navegacao-principal" aria-label="Abrir menu principal">
+      <span>Menu</span>
+      <span class="icone-menu" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+    </button>
+
+    <nav id="navegacao-principal" class="navegacao" aria-label="Menu principal">
+      <ul class="menu">
+        <li><a href="index.html">Início</a></li>
+        <li class="item-com-submenu">
+          <a aria-current="page" href="projetos.html">Projetos</a>
+          <button class="controle-submenu" type="button" aria-expanded="false" aria-controls="submenu-projetos" aria-label="Abrir submenu de Projetos">
+            <span class="seta-submenu" aria-hidden="true">▾</span>
+          </button>
+          <ul id="submenu-projetos" class="submenu">
+            <li><a href="#acoes-titulo">Resgate e adoção</a></li>
+            <li><a href="#voluntariado">Voluntariado</a></li>
+            <li><a href="#doacoes">Doações</a></li>
+          </ul>
+        </li>
+        <li><a href="cadastro.html">Seja voluntário</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="conteudo" class="conteudo-interno">
+    <header class="titulo-pagina">
+      <p class="destaque">Nossa atuação</p>
+      <h1>Projetos e formas de ajudar</h1>
+      <p>Conheça as principais frentes de atuação e escolha a melhor maneira de participar.</p>
+    </header>
+
+    <section class="secao bloco-projeto" aria-labelledby="acoes-titulo">
+      <div>
+        <p class="destaque">Projetos e ações</p>
+        <div class="grupo-badges" role="group" aria-label="Status e categorias do projeto">
+          <span class="badge badge-sucesso">Projeto ativo</span>
+          <span class="badge">Resgate</span>
+          <span class="badge">Adoção</span>
+        </div>
+        <h2 id="acoes-titulo">Do resgate à adoção</h2>
+        <p>O atendimento começa com o acolhimento do animal, seguido por avaliação, cuidados básicos e divulgação responsável para adoção.</p>
+      </div>
+      <picture>
+        <source srcset="../imagens/animal-resgatado.webp" type="image/webp">
+        <img class="imagem-projeto" src="../imagens/animal-resgatado.jpg" alt="Voluntária oferecendo cuidado a um cachorro resgatado" width="1536" height="1024">
+      </picture>
+    </section>
+
+    <div id="como-ajudar" class="grade-ajuda">
+      <section id="voluntariado" class="cartao" aria-labelledby="voluntariado-titulo">
+        <p class="destaque">Voluntariado</p>
+        <div class="grupo-badges" role="group" aria-label="Categoria e status">
+          <span class="badge">Voluntariado</span>
+          <span class="badge badge-sucesso">Inscrições abertas</span>
+        </div>
+        <h2 id="voluntariado-titulo">Doe seu tempo</h2>
+        <p>Os voluntários podem ajudar em campanhas, eventos de adoção, divulgação e cuidados com os animais.</p>
+        <ul>
+          <li>Apoio em eventos de adoção;</li>
+          <li>Organização de doações;</li>
+          <li>Divulgação das campanhas.</li>
+        </ul>
+        <a class="botao" href="cadastro.html">Fazer cadastro</a>
+      </section>
+
+      <section id="doacoes" class="cartao" aria-labelledby="doacoes-titulo">
+        <p class="destaque">Doações</p>
+        <div class="grupo-badges" role="group" aria-label="Categoria e status">
+          <span class="badge">Doações</span>
+          <span class="badge badge-atencao">Campanha contínua</span>
+        </div>
+        <h2 id="doacoes-titulo">Contribua com materiais</h2>
+        <p>As doações ajudam a manter o atendimento e podem ser realizadas de acordo com a necessidade do projeto.</p>
+        <ul>
+          <li>Ração para cães e gatos;</li>
+          <li>Medicamentos veterinários;</li>
+          <li>Produtos de limpeza e higiene.</li>
+        </ul>
+        <a class="botao botao-secundario" href="mailto:contato@exemplo.org?subject=Quero%20fazer%20uma%20doação">Entrar em contato</a>
+      </section>
+    </div>
+  </main>
+
+  <footer class="rodape">
+    <p><strong>Projeto Novo Lar</strong></p>
+    <p>E-mail: <a href="mailto:contato@exemplo.org">contato@exemplo.org</a></p>
+    <p>Telefone: <a href="tel:+5500000000000">(00) 00000-0000</a></p>
+    <p><small>&copy; 2026 Projeto Novo Lar. Projeto acadêmico fictício.</small></p>
+  </footer>
+</body>
+</html>
+
+===== FICHEIRO: html/cadastro.html =====
+
+<!doctype html>
+<html lang="pt-BR" class="sem-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Formulário de cadastro de voluntários do Projeto Novo Lar.">
+  <title>Cadastro | Projeto Novo Lar</title>
+  <link rel="stylesheet" href="../css/estilos.css">
+  <script id="biblioteca-imask" src="https://unpkg.com/imask@7.6.1/dist/imask.min.js" async></script>
+  <script src="../js/menu.js" defer></script>
+  <script src="../js/formulario.js" defer></script>
+  <script src="../js/integracoes.js" defer></script>
+</head>
+<body>
+  <a class="pular-conteudo" href="#conteudo">Pular para o conteúdo principal</a>
+
+  <header class="cabecalho">
+    <a class="marca" href="index.html" aria-label="Projeto Novo Lar — página inicial">
+      <span aria-hidden="true">♥</span> Projeto Novo Lar
+    </a>
+
+    <button class="controle-menu" type="button" aria-expanded="false" aria-controls="navegacao-principal" aria-label="Abrir menu principal">
+      <span>Menu</span>
+      <span class="icone-menu" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+    </button>
+
+    <nav id="navegacao-principal" class="navegacao" aria-label="Menu principal">
+      <ul class="menu">
+        <li><a href="index.html">Início</a></li>
+        <li class="item-com-submenu">
+          <a href="projetos.html">Projetos</a>
+          <button class="controle-submenu" type="button" aria-expanded="false" aria-controls="submenu-projetos" aria-label="Abrir submenu de Projetos">
+            <span class="seta-submenu" aria-hidden="true">▾</span>
+          </button>
+          <ul id="submenu-projetos" class="submenu">
+            <li><a href="projetos.html#acoes-titulo">Resgate e adoção</a></li>
+            <li><a href="projetos.html#voluntariado">Voluntariado</a></li>
+            <li><a href="projetos.html#doacoes">Doações</a></li>
+          </ul>
+        </li>
+        <li><a aria-current="page" href="cadastro.html">Seja voluntário</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="conteudo" class="conteudo-interno">
+    <header class="titulo-pagina">
+      <p class="destaque">Participe</p>
+      <h1>Cadastro de voluntário</h1>
+      <p>Preencha seus dados para demonstrar interesse em participar das ações. Os campos marcados com * são obrigatórios.</p>
+    </header>
+
+    <aside class="alerta alerta-informativo" aria-labelledby="aviso-dados-titulo">
+      <span class="alerta-icone" aria-hidden="true">i</span>
+      <div>
+        <strong id="aviso-dados-titulo">Cuidado com seus dados</strong>
+        <p>Neste projeto acadêmico, o formulário apenas demonstra o cadastro e não envia informações para um servidor.</p>
+      </div>
+    </aside>
+
+    <div id="retorno-formulario" class="alerta alerta-erro" role="alert" hidden>
+      <span class="alerta-icone" aria-hidden="true">!</span>
+      <div>
+        <strong>Não foi possível concluir</strong>
+        <p>Revise os campos destacados antes de enviar o cadastro.</p>
+      </div>
+    </div>
+
+    <form class="formulario" action="#" method="post">
+      <fieldset>
+        <legend>Dados pessoais</legend>
+
+        <div class="grade-campos">
+          <div class="campo campo-largo">
+            <label for="nome">Nome completo *</label>
+            <input type="text" id="nome" name="nome" autocomplete="name" minlength="3" required>
+          </div>
+
+          <div class="campo">
+            <label for="nascimento">Data de nascimento *</label>
+            <input type="date" id="nascimento" name="nascimento" autocomplete="bday" required>
+          </div>
+
+          <div class="campo">
+            <label for="cpf">CPF *</label>
+            <input type="text" id="cpf" name="cpf" inputmode="numeric" autocomplete="off" maxlength="14" pattern="[0-9]{3}\.[0-9]{3}\.[0-9]{3}-[0-9]{2}" placeholder="000.000.000-00" title="Digite o CPF no formato 000.000.000-00" required>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Contato</legend>
+
+        <div class="grade-campos">
+          <div class="campo">
+            <label for="email">E-mail *</label>
+            <input type="email" id="email" name="email" autocomplete="email" required>
+          </div>
+
+          <div class="campo">
+            <label for="telefone">Telefone *</label>
+            <input type="text" id="telefone" name="telefone" inputmode="tel" autocomplete="tel" maxlength="15" pattern="\([0-9]{2}\) [0-9]{4,5}-[0-9]{4}" placeholder="(00) 00000-0000" title="Digite o telefone no formato (00) 00000-0000" required>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Endereço</legend>
+
+        <div class="grade-campos">
+          <div class="campo campo-largo">
+            <label for="endereco">Endereço *</label>
+            <input type="text" id="endereco" name="endereco" autocomplete="address-line1" minlength="3" required>
+          </div>
+
+          <div class="campo">
+            <label for="cidade">Cidade *</label>
+            <input type="text" id="cidade" name="cidade" autocomplete="address-level2" minlength="2" required>
+          </div>
+
+          <div class="campo">
+            <label for="estado">Estado *</label>
+            <input type="text" id="estado" name="estado" autocomplete="address-level1" minlength="2" maxlength="2" pattern="[A-Za-z]{2}" autocapitalize="characters" placeholder="UF" title="Digite uma UF válida com duas letras, como SP" required>
+          </div>
+
+          <div class="campo">
+            <label for="cep">CEP *</label>
+            <input type="text" id="cep" name="cep" inputmode="numeric" autocomplete="postal-code" maxlength="9" pattern="[0-9]{5}-[0-9]{3}" placeholder="00000-000" title="Digite o CEP no formato 00000-000" required>
+          </div>
+        </div>
+      </fieldset>
+
+      <button class="botao" type="submit">Enviar cadastro</button>
+    </form>
+  </main>
+
+  <div id="toast-cadastro" class="toast" role="status" aria-live="polite" aria-atomic="true" aria-hidden="true">
+    <span class="toast-icone" aria-hidden="true">✓</span>
+    <div>
+      <strong>Cadastro recebido</strong>
+      <p>Obrigado pelo interesse! Em uma aplicação real, a equipe entraria em contato.</p>
+    </div>
+    <button class="toast-fechar" type="button" aria-label="Fechar notificação">×</button>
+  </div>
+
+  <footer class="rodape">
+    <p><strong>Projeto Novo Lar</strong></p>
+    <p>E-mail: <a href="mailto:contato@exemplo.org">contato@exemplo.org</a></p>
+    <p>Telefone: <a href="tel:+5500000000000">(00) 00000-0000</a></p>
+    <p><small>&copy; 2026 Projeto Novo Lar. Projeto acadêmico fictício.</small></p>
+  </footer>
+</body>
+</html>
+
+===== FICHEIRO: css/estilos.css =====
+
+:root {
+  color-scheme: light;
+
+  /* Cores da marca */
+  --cor-primaria: #12372a;
+  --cor-primaria-escura: #0b281e;
+  --cor-secundaria: #9b4300;
+  --cor-apoio: #b63b2d;
+  --cor-destaque: #ffb703;
+  --cor-sobre-primaria: #ffffff;
+  --cor-sobre-destaque: #0b281e;
+
+  /* Cores neutras e de estado */
+  --cor-texto: #17211c;
+  --cor-texto-suave: #4d5c54;
+  --cor-fundo: #f7faf8;
+  --cor-superficie: #ffffff;
+  --cor-superficie-suave: #e7f3ec;
+  --cor-borda: #72867b;
+  --cor-borda-forte: #52675c;
+  --cor-sucesso: #1b6e37;
+  --cor-sucesso-fundo: #eff9f2;
+  --cor-atencao-fundo: #fff7e6;
+  --cor-erro: #b42318;
+  --cor-erro-fundo: #fff3f1;
+
+  /* Tipografia: cinco níveis hierárquicos */
+  --fonte-familia: Arial, Helvetica, sans-serif;
+  --fonte-xs: 0.875rem;
+  --fonte-sm: 1rem;
+  --fonte-md: 1.25rem;
+  --fonte-lg: clamp(1.7rem, 4vw, 2.7rem);
+  --fonte-xl: clamp(2.35rem, 6vw, 4.8rem);
+
+  /* Espaçamentos modulares baseados em 4px */
+  --espaco-1: 0.25rem;
+  --espaco-2: 0.5rem;
+  --espaco-3: 0.75rem;
+  --espaco-4: 1rem;
+  --espaco-5: 1.5rem;
+  --espaco-6: 2rem;
+  --espaco-7: 3rem;
+  --espaco-8: 4rem;
+  --espaco-9: 5rem;
+  --espaco-10: 6rem;
+
+  --raio-pequeno: 0.35rem;
+  --raio-medio: 0.8rem;
+  --largura-conteudo: 1120px;
+  --colunas-grid: 12;
+  --gap-grid: var(--espaco-5);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  color: var(--cor-texto);
+  background: var(--cor-fundo);
+  font-family: var(--fonte-familia);
+  font-size: var(--fonte-sm);
+  line-height: 1.6;
+}
+
+a {
+  color: inherit;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid var(--cor-primaria-escura);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 3px var(--cor-destaque);
+}
+
+.pular-conteudo {
+  position: absolute;
+  top: -80px;
+  left: var(--espaco-4);
+  z-index: 10;
+  padding: var(--espaco-3) var(--espaco-4);
+  color: var(--cor-sobre-primaria);
+  background: var(--cor-primaria);
+  border-radius: var(--raio-pequeno);
+}
+
+.pular-conteudo:focus {
+  top: var(--espaco-4);
+}
+
+.visualmente-oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+#conteudo,
+#conteudo [tabindex="-1"] {
+  scroll-margin-top: var(--espaco-5);
+}
+
+.cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espaco-6);
+  max-width: var(--largura-conteudo);
+  margin: 0 auto;
+  padding: var(--fonte-md) var(--espaco-5);
+}
+
+.marca {
+  color: var(--cor-primaria);
+  font-size: var(--fonte-md);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.marca span {
+  color: var(--cor-apoio);
+}
+
+.navegacao {
+  margin-left: auto;
+}
+
+.controle-menu {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espaco-3);
+  min-height: 44px;
+  padding: var(--espaco-2) var(--espaco-3);
+  color: var(--cor-sobre-primaria);
+  background: var(--cor-primaria);
+  border: 2px solid var(--cor-primaria);
+  border-radius: var(--raio-pequeno);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+}
+
+.controle-menu:hover {
+  background: var(--cor-primaria-escura);
+  border-color: var(--cor-primaria-escura);
+}
+
+.icone-menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 1.35rem;
+  height: 1rem;
+}
+
+.icone-menu span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+  border-radius: 1px;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.controle-menu[aria-expanded="true"] .icone-menu span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.controle-menu[aria-expanded="true"] .icone-menu span:nth-child(2) {
+  opacity: 0;
+}
+
+.controle-menu[aria-expanded="true"] .icone-menu span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.menu {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--espaco-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.menu > li {
+  position: relative;
+}
+
+.menu a {
+  display: block;
+  padding: var(--espaco-2) var(--espaco-3);
+  border-radius: var(--raio-pequeno);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.item-com-submenu {
+  display: flex;
+  align-items: stretch;
+  flex-wrap: wrap;
+}
+
+.js .item-com-submenu > a {
+  flex: 1;
+  border-radius: var(--raio-pequeno) 0 0 var(--raio-pequeno);
+}
+
+.controle-submenu {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: var(--espaco-2);
+  color: var(--cor-primaria);
+  background: transparent;
+  border: 0;
+  border-radius: 0 var(--raio-pequeno) var(--raio-pequeno) 0;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.1s ease;
+}
+
+.js .controle-submenu {
+  display: inline-flex;
+}
+
+.seta-submenu {
+  transition: transform 0.2s ease;
+}
+
+.controle-submenu[aria-expanded="true"] .seta-submenu {
+  transform: rotate(180deg);
+}
+
+.submenu {
+  position: absolute;
+  top: calc(100% + var(--espaco-1));
+  left: 0;
+  z-index: 5;
+  min-width: 14rem;
+  margin: 0;
+  padding: var(--espaco-2);
+  list-style: none;
+  background: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-pequeno);
+  box-shadow: 0 12px 30px rgba(11, 40, 30, 0.16);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(calc(var(--espaco-2) * -1));
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0.2s;
+}
+
+.submenu a {
+  white-space: nowrap;
+}
+
+.controle-submenu[aria-expanded="true"] + .submenu,
+.sem-js .item-com-submenu:hover > .submenu,
+.sem-js .item-com-submenu:focus-within > .submenu {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+  transition-delay: 0s;
+}
+
+.menu a:hover,
+.menu a[aria-current="page"],
+.controle-submenu:hover,
+.controle-submenu[aria-expanded="true"] {
+  color: var(--cor-sobre-primaria);
+  background: var(--cor-primaria);
+}
+
+.controle-menu:active,
+.controle-submenu:active {
+  transform: scale(0.96);
+}
+
+.controle-menu:disabled,
+.controle-submenu:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.apresentacao {
+  display: grid;
+  grid-template-columns: repeat(var(--colunas-grid), minmax(0, 1fr));
+  align-items: center;
+  gap: clamp(var(--gap-grid), 5vw, var(--espaco-9));
+  max-width: var(--largura-conteudo);
+  margin: var(--espaco-6) auto 0;
+  padding: clamp(var(--espaco-6), 6vw, var(--espaco-9)) var(--espaco-5);
+}
+
+.apresentacao > div,
+.apresentacao > picture {
+  grid-column: span 6;
+  min-width: 0;
+}
+
+h1,
+h2 {
+  color: var(--cor-primaria);
+  line-height: 1.15;
+}
+
+h1 {
+  max-width: 15ch;
+  margin: var(--espaco-1) 0 var(--espaco-4);
+  font-size: var(--fonte-xl);
+  letter-spacing: -0.045em;
+}
+
+h2 {
+  margin: var(--espaco-1) 0 var(--espaco-4);
+  font-size: var(--fonte-lg);
+  letter-spacing: -0.025em;
+}
+
+.destaque {
+  margin: 0;
+  color: var(--cor-secundaria);
+  font-size: var(--fonte-xs);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.grupo-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espaco-2);
+  margin: var(--espaco-2) 0 var(--espaco-4);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.75rem;
+  padding: var(--espaco-1) var(--espaco-3);
+  color: var(--cor-primaria);
+  background: var(--cor-superficie-suave);
+  border: 1px solid var(--cor-borda-forte);
+  border-radius: 999px;
+  font-size: var(--fonte-xs);
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.badge-sucesso {
+  color: var(--cor-sucesso);
+  background: var(--cor-sucesso-fundo);
+  border-color: var(--cor-sucesso);
+}
+
+.badge-atencao {
+  color: var(--cor-secundaria);
+  background: var(--cor-atencao-fundo);
+  border-color: var(--cor-secundaria);
+}
+
+.imagem-principal,
+.imagem-projeto {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 1.5rem 0.3rem 1.5rem 0.3rem;
+  box-shadow: 18px 18px 0 var(--cor-destaque);
+}
+
+.acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espaco-3);
+  margin-top: var(--espaco-5);
+}
+
+.botao {
+  display: inline-block;
+  padding: var(--espaco-3) var(--espaco-4);
+  color: var(--cor-sobre-primaria);
+  background: var(--cor-primaria);
+  border: 2px solid var(--cor-primaria);
+  border-radius: 0.45rem;
+  font: inherit;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease, transform 0.1s ease;
+}
+
+.botao:hover {
+  color: var(--cor-sobre-destaque);
+  background: var(--cor-destaque);
+  border-color: var(--cor-destaque);
+  box-shadow: 0 4px 0 var(--cor-primaria-escura);
+  transform: translateY(-2px);
+}
+
+.botao:active {
+  box-shadow: 0 1px 0 var(--cor-primaria-escura);
+  transform: translateY(1px);
+}
+
+.botao-secundario {
+  color: var(--cor-primaria);
+  background: transparent;
+}
+
+.botao:disabled {
+  color: var(--cor-sobre-primaria);
+  background: var(--cor-borda-forte);
+  border-color: var(--cor-borda-forte);
+  box-shadow: none;
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.secao,
+.conteudo-interno,
+.titulo-pagina {
+  max-width: var(--largura-conteudo);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.secao {
+  padding: clamp(var(--espaco-7), 7vw, var(--espaco-10)) var(--espaco-5);
+}
+
+.secao > p {
+  max-width: 65ch;
+}
+
+.secao-colorida {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espaco-6);
+  margin-bottom: var(--espaco-9);
+  background: var(--cor-superficie-suave);
+  border-left: 8px solid var(--cor-destaque);
+  border-radius: var(--raio-medio);
+}
+
+.conteudo-interno {
+  padding: var(--espaco-6) var(--espaco-5) var(--espaco-10);
+}
+
+.titulo-pagina {
+  padding: var(--espaco-7) 0 var(--espaco-8);
+}
+
+.titulo-pagina h1 {
+  max-width: 18ch;
+}
+
+.titulo-pagina > p:last-child {
+  max-width: 58ch;
+  color: var(--cor-texto-suave);
+}
+
+.bloco-projeto {
+  display: grid;
+  grid-template-columns: repeat(var(--colunas-grid), minmax(0, 1fr));
+  align-items: center;
+  gap: var(--gap-grid);
+  padding-right: 0;
+  padding-left: 0;
+  border-top: 1px solid var(--cor-borda);
+}
+
+.bloco-projeto > div {
+  grid-column: span 7;
+  min-width: 0;
+}
+
+.bloco-projeto > picture {
+  grid-column: span 5;
+  min-width: 0;
+}
+
+.grade-ajuda {
+  display: grid;
+  grid-template-columns: repeat(var(--colunas-grid), minmax(0, 1fr));
+  gap: var(--gap-grid);
+  scroll-margin-top: var(--espaco-6);
+}
+
+.grade-ajuda > .cartao {
+  grid-column: span 6;
+  min-width: 0;
+}
+
+.cartao {
+  padding: clamp(var(--espaco-5), 4vw, 2.5rem);
+  background: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-medio);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.cartao:hover,
+.cartao:focus-within {
+  border-color: var(--cor-borda-forte);
+  box-shadow: 0 12px 28px rgba(11, 40, 30, 0.14);
+  transform: translateY(-3px);
+}
+
+.cartao ul {
+  margin-bottom: 1.75rem;
+  padding-left: 1.3rem;
+}
+
+.formulario {
+  max-width: 850px;
+  padding: clamp(var(--fonte-md), 4vw, 2.5rem);
+  background: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-medio);
+}
+
+.alerta {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--espaco-3);
+  max-width: 850px;
+  margin-bottom: var(--espaco-5);
+  padding: var(--espaco-4);
+  color: var(--cor-texto);
+  background: var(--cor-superficie);
+  border: 1px solid currentColor;
+  border-left-width: 6px;
+  border-radius: var(--raio-pequeno);
+}
+
+.alerta[hidden] {
+  display: none;
+}
+
+.alerta p,
+.toast p {
+  margin: var(--espaco-1) 0 0;
+}
+
+.alerta-icone {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.alerta-informativo {
+  color: var(--cor-primaria);
+  background: var(--cor-superficie-suave);
+}
+
+.alerta-sucesso {
+  color: var(--cor-sucesso);
+  background: var(--cor-sucesso-fundo);
+}
+
+.alerta-erro {
+  color: var(--cor-erro);
+  background: var(--cor-erro-fundo);
+}
+
+fieldset {
+  margin: 0 0 var(--espaco-6);
+  padding: var(--espaco-5);
+  border: 1px solid var(--cor-borda);
+  border-radius: 0.55rem;
+}
+
+legend {
+  padding: 0 var(--espaco-2);
+  color: var(--cor-primaria);
+  font-size: var(--fonte-md);
+  font-weight: 800;
+}
+
+.grade-campos {
+  display: grid;
+  grid-template-columns: repeat(var(--colunas-grid), minmax(0, 1fr));
+  gap: var(--gap-grid);
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  grid-column: span 6;
+  gap: var(--espaco-1);
+  min-width: 0;
+}
+
+.campo-largo {
+  grid-column: span 12;
+}
+
+label {
+  font-weight: 700;
+}
+
+input {
+  width: 100%;
+  min-height: 44px;
+  padding: 0.7rem 0.8rem;
+  color: var(--cor-texto);
+  background: var(--cor-fundo);
+  border: 1px solid var(--cor-borda-forte);
+  border-radius: var(--raio-pequeno);
+  font: inherit;
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input::placeholder {
+  color: var(--cor-texto-suave);
+  opacity: 1;
+}
+
+input:hover:not(:disabled) {
+  border-color: var(--cor-primaria);
+}
+
+.sem-js input:user-valid {
+  background: var(--cor-sucesso-fundo);
+  border-color: var(--cor-sucesso);
+  box-shadow: inset 4px 0 0 var(--cor-sucesso);
+}
+
+.sem-js input:user-invalid {
+  background: var(--cor-erro-fundo);
+  border-color: var(--cor-erro);
+  box-shadow: inset 4px 0 0 var(--cor-erro);
+}
+
+.campo.campo-valido input {
+  background: var(--cor-sucesso-fundo);
+  border-color: var(--cor-sucesso);
+  box-shadow: inset 4px 0 0 var(--cor-sucesso);
+}
+
+.campo.campo-invalido input {
+  background: var(--cor-erro-fundo);
+  border-color: var(--cor-erro);
+  box-shadow: inset 4px 0 0 var(--cor-erro);
+}
+
+input:focus-visible {
+  background: var(--cor-superficie);
+  border-color: var(--cor-primaria);
+  box-shadow: 0 0 0 3px var(--cor-destaque);
+}
+
+.campo.campo-valido input:focus-visible {
+  box-shadow: inset 4px 0 0 var(--cor-sucesso), 0 0 0 3px var(--cor-destaque);
+}
+
+.campo.campo-invalido input:focus-visible {
+  box-shadow: inset 4px 0 0 var(--cor-erro), 0 0 0 3px var(--cor-destaque);
+}
+
+input:disabled {
+  background: var(--cor-superficie-suave);
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.sem-js .campo:has(input:user-valid)::after,
+.sem-js .campo:has(input:user-invalid)::after,
+.mensagem-campo {
+  font-size: var(--fonte-xs);
+  font-weight: 700;
+}
+
+.sem-js .campo:has(input:user-valid)::after {
+  content: "✓ Preenchimento válido.";
+  color: var(--cor-sucesso);
+}
+
+.sem-js .campo:has(input:user-invalid)::after {
+  content: "Atenção: revise este campo.";
+  color: var(--cor-erro);
+}
+
+.mensagem-campo {
+  display: block;
+  min-height: 1.3em;
+}
+
+.mensagem-campo[hidden] {
+  display: none;
+}
+
+.campo-valido .mensagem-campo {
+  color: var(--cor-sucesso);
+}
+
+.campo-invalido .mensagem-campo {
+  color: var(--cor-erro);
+}
+
+.toast {
+  position: fixed;
+  right: var(--espaco-5);
+  bottom: var(--espaco-5);
+  z-index: 20;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--espaco-3);
+  width: min(28rem, calc(100vw - var(--espaco-8)));
+  padding: var(--espaco-4);
+  color: var(--cor-texto);
+  background: var(--cor-superficie);
+  border: 1px solid var(--cor-sucesso);
+  border-left-width: 6px;
+  border-radius: var(--raio-medio);
+  box-shadow: 0 18px 45px rgba(11, 40, 30, 0.2);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(var(--espaco-4));
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0.2s;
+}
+
+.toast.esta-visivel {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+  transition-delay: 0s;
+}
+
+.toast strong {
+  color: var(--cor-sucesso);
+}
+
+.toast-icone {
+  display: grid;
+  place-items: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  color: var(--cor-sobre-primaria);
+  background: var(--cor-sucesso);
+  border-radius: 50%;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.toast-fechar {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin: calc(var(--espaco-2) * -1);
+  padding: 0;
+  color: var(--cor-texto-suave);
+  background: transparent;
+  border: 0;
+  border-radius: var(--raio-pequeno);
+  font: inherit;
+  font-size: var(--fonte-md);
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.toast-fechar:hover {
+  color: var(--cor-primaria);
+  background: var(--cor-superficie-suave);
+}
+
+.rodape {
+  padding: var(--espaco-7) max(var(--espaco-5), calc((100% - var(--largura-conteudo)) / 2 + var(--espaco-5)));
+  color: var(--cor-sobre-primaria);
+  background: var(--cor-primaria);
+}
+
+.rodape p {
+  margin: var(--espaco-1) 0;
+}
+
+.rodape a {
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 1280px) {
+  :root {
+    --largura-conteudo: 1040px;
+  }
+
+  .apresentacao,
+  .conteudo-interno,
+  .cabecalho {
+    padding-right: var(--espaco-6);
+    padding-left: var(--espaco-6);
+  }
+}
+
+@media (max-width: 1024px) {
+  :root {
+    --largura-conteudo: 920px;
+    --gap-grid: var(--espaco-4);
+  }
+
+  .bloco-projeto > div,
+  .bloco-projeto > picture {
+    grid-column: span 6;
+  }
+
+  .secao-colorida {
+    margin-right: var(--espaco-6);
+    margin-left: var(--espaco-6);
+  }
+}
+
+@media (max-width: 768px) {
+  .cabecalho {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+  }
+
+  .secao-colorida {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .navegacao {
+    grid-column: 1 / -1;
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .js .controle-menu {
+    display: inline-flex;
+  }
+
+  .js .navegacao {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(calc(var(--espaco-2) * -1));
+    transition: max-height 0.35s ease, opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0.35s;
+  }
+
+  .js .controle-menu[aria-expanded="true"] + .navegacao {
+    max-height: 50rem;
+    margin-top: var(--espaco-3);
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition-delay: 0s;
+  }
+
+  .menu {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--espaco-1);
+    width: 100%;
+  }
+
+  .menu > li,
+  .menu > li:not(.item-com-submenu) > a {
+    width: 100%;
+  }
+
+  .item-com-submenu > a {
+    flex: 1;
+  }
+
+  .submenu {
+    position: static;
+    flex-basis: 100%;
+    width: 100%;
+    min-width: 0;
+    max-height: 0;
+    margin: 0;
+    padding: 0 var(--espaco-2);
+    overflow: hidden;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .submenu a {
+    white-space: normal;
+  }
+
+  .controle-submenu[aria-expanded="true"] + .submenu,
+  .sem-js .item-com-submenu > .submenu {
+    max-height: 16rem;
+    margin-top: var(--espaco-1);
+    padding: var(--espaco-2);
+    border-left: 3px solid var(--cor-destaque);
+  }
+
+  .sem-js .item-com-submenu > .submenu {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .apresentacao > div,
+  .apresentacao > picture,
+  .bloco-projeto > div,
+  .bloco-projeto > picture,
+  .grade-ajuda > .cartao,
+  .grade-campos > .campo {
+    grid-column: span 12;
+  }
+
+  .apresentacao picture {
+    order: -1;
+  }
+
+  .bloco-projeto {
+    padding-top: var(--espaco-7);
+  }
+}
+
+@media (max-width: 600px) {
+  .cabecalho,
+  .apresentacao,
+  .conteudo-interno {
+    padding-right: var(--espaco-4);
+    padding-left: var(--espaco-4);
+  }
+
+  .menu a,
+  .acoes .botao {
+    text-align: center;
+  }
+
+  .acoes .botao {
+    width: 100%;
+  }
+
+  fieldset {
+    padding: var(--espaco-4);
+  }
+
+  .toast {
+    left: var(--espaco-4);
+    right: var(--espaco-4);
+    bottom: var(--espaco-4);
+    width: auto;
+  }
+}
+
+@media (max-width: 420px) {
+  :root {
+    --fonte-xl: 2.2rem;
+    --fonte-lg: 1.65rem;
+  }
+
+  .secao-colorida {
+    margin-right: var(--espaco-4);
+    margin-left: var(--espaco-4);
+    padding: var(--espaco-6) var(--espaco-4);
+  }
+
+  .imagem-principal,
+  .imagem-projeto {
+    box-shadow: 10px 10px 0 var(--cor-destaque);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --cor-primaria: #a7d8bc;
+    --cor-primaria-escura: #7fc49d;
+    --cor-secundaria: #ffb37a;
+    --cor-apoio: #ff9c89;
+    --cor-destaque: #ffd166;
+    --cor-sobre-primaria: #08110d;
+    --cor-sobre-destaque: #08110d;
+    --cor-texto: #f4f8f5;
+    --cor-texto-suave: #c3d0c9;
+    --cor-fundo: #08110d;
+    --cor-superficie: #102019;
+    --cor-superficie-suave: #173127;
+    --cor-borda: #6f897a;
+    --cor-borda-forte: #9eb3a7;
+    --cor-sucesso: #8ae6a5;
+    --cor-sucesso-fundo: #12351f;
+    --cor-atencao-fundo: #3b2915;
+    --cor-erro: #ffaaa3;
+    --cor-erro-fundo: #3a1717;
+  }
+
+  .submenu,
+  .cartao,
+  .toast {
+    box-shadow: 0 16px 38px rgba(0, 0, 0, 0.45);
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    color-scheme: dark;
+    --cor-primaria: #00ffff;
+    --cor-primaria-escura: #ffff00;
+    --cor-secundaria: #ffff00;
+    --cor-apoio: #ff8080;
+    --cor-destaque: #ffff00;
+    --cor-sobre-primaria: #000000;
+    --cor-sobre-destaque: #000000;
+    --cor-texto: #ffffff;
+    --cor-texto-suave: #ffffff;
+    --cor-fundo: #000000;
+    --cor-superficie: #000000;
+    --cor-superficie-suave: #000000;
+    --cor-borda: #ffffff;
+    --cor-borda-forte: #ffffff;
+    --cor-sucesso: #00ff66;
+    --cor-sucesso-fundo: #000000;
+    --cor-atencao-fundo: #000000;
+    --cor-erro: #ff8080;
+    --cor-erro-fundo: #000000;
+  }
+
+  .submenu,
+  .cartao,
+  .cartao:hover,
+  .cartao:focus-within,
+  .formulario,
+  .alerta,
+  .toast,
+  fieldset,
+  input {
+    border-width: 2px;
+    box-shadow: none;
+  }
+
+  .menu a[aria-current="page"] {
+    outline: 2px solid var(--cor-destaque);
+    outline-offset: 2px;
+  }
+}
+
+@media (forced-colors: active) {
+  :root {
+    --cor-primaria: LinkText;
+    --cor-primaria-escura: Highlight;
+    --cor-secundaria: LinkText;
+    --cor-apoio: LinkText;
+    --cor-destaque: Highlight;
+    --cor-sobre-primaria: Canvas;
+    --cor-sobre-destaque: HighlightText;
+    --cor-texto: CanvasText;
+    --cor-texto-suave: CanvasText;
+    --cor-fundo: Canvas;
+    --cor-superficie: Canvas;
+    --cor-superficie-suave: Canvas;
+    --cor-borda: CanvasText;
+    --cor-borda-forte: CanvasText;
+    --cor-sucesso: CanvasText;
+    --cor-sucesso-fundo: Canvas;
+    --cor-atencao-fundo: Canvas;
+    --cor-erro: CanvasText;
+    --cor-erro-fundo: Canvas;
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible {
+    outline: 3px solid Highlight;
+    box-shadow: none;
+  }
+
+  .pular-conteudo,
+  .controle-menu,
+  .controle-menu:hover,
+  .botao,
+  .rodape,
+  .menu a:hover,
+  .menu a[aria-current="page"],
+  .controle-submenu:hover,
+  .controle-submenu[aria-expanded="true"] {
+    color: HighlightText;
+    background: Highlight;
+    border-color: Highlight;
+  }
+
+  .imagem-principal,
+  .imagem-projeto {
+    border: 2px solid CanvasText;
+    box-shadow: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .navegacao,
+  .submenu,
+  .icone-menu span,
+  .seta-submenu,
+  .controle-menu,
+  .controle-submenu,
+  .botao,
+  .cartao,
+  .toast,
+  .toast-fechar,
+  input {
+    transition: none;
+  }
+
+  .controle-menu:active,
+  .controle-submenu:active,
+  .botao:hover,
+  .botao:active,
+  .cartao:hover,
+  .cartao:focus-within {
+    transform: none;
+  }
+}
+
+===== FICHEIRO: js/menu.js =====
+
+(() => {
+document.documentElement.classList.replace("sem-js", "js");
+
+const controleMenu = document.querySelector(".controle-menu");
+const controlesSubmenu = document.querySelectorAll(".controle-submenu");
+const consultaMobile = window.matchMedia("(max-width: 768px)");
+
+function definirEstado(controle, aberto) {
+  controle.setAttribute("aria-expanded", String(aberto));
+
+  if (controle.classList.contains("controle-menu")) {
+    controle.setAttribute(
+      "aria-label",
+      aberto ? "Fechar menu principal" : "Abrir menu principal"
+    );
+    return;
+  }
+
+  controle.setAttribute(
+    "aria-label",
+    aberto ? "Fechar submenu de Projetos" : "Abrir submenu de Projetos"
+  );
+}
+
+function fecharSubmenus() {
+  controlesSubmenu.forEach((controle) => definirEstado(controle, false));
+}
+
+function fecharNavegacao() {
+  if (controleMenu) {
+    definirEstado(controleMenu, false);
+  }
+  fecharSubmenus();
+}
+
+if (controleMenu) {
+  controleMenu.addEventListener("click", () => {
+    const aberto = controleMenu.getAttribute("aria-expanded") === "true";
+    definirEstado(controleMenu, !aberto);
+
+    if (aberto) {
+      fecharSubmenus();
+    }
+  });
+}
+
+controlesSubmenu.forEach((controle) => {
+  controle.addEventListener("click", () => {
+    const aberto = controle.getAttribute("aria-expanded") === "true";
+    fecharSubmenus();
+    definirEstado(controle, !aberto);
+  });
+});
+
+document.addEventListener("click", (evento) => {
+  if (!evento.target.closest(".cabecalho")) {
+    fecharNavegacao();
+  }
+});
+
+document.addEventListener("keydown", (evento) => {
+  if (evento.key !== "Escape") {
+    return;
+  }
+
+  const submenuAberto = document.querySelector(
+    '.controle-submenu[aria-expanded="true"]'
+  );
+  const menuAberto = controleMenu?.getAttribute("aria-expanded") === "true";
+
+  fecharNavegacao();
+
+  if (submenuAberto) {
+    submenuAberto.focus();
+  } else if (menuAberto && controleMenu) {
+    controleMenu.focus();
+  }
+});
+
+document.querySelector(".navegacao")?.addEventListener("click", (evento) => {
+  if (consultaMobile.matches && evento.target.closest("a")) {
+    fecharNavegacao();
+  }
+});
+
+consultaMobile.addEventListener("change", fecharNavegacao);
+window.addEventListener("hashchange", fecharNavegacao);
+})();
+
+===== FICHEIRO: js/formulario.js =====
+
+(() => {
+let temporizadorToast;
+
+const padroesFormulario = Object.freeze({
+  cpf: /^\d{3}\.\d{3}\.\d{3}-\d{2}$/,
+  telefone: /^\(\d{2}\) \d{4,5}-\d{4}$/,
+  cep: /^\d{5}-\d{3}$/,
+  estado: /^[A-Z]{2}$/,
+});
+
+const ufsValidas = new Set([
+  "AC",
+  "AL",
+  "AP",
+  "AM",
+  "BA",
+  "CE",
+  "DF",
+  "ES",
+  "GO",
+  "MA",
+  "MT",
+  "MS",
+  "MG",
+  "PA",
+  "PB",
+  "PR",
+  "PE",
+  "PI",
+  "RJ",
+  "RN",
+  "RS",
+  "RO",
+  "RR",
+  "SC",
+  "SP",
+  "SE",
+  "TO",
+]);
+
+const mensagensObrigatorias = Object.freeze({
+  nome: "Informe seu nome completo.",
+  nascimento: "Informe sua data de nascimento.",
+  cpf: "Informe o CPF.",
+  email: "Informe seu e-mail.",
+  telefone: "Informe seu telefone.",
+  endereco: "Informe seu endereço.",
+  cidade: "Informe sua cidade.",
+  estado: "Informe o estado.",
+  cep: "Informe o CEP.",
+});
+
+function obterHojeISO() {
+  const hoje = new Date();
+  const ano = hoje.getFullYear();
+  const mes = String(hoje.getMonth() + 1).padStart(2, "0");
+  const dia = String(hoje.getDate()).padStart(2, "0");
+  return `${ano}-${mes}-${dia}`;
+}
+
+function campoDoFormulario(alvo) {
+  return (
+    alvo instanceof HTMLInputElement &&
+    alvo.closest(".formulario") instanceof HTMLFormElement
+  );
+}
+
+function obterRetornoFormulario() {
+  return document.querySelector("#retorno-formulario");
+}
+
+function obterToastCadastro() {
+  return document.querySelector("#toast-cadastro");
+}
+
+function obterOuCriarMensagem(campo) {
+  const grupoCampo = campo.closest(".campo");
+  if (!grupoCampo) {
+    return null;
+  }
+
+  let mensagem = grupoCampo.querySelector(".mensagem-campo");
+  if (!mensagem) {
+    mensagem = document.createElement("small");
+    mensagem.className = "mensagem-campo";
+    mensagem.id = `${campo.id}-mensagem`;
+    mensagem.setAttribute("aria-live", "polite");
+    mensagem.hidden = true;
+    grupoCampo.append(mensagem);
+  }
+
+  const descricoes = new Set(
+    (campo.getAttribute("aria-describedby") || "").split(/\s+/).filter(Boolean)
+  );
+  descricoes.add(mensagem.id);
+  campo.setAttribute("aria-describedby", Array.from(descricoes).join(" "));
+
+  return mensagem;
+}
+
+function cpfPossuiDigitosValidos(valor) {
+  const digitos = valor.replace(/\D/g, "");
+  if (!/^\d{11}$/.test(digitos) || /^(\d)\1{10}$/.test(digitos)) {
+    return false;
+  }
+
+  function calcularDigito(tamanho) {
+    let soma = 0;
+    for (let indice = 0; indice < tamanho; indice += 1) {
+      soma += Number(digitos[indice]) * (tamanho + 1 - indice);
+    }
+    const resto = (soma * 10) % 11;
+    return resto === 10 ? 0 : resto;
+  }
+
+  return (
+    calcularDigito(9) === Number(digitos[9]) &&
+    calcularDigito(10) === Number(digitos[10])
+  );
+}
+
+function obterMensagemErro(campo) {
+  campo.setCustomValidity("");
+  const valor = campo.value.trim();
+
+  if (campo.required && !valor) {
+    return mensagensObrigatorias[campo.id] || "Preencha este campo.";
+  }
+
+  if (campo.id === "nome" && valor.length < 3) {
+    return "Digite um nome com pelo menos três caracteres.";
+  }
+  if (campo.id === "endereco" && valor.length < 3) {
+    return "Digite um endereço com pelo menos três caracteres.";
+  }
+  if (campo.id === "cidade" && valor.length < 2) {
+    return "Digite uma cidade com pelo menos dois caracteres.";
+  }
+  if (campo.id === "email" && campo.validity.typeMismatch) {
+    return "Digite um e-mail válido, como nome@exemplo.org.";
+  }
+  if (campo.id === "nascimento" && valor > obterHojeISO()) {
+    return "A data de nascimento não pode estar no futuro.";
+  }
+  if (campo.id === "cpf") {
+    if (!padroesFormulario.cpf.test(valor)) {
+      return "Use o formato 000.000.000-00.";
+    }
+    if (!cpfPossuiDigitosValidos(valor)) {
+      return "CPF inválido. Confira os dígitos informados.";
+    }
+  }
+  if (
+    campo.id === "telefone" &&
+    !padroesFormulario.telefone.test(valor)
+  ) {
+    return "Use o formato (00) 00000-0000 ou (00) 0000-0000.";
+  }
+  if (campo.id === "cep" && !padroesFormulario.cep.test(valor)) {
+    return "Use o formato 00000-000.";
+  }
+  if (campo.id === "estado") {
+    if (!padroesFormulario.estado.test(valor)) {
+      return "Digite a UF com duas letras, como SP.";
+    }
+    if (!ufsValidas.has(valor)) {
+      return "Informe uma UF brasileira válida.";
+    }
+  }
+
+  if (campo.validity.tooShort) {
+    return `Use pelo menos ${campo.minLength} caracteres.`;
+  }
+  if (campo.validity.patternMismatch || campo.validity.badInput) {
+    return campo.title || "Revise o formato deste campo.";
+  }
+
+  return "";
+}
+
+function validarCampo(campo) {
+  const grupoCampo = campo.closest(".campo");
+  const mensagem = obterOuCriarMensagem(campo);
+  const erro = obterMensagemErro(campo);
+  const valido = erro === "";
+
+  campo.setCustomValidity(erro);
+  campo.setAttribute("aria-invalid", String(!valido));
+
+  if (grupoCampo) {
+    grupoCampo.classList.toggle("campo-valido", valido);
+    grupoCampo.classList.toggle("campo-invalido", !valido);
+  }
+
+  if (mensagem) {
+    mensagem.hidden = false;
+    mensagem.textContent = valido ? "✓ Preenchimento válido." : erro;
+  }
+
+  return valido;
+}
+
+function validarFormulario(formulario) {
+  const campos = Array.from(formulario.querySelectorAll("input:not(:disabled)"));
+  let primeiroInvalido = null;
+  let quantidadeInvalidos = 0;
+
+  campos.forEach((campo) => {
+    campo.dataset.interagiu = "true";
+    if (!validarCampo(campo)) {
+      primeiroInvalido ||= campo;
+      quantidadeInvalidos += 1;
+    }
+  });
+
+  return {
+    valido: quantidadeInvalidos === 0,
+    primeiroInvalido,
+    quantidadeInvalidos,
+  };
+}
+
+function exibirResumoErro(quantidadeInvalidos) {
+  const retornoFormulario = obterRetornoFormulario();
+  if (!retornoFormulario) {
+    return;
+  }
+
+  const mensagem = retornoFormulario.querySelector("p");
+  if (mensagem && Number.isInteger(quantidadeInvalidos)) {
+    mensagem.textContent =
+      quantidadeInvalidos === 1
+        ? "Revise o campo destacado antes de enviar o cadastro."
+        : `Revise os ${quantidadeInvalidos} campos destacados antes de enviar o cadastro.`;
+  }
+  retornoFormulario.hidden = false;
+}
+
+function ocultarResumoErro() {
+  const retornoFormulario = obterRetornoFormulario();
+  if (retornoFormulario) {
+    retornoFormulario.hidden = true;
+  }
+}
+
+function ocultarToast() {
+  const toastCadastro = obterToastCadastro();
+  window.clearTimeout(temporizadorToast);
+
+  if (!toastCadastro) {
+    return;
+  }
+
+  toastCadastro.classList.remove("esta-visivel");
+  toastCadastro.setAttribute("aria-hidden", "true");
+}
+
+function exibirToast() {
+  const toastCadastro = obterToastCadastro();
+  if (!toastCadastro) {
+    return;
+  }
+
+  window.clearTimeout(temporizadorToast);
+  toastCadastro.classList.add("esta-visivel");
+  toastCadastro.setAttribute("aria-hidden", "false");
+  temporizadorToast = window.setTimeout(ocultarToast, 7000);
+}
+
+function prepararFormularios() {
+  document.querySelectorAll(".formulario").forEach((formulario) => {
+    formulario.noValidate = true;
+
+    formulario.querySelectorAll("input").forEach((campo) => {
+      obterOuCriarMensagem(campo);
+      if (campo.id === "nascimento") {
+        campo.max = obterHojeISO();
+      }
+    });
+  });
+}
+
+document.addEventListener(
+  "invalid",
+  (evento) => {
+    const campo = evento.target;
+    if (!campoDoFormulario(campo)) {
+      return;
+    }
+
+    evento.preventDefault();
+    campo.dataset.interagiu = "true";
+    validarCampo(campo);
+    exibirResumoErro();
+    ocultarToast();
+  },
+  true
+);
+
+document.addEventListener("input", (evento) => {
+  const campo = evento.target;
+  if (!campoDoFormulario(campo)) {
+    return;
+  }
+
+  if (campo.id === "estado") {
+    campo.value = campo.value.toUpperCase();
+  }
+
+  const formulario = campo.closest(".formulario");
+  if (
+    campo.dataset.interagiu === "true" ||
+    formulario.dataset.tentativaEnvio === "true"
+  ) {
+    validarCampo(campo);
+  } else {
+    campo.setCustomValidity("");
+  }
+
+  if (formulario.dataset.tentativaEnvio === "true") {
+    const quantidadeInvalidos = formulario.querySelectorAll(
+      ".campo-invalido"
+    ).length;
+    if (quantidadeInvalidos > 0) {
+      exibirResumoErro(quantidadeInvalidos);
+    } else {
+      ocultarResumoErro();
+    }
+  }
+
+  ocultarToast();
+});
+
+document.addEventListener("focusout", (evento) => {
+  const campo = evento.target;
+  if (!campoDoFormulario(campo)) {
+    return;
+  }
+
+  campo.dataset.interagiu = "true";
+  validarCampo(campo);
+});
+
+document.addEventListener("submit", (evento) => {
+  const formulario = evento.target;
+  if (
+    !(formulario instanceof HTMLFormElement) ||
+    !formulario.matches(".formulario")
+  ) {
+    return;
+  }
+
+  evento.preventDefault();
+  formulario.dataset.tentativaEnvio = "true";
+  const resultado = validarFormulario(formulario);
+
+  if (!resultado.valido) {
+    exibirResumoErro(resultado.quantidadeInvalidos);
+    ocultarToast();
+    window.requestAnimationFrame(() => resultado.primeiroInvalido?.focus());
+    return;
+  }
+
+  formulario.dataset.tentativaEnvio = "false";
+  ocultarResumoErro();
+  exibirToast();
+});
+
+document.addEventListener("click", (evento) => {
+  const alvo = evento.target;
+  if (alvo instanceof Element && alvo.closest(".toast-fechar")) {
+    ocultarToast();
+  }
+});
+
+document.addEventListener("novolar:rota-renderizada", () => {
+  ocultarToast();
+  prepararFormularios();
+});
+
+prepararFormularios();
+
+window.NovoLarFormulario = Object.freeze({ validarCampo, validarFormulario });
+})();
+
+===== FICHEIRO: js/componentes.js =====
+
+(() => {
+  const dadosAcoes = [
+    {
+      id: "voluntariado",
+      categoria: "Voluntariado",
+      badges: [
+        { texto: "Voluntariado", classe: "" },
+        { texto: "Inscrições abertas", classe: "badge-sucesso" },
+      ],
+      titulo: "Doe seu tempo",
+      descricao:
+        "Os voluntários podem ajudar em campanhas, eventos de adoção, divulgação e cuidados com os animais.",
+      itens: [
+        "Apoio em eventos de adoção;",
+        "Organização de doações;",
+        "Divulgação das campanhas.",
+      ],
+      acao: {
+        texto: "Fazer cadastro",
+        href: "cadastro.html",
+        rota: "/cadastro",
+        classes: [],
+      },
+    },
+    {
+      id: "doacoes",
+      categoria: "Doações",
+      badges: [
+        { texto: "Doações", classe: "" },
+        { texto: "Campanha contínua", classe: "badge-atencao" },
+      ],
+      titulo: "Contribua com materiais",
+      descricao:
+        "As doações ajudam a manter o atendimento e podem ser realizadas de acordo com a necessidade do projeto.",
+      itens: [
+        "Ração para cães e gatos;",
+        "Medicamentos veterinários;",
+        "Produtos de limpeza e higiene.",
+      ],
+      acao: {
+        texto: "Entrar em contato",
+        href:
+          "mailto:contato@exemplo.org?subject=Quero%20fazer%20uma%20doação",
+        classes: ["botao-secundario"],
+      },
+    },
+  ];
+
+  function obterCampo(fragmento, nome) {
+    const campo = fragmento.querySelector(`[data-campo="${nome}"]`);
+
+    if (!(campo instanceof HTMLElement)) {
+      throw new Error(`O campo ${nome} não foi encontrado no modelo do cartão.`);
+    }
+
+    return campo;
+  }
+
+  function criarCartao(dados, modelo) {
+    const fragmento = modelo.content.cloneNode(true);
+    const cartao = fragmento.querySelector(".cartao");
+
+    if (!(cartao instanceof HTMLElement)) {
+      throw new Error("A estrutura do cartão não foi encontrada no template.");
+    }
+
+    const titulo = obterCampo(fragmento, "titulo");
+    const tituloId = `${dados.id}-titulo`;
+
+    cartao.id = dados.id;
+    cartao.setAttribute("aria-labelledby", tituloId);
+    titulo.id = tituloId;
+
+    obterCampo(fragmento, "categoria").textContent = dados.categoria;
+    titulo.textContent = dados.titulo;
+    obterCampo(fragmento, "descricao").textContent = dados.descricao;
+
+    const grupoBadges = obterCampo(fragmento, "badges");
+    grupoBadges.replaceChildren();
+    dados.badges.forEach((dadosBadge) => {
+      const badge = document.createElement("span");
+      badge.classList.add("badge");
+
+      if (dadosBadge.classe) {
+        badge.classList.add(dadosBadge.classe);
+      }
+
+      badge.textContent = dadosBadge.texto;
+      grupoBadges.append(badge);
+    });
+
+    const lista = obterCampo(fragmento, "itens");
+    lista.replaceChildren();
+    dados.itens.forEach((item) => {
+      const elementoLista = document.createElement("li");
+      elementoLista.textContent = item;
+      lista.append(elementoLista);
+    });
+
+    const link = obterCampo(fragmento, "acao");
+    link.textContent = dados.acao.texto;
+    link.setAttribute("href", dados.acao.href);
+    dados.acao.classes.forEach((classe) => link.classList.add(classe));
+
+    if (dados.acao.rota) {
+      link.dataset.rota = dados.acao.rota;
+    }
+
+    return fragmento;
+  }
+
+  function renderizarCartoesAjuda(raiz = document) {
+    const lista = raiz.querySelector("[data-lista-ajuda]");
+    const modelo = document.querySelector("#modelo-cartao-ajuda");
+
+    if (
+      !(lista instanceof HTMLElement) ||
+      !(modelo instanceof HTMLTemplateElement)
+    ) {
+      return false;
+    }
+
+    const lote = document.createDocumentFragment();
+
+    dadosAcoes.forEach((dados) => {
+      lote.append(criarCartao(dados, modelo));
+    });
+
+    lista.replaceChildren(lote);
+    return true;
+  }
+
+  window.NovoLarComponentes = Object.freeze({ renderizarCartoesAjuda });
+})();
+
+===== FICHEIRO: js/persistencia.js =====
+
+(() => {
+  const chaveArmazenamento = "projeto-novo-lar:navegacao:v1";
+  const versaoAtual = 1;
+  const limiteHistorico = 8;
+  const rotasPermitidas = new Set([
+    "/inicio",
+    "/projetos",
+    "/projetos/resgate",
+    "/projetos/voluntariado",
+    "/projetos/doacoes",
+    "/projetos/como-ajudar",
+    "/cadastro",
+  ]);
+
+  function criarEstadoInicial() {
+    return {
+      versao: versaoAtual,
+      ultimaRota: "/inicio",
+      historico: [],
+    };
+  }
+
+  function entradaHistoricoValida(entrada) {
+    return (
+      entrada !== null &&
+      typeof entrada === "object" &&
+      rotasPermitidas.has(entrada.rota) &&
+      typeof entrada.acessadaEm === "string" &&
+      Number.isFinite(Date.parse(entrada.acessadaEm))
+    );
+  }
+
+  function limparArmazenamentoCorrompido() {
+    try {
+      window.localStorage.removeItem(chaveArmazenamento);
+    } catch {
+      // A aplicação continua funcionando mesmo se o armazenamento estiver bloqueado.
+    }
+  }
+
+  function obterEstado() {
+    try {
+      const textoSalvo = window.localStorage.getItem(chaveArmazenamento);
+      if (!textoSalvo) {
+        return criarEstadoInicial();
+      }
+
+      const dados = JSON.parse(textoSalvo);
+      if (
+        dados === null ||
+        typeof dados !== "object" ||
+        dados.versao !== versaoAtual ||
+        !rotasPermitidas.has(dados.ultimaRota) ||
+        !Array.isArray(dados.historico)
+      ) {
+        limparArmazenamentoCorrompido();
+        return criarEstadoInicial();
+      }
+
+      return {
+        versao: versaoAtual,
+        ultimaRota: dados.ultimaRota,
+        historico: dados.historico
+          .filter(entradaHistoricoValida)
+          .slice(-limiteHistorico),
+      };
+    } catch {
+      limparArmazenamentoCorrompido();
+      return criarEstadoInicial();
+    }
+  }
+
+  function salvarEstado(estado) {
+    try {
+      const textoParaSalvar = JSON.stringify(estado);
+      window.localStorage.setItem(chaveArmazenamento, textoParaSalvar);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  function registrarRota(rota) {
+    if (!rotasPermitidas.has(rota)) {
+      return false;
+    }
+
+    const estadoAtual = obterEstado();
+    const novaEntrada = {
+      rota,
+      acessadaEm: new Date().toISOString(),
+    };
+    const historico = [...estadoAtual.historico];
+    const ultimaEntrada = historico[historico.length - 1];
+
+    if (ultimaEntrada?.rota === rota) {
+      historico[historico.length - 1] = novaEntrada;
+    } else {
+      historico.push(novaEntrada);
+    }
+
+    return salvarEstado({
+      versao: versaoAtual,
+      ultimaRota: rota,
+      historico: historico.slice(-limiteHistorico),
+    });
+  }
+
+  function obterUltimaRota() {
+    return obterEstado().ultimaRota;
+  }
+
+  window.NovoLarPersistencia = Object.freeze({
+    obterEstado,
+    obterUltimaRota,
+    registrarRota,
+  });
+})();
+
+===== FICHEIRO: js/integracoes.js =====
+
+(() => {
+  const instanciasPorCampo = new WeakMap();
+
+  const configuracoesMascaras = Object.freeze([
+    Object.freeze({ seletor: "#cpf", opcoes: { mask: "000.000.000-00" } }),
+    Object.freeze({
+      seletor: "#telefone",
+      opcoes: {
+        mask: [
+          { mask: "(00) 0000-0000" },
+          { mask: "(00) 00000-0000" },
+        ],
+        dispatch(caractereAdicionado, mascaraDinamica) {
+          const digitos = `${mascaraDinamica.value}${caractereAdicionado}`.replace(
+            /\D/g,
+            ""
+          );
+          return mascaraDinamica.compiledMasks[digitos.length > 10 ? 1 : 0];
+        },
+      },
+    }),
+    Object.freeze({ seletor: "#cep", opcoes: { mask: "00000-000" } }),
+  ]);
+
+  function iniciarMascaras(raiz = document) {
+    if (typeof window.IMask !== "function") {
+      return 0;
+    }
+
+    let quantidadeIniciada = 0;
+
+    configuracoesMascaras.forEach(({ seletor, opcoes }) => {
+      const campo = raiz.querySelector(seletor);
+      if (
+        !(campo instanceof HTMLInputElement) ||
+        instanciasPorCampo.has(campo)
+      ) {
+        return;
+      }
+
+      const instancia = window.IMask(campo, opcoes);
+      instanciasPorCampo.set(campo, instancia);
+      quantidadeIniciada += 1;
+    });
+
+    return quantidadeIniciada;
+  }
+
+  document.querySelector("#biblioteca-imask")?.addEventListener("load", () => {
+    iniciarMascaras();
+  });
+
+  document.addEventListener("novolar:rota-renderizada", () => {
+    iniciarMascaras();
+  });
+
+  iniciarMascaras();
+
+  window.NovoLarIntegracoes = Object.freeze({ iniciarMascaras });
+})();
+
+===== FICHEIRO: js/spa.js =====
+
+(() => {
+const conteudo = document.querySelector("#conteudo");
+const avisoRota = document.querySelector("#aviso-rota");
+const descricaoPagina = document.querySelector('meta[name="description"]');
+
+if (!conteudo) {
+  throw new Error("O contêiner principal da aplicação não foi encontrado.");
+}
+
+const modeloInicio = document.createDocumentFragment();
+Array.from(conteudo.childNodes).forEach((no) => {
+  modeloInicio.append(no.cloneNode(true));
+});
+
+const rotas = {
+  inicio: {
+    titulo: "Início | Projeto Novo Lar",
+    descricao:
+      "Conheça o Projeto Novo Lar e suas ações de proteção e adoção responsável de animais.",
+    classe: "",
+    criarConteudo: () => modeloInicio.cloneNode(true),
+  },
+  projetos: {
+    titulo: "Projetos | Projeto Novo Lar",
+    descricao:
+      "Veja os projetos, as formas de voluntariado e as campanhas de doação do Projeto Novo Lar.",
+    classe: "conteudo-interno",
+    template: "pagina-projetos",
+  },
+  cadastro: {
+    titulo: "Cadastro | Projeto Novo Lar",
+    descricao: "Formulário de cadastro de voluntários do Projeto Novo Lar.",
+    classe: "conteudo-interno",
+    template: "pagina-cadastro",
+  },
+};
+
+const alvosProjetos = {
+  resgate: "acoes-titulo",
+  voluntariado: "voluntariado",
+  doacoes: "doacoes",
+  "como-ajudar": "como-ajudar",
+};
+
+function obterRota() {
+  const hash = window.location.hash.startsWith("#/")
+    ? window.location.hash.slice(2)
+    : "";
+
+  let partes;
+  try {
+    partes = decodeURIComponent(hash).split("/").filter(Boolean);
+  } catch {
+    partes = [];
+  }
+
+  const nome = partes[0] || "inicio";
+  const secao = nome === "projetos" ? alvosProjetos[partes[1]] : undefined;
+  const caminho = partes.length > 0 ? `/${partes.join("/")}` : "/inicio";
+
+  return {
+    nome,
+    secao,
+    caminho,
+    desconhecida:
+      !Object.prototype.hasOwnProperty.call(rotas, nome) ||
+      (nome === "projetos" && partes.length > 1 && !secao),
+  };
+}
+
+function criarFragmento(configuracao) {
+  if (configuracao.criarConteudo) {
+    return configuracao.criarConteudo();
+  }
+
+  const template = document.querySelector(`#${configuracao.template}`);
+  if (!(template instanceof HTMLTemplateElement)) {
+    throw new Error(`O modelo ${configuracao.template} não foi encontrado.`);
+  }
+
+  return template.content.cloneNode(true);
+}
+
+function atualizarNavegacao(nomeRota) {
+  document
+    .querySelectorAll(".navegacao a[data-rota]")
+    .forEach((link) => link.removeAttribute("aria-current"));
+
+  document
+    .querySelector(`.navegacao a[data-rota="/${nomeRota}"]`)
+    ?.setAttribute("aria-current", "page");
+}
+
+function focarConteudo(secao) {
+  const alvo = secao
+    ? conteudo.querySelector(`#${secao}`)
+    : conteudo.querySelector("h1");
+
+  if (!(alvo instanceof HTMLElement)) {
+    conteudo.focus();
+    return;
+  }
+
+  alvo.setAttribute("tabindex", "-1");
+  alvo.focus({ preventScroll: true });
+  alvo.scrollIntoView({
+    behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ? "auto"
+      : "smooth",
+    block: "start",
+  });
+  alvo.addEventListener("blur", () => alvo.removeAttribute("tabindex"), {
+    once: true,
+  });
+}
+
+function renderizarRota({ moverFoco = true } = {}) {
+  const rotaSolicitada = obterRota();
+  const nomeRota = rotaSolicitada.desconhecida
+    ? "inicio"
+    : rotaSolicitada.nome;
+  const configuracao = rotas[nomeRota];
+
+  conteudo.className = configuracao.classe;
+  conteudo.replaceChildren(criarFragmento(configuracao));
+
+  if (nomeRota === "projetos") {
+    window.NovoLarComponentes?.renderizarCartoesAjuda(conteudo);
+  }
+
+  document.title = configuracao.titulo;
+
+  if (descricaoPagina) {
+    descricaoPagina.setAttribute("content", configuracao.descricao);
+  }
+
+  atualizarNavegacao(nomeRota);
+
+  window.NovoLarPersistencia?.registrarRota(
+    rotaSolicitada.desconhecida ? "/inicio" : rotaSolicitada.caminho
+  );
+
+  if (avisoRota) {
+    avisoRota.textContent = rotaSolicitada.desconhecida
+      ? "Endereço não encontrado. Página inicial exibida."
+      : `${conteudo.querySelector("h1")?.textContent || "Página"} carregada.`;
+  }
+
+  document.dispatchEvent(
+    new CustomEvent("novolar:rota-renderizada", {
+      detail: { rota: nomeRota, secao: rotaSolicitada.secao },
+    })
+  );
+
+  if (moverFoco || rotaSolicitada.secao) {
+    window.requestAnimationFrame(() => focarConteudo(rotaSolicitada.secao));
+  } else {
+    window.scrollTo(0, 0);
+  }
+}
+
+document.addEventListener("click", (evento) => {
+  const alvo = evento.target;
+  if (!(alvo instanceof Element)) {
+    return;
+  }
+
+  const atalhoConteudo = alvo.closest(".pular-conteudo");
+  if (atalhoConteudo) {
+    evento.preventDefault();
+    conteudo.focus();
+    return;
+  }
+
+  const link = alvo.closest("a[data-rota]");
+  if (
+    !link ||
+    evento.defaultPrevented ||
+    evento.button !== 0 ||
+    evento.ctrlKey ||
+    evento.metaKey ||
+    evento.shiftKey ||
+    evento.altKey ||
+    link.hasAttribute("download") ||
+    link.target === "_blank"
+  ) {
+    return;
+  }
+
+  const caminho = link.dataset.rota;
+  if (!caminho || !caminho.startsWith("/")) {
+    return;
+  }
+
+  evento.preventDefault();
+  const novoHash = `#${caminho}`;
+
+  if (window.location.hash === novoHash) {
+    renderizarRota();
+  } else {
+    window.location.hash = caminho;
+  }
+});
+
+window.addEventListener("hashchange", () => renderizarRota());
+
+if (!window.location.hash.startsWith("#/")) {
+  const ultimaRota =
+    window.NovoLarPersistencia?.obterUltimaRota() || "/inicio";
+  window.history.replaceState(null, "", `#${ultimaRota}`);
+}
+
+renderizarRota({ moverFoco: false });
+
+window.NovoLarSPA = Object.freeze({ obterRota, renderizarRota });
+})();
+
+===== FICHEIRO: scripts/build.js =====
+
+const { build } = require("esbuild");
+const { minify } = require("html-minifier-terser");
+const { cp, mkdir, readFile, rm, writeFile } = require("node:fs/promises");
+const path = require("node:path");
+
+const raiz = path.resolve(__dirname, "..");
+const distribuicao = path.join(raiz, "dist");
+
+const paginas = [
+  {
+    nome: "index",
+    scriptsFonte: [
+      "js/menu.js",
+      "js/formulario.js",
+      "js/componentes.js",
+      "js/persistencia.js",
+      "js/integracoes.js",
+      "js/spa.js",
+    ],
+  },
+  {
+    nome: "cadastro",
+    scriptsFonte: ["js/menu.js", "js/formulario.js", "js/integracoes.js"],
+  },
+  {
+    nome: "projetos",
+    scriptsFonte: ["js/menu.js"],
+  },
+];
+
+const ficheirosFonteUnicos = [
+  ...paginas.map((pagina) => `html/${pagina.nome}.html`),
+  "css/estilos.css",
+  ...new Set(paginas.flatMap((pagina) => pagina.scriptsFonte)),
+];
+const ficheirosDistribuicaoUnicos = [
+  ...paginas.map((pagina) => `dist/html/${pagina.nome}.html`),
+  "dist/css/estilos.min.css",
+  ...paginas.map((pagina) => `dist/js/${pagina.nome}.min.js`),
+];
+
+function caminhoNaRaiz(caminhoRelativo) {
+  return path.join(raiz, caminhoRelativo);
+}
+
+async function tamanho(caminhoRelativo) {
+  const conteudo = await readFile(caminhoNaRaiz(caminhoRelativo), "utf8");
+  const normalizado = conteudo.replace(/\r\n?/g, "\n");
+  return Buffer.byteLength(normalizado, "utf8");
+}
+
+function arredondar(valor) {
+  return Number(valor.toFixed(2));
+}
+
+function padraoScriptLocal() {
+  return /\s*<script\b(?=[^>]*\bsrc=["']\.\.\/js\/([^"']+\.js)["'])[^>]*>\s*<\/script>/gi;
+}
+
+function listarScriptsLocais(html) {
+  return [...html.matchAll(padraoScriptLocal())].map(
+    (resultado) => `js/${resultado[1]}`
+  );
+}
+
+function removerScriptsLocais(html) {
+  return html.replace(padraoScriptLocal(), "");
+}
+
+async function gerarBundle(pagina) {
+  const imports = pagina.scriptsFonte
+    .map((ficheiro) => `import "../${ficheiro}";`)
+    .join("\n");
+
+  await build({
+    absWorkingDir: raiz,
+    stdin: {
+      contents: imports,
+      resolveDir: path.join(raiz, "scripts"),
+      sourcefile: `${pagina.nome}.entrada.js`,
+    },
+    bundle: true,
+    charset: "utf8",
+    format: "iife",
+    legalComments: "none",
+    minify: true,
+    outfile: path.join(distribuicao, "js", `${pagina.nome}.min.js`),
+    sourcemap: false,
+    target: ["es2020"],
+  });
+}
+
+async function gerarHtml(pagina) {
+  const origem = await readFile(caminhoNaRaiz(`html/${pagina.nome}.html`), "utf8");
+  const scriptsEncontrados = listarScriptsLocais(origem);
+  if (JSON.stringify(scriptsEncontrados) !== JSON.stringify(pagina.scriptsFonte)) {
+    throw new Error(
+      `Os scripts declarados em ${pagina.nome}.html não correspondem à configuração da build.`
+    );
+  }
+  const comRecursosDeProducao = removerScriptsLocais(origem)
+    .replace("../css/estilos.css", "../css/estilos.min.css")
+    .replace(
+      "</head>",
+      `<script src="../js/${pagina.nome}.min.js" defer></script></head>`
+    );
+  const minificado = await minify(comRecursosDeProducao, {
+    collapseWhitespace: true,
+    decodeEntities: true,
+    removeComments: true,
+    removeRedundantAttributes: true,
+    useShortDoctype: true,
+  });
+
+  await writeFile(
+    path.join(distribuicao, "html", `${pagina.nome}.html`),
+    minificado,
+    "utf8"
+  );
+}
+
+async function gerarEntradaPublicacao() {
+  const entrada = [
+    "<!doctype html>",
+    '<html lang="pt-BR">',
+    "<head>",
+    '<meta charset="utf-8">',
+    '<meta name="viewport" content="width=device-width,initial-scale=1">',
+    '<meta http-equiv="refresh" content="0; url=html/index.html">',
+    "<title>Projeto Novo Lar</title>",
+    '<script>window.location.replace("html/index.html"+window.location.search+window.location.hash);</script>',
+    "</head>",
+    '<body><p>A abrir o Projeto Novo Lar. <a href="html/index.html">Continuar</a></p></body>',
+    "</html>",
+  ].join("");
+
+  await Promise.all([
+    writeFile(path.join(distribuicao, "index.html"), entrada, "utf8"),
+    writeFile(path.join(distribuicao, ".nojekyll"), "", "utf8"),
+  ]);
+}
+
+async function resumirPagina(pagina) {
+  const origem = [`html/${pagina.nome}.html`, "css/estilos.css", ...pagina.scriptsFonte];
+  const distribuicaoPagina = [
+    `dist/html/${pagina.nome}.html`,
+    "dist/css/estilos.min.css",
+    `dist/js/${pagina.nome}.min.js`,
+  ];
+  const bytesOrigem = (await Promise.all(origem.map(tamanho))).reduce(
+    (total, valor) => total + valor,
+    0
+  );
+  const bytesDistribuicao = (
+    await Promise.all(distribuicaoPagina.map(tamanho))
+  ).reduce((total, valor) => total + valor, 0);
+  const reducaoBytes = bytesOrigem - bytesDistribuicao;
+
+  return {
+    pagina: pagina.nome,
+    bytesOrigem,
+    bytesDistribuicao,
+    reducaoBytes,
+    reducaoPercentual: arredondar((reducaoBytes / bytesOrigem) * 100),
+  };
+}
+
+async function resumirConjunto(origem, destino) {
+  const bytesOrigem = (await Promise.all(origem.map(tamanho))).reduce(
+    (total, valor) => total + valor,
+    0
+  );
+  const bytesDistribuicao = (await Promise.all(destino.map(tamanho))).reduce(
+    (total, valor) => total + valor,
+    0
+  );
+  const reducaoBytes = bytesOrigem - bytesDistribuicao;
+
+  return {
+    bytesOrigem,
+    bytesDistribuicao,
+    reducaoBytes,
+    reducaoPercentual: arredondar((reducaoBytes / bytesOrigem) * 100),
+  };
+}
+
+async function executar() {
+  await rm(distribuicao, { recursive: true, force: true });
+  await Promise.all([
+    mkdir(path.join(distribuicao, "css"), { recursive: true }),
+    mkdir(path.join(distribuicao, "html"), { recursive: true }),
+    mkdir(path.join(distribuicao, "js"), { recursive: true }),
+  ]);
+
+  await build({
+    absWorkingDir: raiz,
+    entryPoints: ["./css/estilos.css"],
+    charset: "utf8",
+    legalComments: "none",
+    minify: true,
+    outfile: path.join(distribuicao, "css", "estilos.min.css"),
+    sourcemap: false,
+    target: ["es2020"],
+  });
+
+  await Promise.all(paginas.map(gerarBundle));
+  await Promise.all(paginas.map(gerarHtml));
+  await cp(caminhoNaRaiz("imagens"), path.join(distribuicao, "imagens"), {
+    recursive: true,
+  });
+  await gerarEntradaPublicacao();
+
+  const paginasResumidas = await Promise.all(paginas.map(resumirPagina));
+  const ficheirosUnicos = await resumirConjunto(
+    ficheirosFonteUnicos,
+    ficheirosDistribuicaoUnicos
+  );
+  const totalOrigem = paginasResumidas.reduce(
+    (total, pagina) => total + pagina.bytesOrigem,
+    0
+  );
+  const totalDistribuicao = paginasResumidas.reduce(
+    (total, pagina) => total + pagina.bytesDistribuicao,
+    0
+  );
+  const relatorio = {
+    ferramenta: "esbuild e html-minifier-terser",
+    criterioTamanho:
+      "ficheiros de texto normalizados com finais de linha LF; imagens excluídas",
+    css: "css/estilos.css para dist/css/estilos.min.css",
+    ficheirosUnicos,
+    paginas: paginasResumidas,
+    carregamentosAgregados: {
+      bytesOrigem: totalOrigem,
+      bytesDistribuicao: totalDistribuicao,
+      reducaoBytes: totalOrigem - totalDistribuicao,
+      reducaoPercentual: arredondar(
+        ((totalOrigem - totalDistribuicao) / totalOrigem) * 100
+      ),
+    },
+  };
+  const linhas = [
+    "RELATÓRIO DE BUILD DE PRODUÇÃO",
+    "",
+    "Ferramentas: esbuild e html-minifier-terser",
+    "Critério: ficheiros de texto normalizados com finais de linha LF; imagens excluídas",
+    "",
+    `Ficheiros únicos: ${ficheirosUnicos.bytesOrigem} bytes para ${ficheirosUnicos.bytesDistribuicao} bytes, redução de ${ficheirosUnicos.reducaoPercentual}%`,
+    "",
+    ...paginasResumidas.map(
+      (pagina) =>
+        `${pagina.pagina}: ${pagina.bytesOrigem} bytes para ${pagina.bytesDistribuicao} bytes, redução de ${pagina.reducaoPercentual}%`
+    ),
+    "",
+    `Carregamentos agregados: ${relatorio.carregamentosAgregados.bytesOrigem} bytes para ${relatorio.carregamentosAgregados.bytesDistribuicao} bytes, redução de ${relatorio.carregamentosAgregados.reducaoPercentual}%`,
+  ];
+
+  await Promise.all([
+    writeFile(
+      path.join(distribuicao, "relatorio-build.json"),
+      `${JSON.stringify(relatorio, null, 2)}\n`,
+      "utf8"
+    ),
+    writeFile(
+      path.join(distribuicao, "relatorio-build.txt"),
+      `${linhas.join("\n")}\n`,
+      "utf8"
+    ),
+  ]);
+
+  console.log(linhas.join("\n"));
+}
+
+executar().catch((erro) => {
+  console.error(erro);
+  process.exitCode = 1;
+});
+
+===== FICHEIRO: scripts/verificar-build.js =====
+
+const { access, readFile } = require("node:fs/promises");
+const path = require("node:path");
+
+const raiz = path.resolve(__dirname, "..");
+const paginas = ["index", "cadastro", "projetos"];
+const scriptsPorPagina = {
+  index: [
+    "js/menu.js",
+    "js/formulario.js",
+    "js/componentes.js",
+    "js/persistencia.js",
+    "js/integracoes.js",
+    "js/spa.js",
+  ],
+  cadastro: ["js/menu.js", "js/formulario.js", "js/integracoes.js"],
+  projetos: ["js/menu.js"],
+};
+const ficheirosFonteUnicos = [
+  "html/index.html",
+  "html/cadastro.html",
+  "html/projetos.html",
+  "css/estilos.css",
+  "js/menu.js",
+  "js/formulario.js",
+  "js/componentes.js",
+  "js/persistencia.js",
+  "js/integracoes.js",
+  "js/spa.js",
+];
+const ficheirosDistribuicaoUnicos = [
+  "dist/html/index.html",
+  "dist/html/cadastro.html",
+  "dist/html/projetos.html",
+  "dist/css/estilos.min.css",
+  "dist/js/index.min.js",
+  "dist/js/cadastro.min.js",
+  "dist/js/projetos.min.js",
+];
+
+function caminhoNaRaiz(caminhoRelativo) {
+  return path.join(raiz, caminhoRelativo);
+}
+
+async function existe(caminhoRelativo) {
+  await access(caminhoNaRaiz(caminhoRelativo));
+}
+
+async function verificarPagina(nome) {
+  const caminhoHtml = `dist/html/${nome}.html`;
+  const html = await readFile(caminhoNaRaiz(caminhoHtml), "utf8");
+  const cssEsperado = "../css/estilos.min.css";
+  const scriptEsperado = `../js/${nome}.min.js`;
+
+  if (!html.includes(cssEsperado)) {
+    throw new Error(`${caminhoHtml} não referencia o CSS minificado.`);
+  }
+
+  if (!html.includes(scriptEsperado)) {
+    throw new Error(`${caminhoHtml} não referencia o bundle esperado.`);
+  }
+
+  if (/\.\.\/js\/(?:menu|formulario|componentes|persistencia|integracoes|spa)\.js/.test(html)) {
+    throw new Error(`${caminhoHtml} ainda referencia scripts fonte.`);
+  }
+
+  if (html.includes("\n")) {
+    throw new Error(`${caminhoHtml} não foi minificado em uma linha.`);
+  }
+
+  await existe(`dist/js/${nome}.min.js`);
+  const bundle = await readFile(
+    caminhoNaRaiz(`dist/js/${nome}.min.js`),
+    "utf8"
+  );
+  new Function(bundle);
+}
+
+async function verificarEntradaPublicacao() {
+  const entrada = await readFile(caminhoNaRaiz("dist/index.html"), "utf8");
+
+  if (!entrada.includes('url=html/index.html')) {
+    throw new Error("A entrada de publicação não contém o redirecionamento HTML.");
+  }
+
+  if (!entrada.includes('window.location.search+window.location.hash')) {
+    throw new Error("A entrada de publicação não preserva a pesquisa e a rota.");
+  }
+}
+
+async function totalBytes(ficheiros) {
+  const tamanhos = await Promise.all(
+    ficheiros.map(async (ficheiro) => {
+      const conteudo = await readFile(caminhoNaRaiz(ficheiro), "utf8");
+      return Buffer.byteLength(conteudo.replace(/\r\n?/g, "\n"), "utf8");
+    })
+  );
+  return tamanhos.reduce((total, valor) => total + valor, 0);
+}
+
+function arredondar(valor) {
+  return Number(valor.toFixed(2));
+}
+
+async function resumirFicheiros(origem, destino) {
+  const bytesOrigem = await totalBytes(origem);
+  const bytesDistribuicao = await totalBytes(destino);
+  const reducaoBytes = bytesOrigem - bytesDistribuicao;
+
+  return {
+    bytesOrigem,
+    bytesDistribuicao,
+    reducaoBytes,
+    reducaoPercentual: arredondar((reducaoBytes / bytesOrigem) * 100),
+  };
+}
+
+async function executar() {
+  await Promise.all([
+    existe("dist/index.html"),
+    existe("dist/.nojekyll"),
+    existe("dist/css/estilos.min.css"),
+    existe("dist/imagens/animal-resgatado.jpg"),
+    existe("dist/imagens/animal-resgatado.webp"),
+    existe("dist/relatorio-build.json"),
+    existe("dist/relatorio-build.txt"),
+    verificarEntradaPublicacao(),
+    ...paginas.map(verificarPagina),
+  ]);
+
+  const cssFonte = await totalBytes(["css/estilos.css"]);
+  const cssMinificado = await totalBytes(["dist/css/estilos.min.css"]);
+  if (cssMinificado >= cssFonte) {
+    throw new Error("O CSS de produção não ficou menor que o CSS fonte.");
+  }
+
+  const relatorio = JSON.parse(
+    await readFile(caminhoNaRaiz("dist/relatorio-build.json"), "utf8")
+  );
+  const resumoEsperado = await resumirFicheiros(
+    ficheirosFonteUnicos,
+    ficheirosDistribuicaoUnicos
+  );
+
+  if (
+    JSON.stringify(relatorio.ficheirosUnicos) !==
+    JSON.stringify(resumoEsperado)
+  ) {
+    throw new Error("O relatório não corresponde aos tamanhos atuais da build.");
+  }
+
+  const paginasEsperadas = await Promise.all(
+    paginas.map(async (pagina) => ({
+      pagina,
+      ...(await resumirFicheiros(
+        [
+          `html/${pagina}.html`,
+          "css/estilos.css",
+          ...scriptsPorPagina[pagina],
+        ],
+        [
+          `dist/html/${pagina}.html`,
+          "dist/css/estilos.min.css",
+          `dist/js/${pagina}.min.js`,
+        ]
+      )),
+    }))
+  );
+
+  if (JSON.stringify(relatorio.paginas) !== JSON.stringify(paginasEsperadas)) {
+    throw new Error("O relatório por página não corresponde à build atual.");
+  }
+
+  const bytesOrigemAgregados = paginasEsperadas.reduce(
+    (total, pagina) => total + pagina.bytesOrigem,
+    0
+  );
+  const bytesDistribuicaoAgregados = paginasEsperadas.reduce(
+    (total, pagina) => total + pagina.bytesDistribuicao,
+    0
+  );
+  const reducaoAgregada = bytesOrigemAgregados - bytesDistribuicaoAgregados;
+  const carregamentosAgregadosEsperados = {
+    bytesOrigem: bytesOrigemAgregados,
+    bytesDistribuicao: bytesDistribuicaoAgregados,
+    reducaoBytes: reducaoAgregada,
+    reducaoPercentual: arredondar(
+      (reducaoAgregada / bytesOrigemAgregados) * 100
+    ),
+  };
+
+  if (
+    JSON.stringify(relatorio.carregamentosAgregados) !==
+    JSON.stringify(carregamentosAgregadosEsperados)
+  ) {
+    throw new Error(
+      "O relatório agregado não corresponde aos carregamentos atuais."
+    );
+  }
+
+  console.log("Build verificada: referências, bundles, imagens e redução confirmadas.");
+}
+
+executar().catch((erro) => {
+  console.error(erro);
+  process.exitCode = 1;
+});
+
+===== FICHEIRO: scripts/gerar-codigo-final.js =====
+
+const { readFile, writeFile } = require("node:fs/promises");
+const path = require("node:path");
+
+const raiz = path.resolve(__dirname, "..");
+const destino = path.join(raiz, "CODIGO-FONTE-FINAL.txt");
+const limiteCaracteres = 100000;
+const ficheiros = [
+  ".github/workflows/deploy-pages.yml",
+  ".gitignore",
+  "package.json",
+  "html/index.html",
+  "html/projetos.html",
+  "html/cadastro.html",
+  "css/estilos.css",
+  "js/menu.js",
+  "js/formulario.js",
+  "js/componentes.js",
+  "js/persistencia.js",
+  "js/integracoes.js",
+  "js/spa.js",
+  "scripts/build.js",
+  "scripts/verificar-build.js",
+  "scripts/gerar-codigo-final.js",
+  "validacao-contraste/verificar-contraste.js",
+];
+
+async function executar() {
+  const blocos = await Promise.all(
+    ficheiros.map(async (ficheiro) => {
+      const conteudo = await readFile(path.join(raiz, ficheiro), "utf8");
+      return `===== FICHEIRO: ${ficheiro} =====\n\n${conteudo.trimEnd()}`;
+    })
+  );
+  const cabecalho = [
+    "PROJETO NOVO LAR - CÓDIGO FONTE FINAL VERSIONADO",
+    "Conteúdo consolidado para o campo de entrega da plataforma.",
+    "Cada bloco indica o caminho original do respetivo ficheiro.",
+  ].join("\n");
+  const conteudoFinal = `${cabecalho}\n\n${blocos.join("\n\n")}\n`;
+
+  if (conteudoFinal.length > limiteCaracteres) {
+    throw new Error(
+      `O código consolidado excedeu o limite: ${conteudoFinal.length} caracteres.`
+    );
+  }
+
+  await writeFile(destino, conteudoFinal, "utf8");
+  console.log(
+    `Código final criado com ${conteudoFinal.length} de ${limiteCaracteres} caracteres.`
+  );
+}
+
+executar().catch((erro) => {
+  console.error(erro);
+  process.exitCode = 1;
+});
+
+===== FICHEIRO: validacao-contraste/verificar-contraste.js =====
+
+const pares = [
+  ["Claro | Texto principal", "#17211c", "#f7faf8", 4.5],
+  ["Claro | Texto secundário", "#4d5c54", "#f7faf8", 4.5],
+  ["Claro | Títulos", "#12372a", "#f7faf8", 4.5],
+  ["Claro | Botões", "#ffffff", "#12372a", 4.5],
+  ["Claro | Atenção", "#9b4300", "#fff7e6", 4.5],
+  ["Claro | Sucesso", "#1b6e37", "#eff9f2", 4.5],
+  ["Claro | Erro", "#b42318", "#fff3f1", 4.5],
+  ["Claro | Bordas funcionais", "#72867b", "#ffffff", 3],
+  ["Claro | Indicador de foco", "#0b281e", "#ffb703", 3],
+  ["Escuro | Texto principal", "#f4f8f5", "#08110d", 4.5],
+  ["Escuro | Texto em superfície", "#f4f8f5", "#102019", 4.5],
+  ["Escuro | Texto secundário", "#c3d0c9", "#08110d", 4.5],
+  ["Escuro | Títulos", "#a7d8bc", "#08110d", 4.5],
+  ["Escuro | Botões", "#08110d", "#a7d8bc", 4.5],
+  ["Escuro | Hover de botão", "#08110d", "#7fc49d", 4.5],
+  ["Escuro | Destaques", "#ffb37a", "#08110d", 4.5],
+  ["Escuro | Bordas", "#6f897a", "#102019", 3],
+  ["Escuro | Sucesso", "#8ae6a5", "#12351f", 4.5],
+  ["Escuro | Erro", "#ffaaa3", "#3a1717", 4.5],
+  ["Alto contraste | Texto", "#ffffff", "#000000", 4.5],
+  ["Alto contraste | Títulos", "#00ffff", "#000000", 4.5],
+  ["Alto contraste | Botões", "#000000", "#00ffff", 4.5],
+  ["Alto contraste | Foco", "#000000", "#ffff00", 3],
+  ["Alto contraste | Sucesso", "#00ff66", "#000000", 4.5],
+  ["Alto contraste | Erro", "#ff8080", "#000000", 4.5],
+];
+
+function linearizar(canal) {
+  const valor = canal / 255;
+  return valor <= 0.04045
+    ? valor / 12.92
+    : Math.pow((valor + 0.055) / 1.055, 2.4);
+}
+
+function luminancia(cor) {
+  const hexadecimal = cor.replace("#", "");
+  const vermelho = parseInt(hexadecimal.slice(0, 2), 16);
+  const verde = parseInt(hexadecimal.slice(2, 4), 16);
+  const azul = parseInt(hexadecimal.slice(4, 6), 16);
+
+  return (
+    0.2126 * linearizar(vermelho) +
+    0.7152 * linearizar(verde) +
+    0.0722 * linearizar(azul)
+  );
+}
+
+function calcularRacio(primeiraCor, segundaCor) {
+  const primeiraLuminancia = luminancia(primeiraCor);
+  const segundaLuminancia = luminancia(segundaCor);
+  const maior = Math.max(primeiraLuminancia, segundaLuminancia);
+  const menor = Math.min(primeiraLuminancia, segundaLuminancia);
+  return (maior + 0.05) / (menor + 0.05);
+}
+
+let falhas = 0;
+
+console.log("VALIDAÇÃO DE CONTRASTE WCAG 2.1");
+console.log("");
+
+pares.forEach(([elemento, primeiraCor, segundaCor, minimo]) => {
+  const racio = calcularRacio(primeiraCor, segundaCor);
+  const aprovado = racio >= minimo;
+
+  if (!aprovado) {
+    falhas += 1;
+  }
+
+  console.log(
+    elemento +
+      " | " +
+      primeiraCor.toUpperCase() +
+      " sobre " +
+      segundaCor.toUpperCase() +
+      " | " +
+      racio.toFixed(2).replace(".", ",") +
+      ":1 | mínimo " +
+      String(minimo).replace(".", ",") +
+      ":1 | " +
+      (aprovado ? "APROVADO" : "REPROVADO")
+  );
+});
+
+console.log("");
+console.log("Resultado: " + (falhas === 0 ? "todos os pares foram aprovados" : falhas + " pares reprovados"));
+
+if (falhas > 0) {
+  process.exitCode = 1;
+}
