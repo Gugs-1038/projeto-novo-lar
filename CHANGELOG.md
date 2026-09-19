@@ -21,6 +21,12 @@
 - Dimensões intrínsecas e apresentação fluida sem deformação.
 - Redução de 57,07 por cento no recurso e impacto de transferência documentado.
 
+### Publicação
+
+- Workflow de GitHub Actions preparado para build, testes e GitHub Pages.
+- Entrada de publicação na raiz de dist com preservação da rota por hash.
+- Código fonte essencial consolidado num ficheiro com menos de 100000 caracteres.
+
 ## 1.0.0
 
 Primeira versão estável do Projeto Novo Lar.

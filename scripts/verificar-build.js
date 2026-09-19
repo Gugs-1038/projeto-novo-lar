@@ -75,6 +75,18 @@ async function verificarPagina(nome) {
   new Function(bundle);
 }
 
+async function verificarEntradaPublicacao() {
+  const entrada = await readFile(caminhoNaRaiz("dist/index.html"), "utf8");
+
+  if (!entrada.includes('url=html/index.html')) {
+    throw new Error("A entrada de publicação não contém o redirecionamento HTML.");
+  }
+
+  if (!entrada.includes('window.location.search+window.location.hash')) {
+    throw new Error("A entrada de publicação não preserva a pesquisa e a rota.");
+  }
+}
+
 async function totalBytes(ficheiros) {
   const tamanhos = await Promise.all(
     ficheiros.map(async (ficheiro) => {
@@ -104,11 +116,14 @@ async function resumirFicheiros(origem, destino) {
 
 async function executar() {
   await Promise.all([
+    existe("dist/index.html"),
+    existe("dist/.nojekyll"),
     existe("dist/css/estilos.min.css"),
     existe("dist/imagens/animal-resgatado.jpg"),
     existe("dist/imagens/animal-resgatado.webp"),
     existe("dist/relatorio-build.json"),
     existe("dist/relatorio-build.txt"),
+    verificarEntradaPublicacao(),
     ...paginas.map(verificarPagina),
   ]);
 

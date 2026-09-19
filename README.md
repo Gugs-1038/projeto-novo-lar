@@ -44,6 +44,8 @@ Não foram usados framework, banco de dados ou back end. A aplicação continua 
 - ACESSIBILIDADE.md: landmarks, estados WAI-ARIA e estratégias de foco.
 - CONTRASTE.md: perfis claro, escuro, alto contraste e cores forçadas.
 - OTIMIZACAO-IMAGENS.md: formatos, dimensões, responsividade e impacto estimado das imagens.
+- DEPLOY.md: configuração e ativação da publicação no GitHub Pages.
+- CODIGO-FONTE-FINAL.txt: código essencial consolidado para o campo de entrega.
 - respostas-para-plataforma.txt: textos de apoio para a entrega acadêmica.
 
 ## Pré requisitos
@@ -87,6 +89,16 @@ Depois da build, faça a verificação estrutural e a validação de contraste:
     node validacao-contraste/verificar-contraste.js
 
 A verificação manual inclui navegação entre rotas, botões Voltar e Avançar, menu responsivo, formulário válido e inválido, restauração da última rota e funcionamento sem a CDN. Os resultados do Nu Html Checker estão em validacao-w3c/resultado.txt e os resultados cromáticos em validacao-contraste/resultado.txt.
+
+## Publicação
+
+O workflow .github/workflows/deploy-pages.yml prepara a publicação automática no GitHub Pages após alterações integradas na branch main. A rotina instala as dependências, cria a build, executa as verificações e publica a pasta dist. A entrada dist/index.html encaminha a raiz do endereço para a aplicação sem perder a pesquisa ou a rota por hash.
+
+O repositório local ainda precisa de ser ligado a um repositório GitHub e de ter GitHub Actions selecionado como fonte em Settings e Pages. Enquanto essa etapa externa não for concluída, não existe um endereço público confirmado. O procedimento completo está em DEPLOY.md.
+
+Para atualizar o ficheiro consolidado destinado ao campo de código fonte da plataforma, execute:
+
+    npm run codigo:final
 
 ## Acessibilidade e privacidade
 

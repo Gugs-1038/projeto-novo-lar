@@ -7,6 +7,7 @@
   },
   "scripts": {
     "build": "node scripts/build.js",
+    "codigo:final": "node scripts/gerar-codigo-final.js",
     "test:build": "node scripts/verificar-build.js",
     "test:contraste": "node validacao-contraste/verificar-contraste.js"
   },
