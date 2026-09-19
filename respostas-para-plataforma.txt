@@ -163,7 +163,7 @@ Também adotei comunicação por eventos. Depois de inserir uma rota no DOM, o s
 
 Os scripts locais utilizam defer, preservando a ordem declarada no HTML e aguardando a análise do documento. A biblioteca IMask usa async e possui verificação de disponibilidade e fallback, por isso seu carregamento não bloqueia os demais scripts.
 
-Não utilizei import e export porque este é um projeto estático pequeno, preparado para abrir diretamente pelo arquivo index.html, sem servidor ou empacotador. Nesse cenário, scripts separados, IIFEs, APIs mínimas e eventos personalizados oferecem modularidade suficiente, mantêm o código simples de executar e permitem alterar uma funcionalidade sem interferir nas demais.
+Não utilizei import e export nos ficheiros fonte porque o projeto continua preparado para abrir diretamente por html/index.html, sem servidor. Na versão de produção, o esbuild reúne esses scripts em bundles minificados sem alterar a organização original de desenvolvimento. Assim, IIFEs, APIs mínimas e eventos personalizados mantêm a modularidade dos fontes, enquanto o empacotamento fica restrito à build.
 
 14. PRINCIPAIS PROBLEMAS, DIAGNÓSTICOS E SOLUÇÕES
 
@@ -349,7 +349,7 @@ Nome da secção:
 Tecnologias utilizadas
 
 Descrição e tecnologias mencionadas:
-Detalha o uso de HTML5, CSS3, JavaScript puro, DOM, eventos, Web Storage e IMask 7.6.1 por CDN. Também informa que o projeto não utiliza framework, banco de dados ou back end.
+Detalha o uso de HTML5, CSS3, JavaScript puro, DOM, eventos, Web Storage, IMask 7.6.1 por CDN, esbuild e html-minifier-terser. Também informa que o projeto não utiliza framework, banco de dados ou back end.
 
 SECÇÃO 4
 
@@ -357,7 +357,7 @@ Nome da secção:
 Estrutura do projeto
 
 Descrição e tecnologias mencionadas:
-Explica a função das pastas html, css, js, imagens, capturas e validacao-w3c. Também apresenta os documentos de versionamento, gestão e apoio à entrega.
+Explica a função das pastas html, css, js, imagens, capturas, validacao-w3c, validacao-contraste, scripts e dist. Também apresenta os documentos de versionamento, gestão e apoio à entrega.
 
 SECÇÃO 5
 
@@ -365,7 +365,7 @@ Nome da secção:
 Execução, build e testes
 
 Descrição e tecnologias mencionadas:
-Mostra como abrir html/index.html ou iniciar um servidor local com Python. Esclarece que não há build nem suíte automatizada e descreve as verificações manuais e a validação W3C.
+Mostra como abrir html/index.html ou iniciar um servidor local com Python. Também explica npm ci, npm run build, a pasta dist, a verificação estrutural e as validações manual, W3C e de contraste.
 
 SECÇÃO 6
 
@@ -385,11 +385,11 @@ Apresenta o GitFlow com main, develop e branches de apoio, além das mensagens p
 
 PASSO A PASSO DE INSTALAÇÃO LOCAL
 
-O projeto é estático e não exige instalação de pacotes. Extraia a pasta mantendo html, css, js e imagens na mesma estrutura. Em seguida, abra html/index.html em um navegador atualizado. Se preferir um servidor local, execute py -m http.server 8000 na raiz e acesse http://localhost:8000/html/index.html. Caso py não esteja disponível, use python -m http.server 8000.
+O projeto mantém ficheiros fonte estáticos em html, css e js. Para consultar a versão de desenvolvimento, abra html/index.html em um navegador atualizado. Se preferir um servidor local, execute py -m http.server 8000 na raiz e acesse http://localhost:8000/html/index.html. Caso py não esteja disponível, use python -m http.server 8000.
 
-Não há etapa de build, pois HTML, CSS e JavaScript são executados diretamente. A única biblioteca externa é IMask 7.6.1, carregada por CDN. Sem internet, as máscaras não aparecem, mas o formulário e sua validação continuam funcionando.
+Para preparar a versão de produção, instale Node.js 20 ou superior, execute npm ci e depois npm run build. A build usa esbuild para gerar bundles e minificar CSS e JavaScript, e html-minifier-terser para minificar HTML. Os ficheiros resultantes ficam em dist, acompanhados de um relatório de tamanho. A IMask 7.6.1 continua carregada por CDN. Sem internet, as máscaras não aparecem, mas o formulário e sua validação continuam funcionando.
 
-Para verificar a aplicação, visite Início, Projetos e Cadastro, teste o menu, os botões, o histórico do navegador, valores válidos e inválidos no formulário e a restauração da última rota. Os resultados da validação HTML estão em validacao-w3c/resultado.txt. Não há suíte automatizada nesta versão; os testes atuais são manuais e documentados.
+Para verificar a aplicação, execute npm run test:build e node validacao-contraste/verificar-contraste.js. Depois visite Início, Projetos e Cadastro, teste o menu, os botões, o histórico do navegador, valores válidos e inválidos no formulário e a restauração da última rota. Os resultados da validação HTML estão em validacao-w3c/resultado.txt, os rácios em validacao-contraste/resultado.txt e a redução medida em dist/relatorio-build.txt.
 
 20. ALTERAÇÕES SEMÂNTICAS E WAI-ARIA
 
@@ -644,3 +644,17 @@ Títulos #00FFFF sobre #000000: 16,75:1. Texto #000000 sobre foco #FFFF00: 19,56
 
 Ferramenta de validação utilizada:
 Verificador local pela fórmula WCAG 2.1
+
+23. BUILD DE PRODUÇÃO E MINIFICAÇÃO
+
+FERRAMENTA DE BUNDLER E CONFIGURAÇÃO
+
+Utilizei o esbuild 0.25.11, executado por npm run build. O ficheiro scripts/build.js recria a pasta dist, gera um bundle minificado para cada página, minifica o CSS como estilos.min.css e copia as imagens sem as alterar. O html-minifier-terser 7.2.0 minifica os três documentos HTML. As páginas geradas passam a carregar index.min.js, cadastro.min.js ou projetos.min.js, conforme o caso. Cada bundle mantém a ordem dos scripts definida no HTML de origem. A biblioteca IMask 7.6.1 continua a ser carregada externamente por CDN. Os ficheiros fonte permanecem separados em html, css e js para facilitar a manutenção e a avaliação.
+
+PERCENTAGEM DE REDUÇÃO APÓS A MINIFICAÇÃO
+
+Considerando cada ficheiro HTML, CSS e JavaScript apenas uma vez, a build passou de 72788 para 61035 bytes: 11753 bytes a menos, ou 16,15 por cento. Num cenário agregado de uma visita a cada uma das três páginas, em que o CSS partilhado é contado em cada carregamento, o total caiu de 137232 para 99531 bytes, uma redução de 27,47 por cento. Por página, a redução foi de 29,93 por cento em Início, 27,99 por cento em Cadastro e 22,05 por cento em Projetos. As imagens ficaram fora do cálculo por serem copiadas sem minificação. Os valores estão em dist/relatorio-build.txt.
+
+DESAFIOS PARA PRESERVAR A LÓGICA
+
+O principal desafio foi preservar a ordem de execução dos módulos, pois a SPA partilha eventos, templates, rotas por hash, localStorage, mensagens WAI-ARIA e APIs públicas entre os scripts. A IMask, carregada de forma assíncrona por CDN, também poderia ficar disponível antes ou depois do bundle. Para evitar falhas, configurei uma entrada separada para cada página, na mesma ordem do HTML de origem. O módulo de integrações verifica se a IMask já existe e volta a iniciar as máscaras no evento load. Após a build, npm run test:build confirma referências, bundles, imagens e redução de tamanho. npm run test:contraste mantém a validação cromática independente.

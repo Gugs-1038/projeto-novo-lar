@@ -23,8 +23,10 @@ O site funciona como uma Single Page Application estática. A navegação princi
 - JavaScript puro para SPA, DOM, eventos, validação e persistência.
 - Web Storage para guardar somente o histórico recente de rotas.
 - IMask 7.6.1 por CDN para auxiliar a digitação de campos formatados.
+- esbuild 0.25.11 para gerar bundles e minificar CSS e JavaScript.
+- html-minifier-terser 7.2.0 para minificar as páginas HTML de produção.
 
-Não foram usados framework, empacotador, banco de dados ou back end. Se a biblioteca externa não carregar, a validação local continua funcionando.
+Não foram usados framework, banco de dados ou back end. A aplicação continua escrita em JavaScript puro, e o empacotamento é aplicado somente na build de produção. Se a biblioteca externa não carregar, a validação local continua funcionando.
 
 ## Estrutura do projeto
 
@@ -35,6 +37,8 @@ Não foram usados framework, empacotador, banco de dados ou back end. Se a bibli
 - capturas: evidências visuais dos componentes.
 - validacao-w3c: resultados da validação dos documentos HTML.
 - validacao-contraste: verificador local e relatório dos rácios de contraste.
+- dist: versão de produção minificada, pronta para publicação.
+- scripts: automação da build e verificação dos ficheiros gerados.
 - FLUXO-GIT.md: política de branches, commits e versões.
 - GESTAO-REPOSITORIO.md: tarefas e integrações documentadas.
 - ACESSIBILIDADE.md: landmarks, estados WAI-ARIA e estratégias de foco.
@@ -44,10 +48,11 @@ Não foram usados framework, empacotador, banco de dados ou back end. Se a bibli
 ## Pré requisitos
 
 - Navegador atualizado com suporte a JavaScript e localStorage.
-- Nenhuma instalação de pacote é obrigatória.
-- Conexão com a internet é opcional e serve apenas para carregar a IMask.
+- Node.js 20 ou superior para gerar a versão de produção.
+- npm para instalar as dependências da build.
+- Conexão com a internet na primeira instalação das dependências da build.
+- Durante o uso da aplicação, a conexão serve apenas para carregar a IMask e permanece opcional.
 - Python 3 é opcional caso seja usado um servidor local.
-- Node.js é opcional e serve somente para repetir a validação de contraste.
 
 ## Execução local
 
@@ -67,7 +72,16 @@ Depois, acesse:
 
 ## Build e testes
 
-O projeto não possui etapa de build, pois HTML, CSS e JavaScript são executados diretamente. A navegação e o formulário são verificados manualmente. Os rácios de contraste possuem uma verificação local automatizada:
+Os ficheiros fonte continuam legíveis em html, css e js. Para criar a versão de produção, instale as dependências e execute:
+
+    npm ci
+    npm run build
+
+A build gera a pasta dist. O esbuild reúne os scripts de cada página e minifica CSS e JavaScript. O html-minifier-terser minifica os três documentos HTML. As imagens são copiadas sem alteração, e dist/relatorio-build.txt apresenta tanto a redução dos ficheiros únicos como a redução agregada por carregamento de página.
+
+Depois da build, faça a verificação estrutural e a validação de contraste:
+
+    npm run test:build
 
     node validacao-contraste/verificar-contraste.js
 

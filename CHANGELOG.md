@@ -9,6 +9,12 @@
 - Bordas funcionais, marcadores de posição e estados de foco reforçados.
 - Verificação automatizada de 25 pares cromáticos segundo a fórmula WCAG 2.1.
 
+### Build de produção
+
+- Build com esbuild e html-minifier-terser para CSS, JavaScript e HTML.
+- Pasta dist com bundles por página, imagens copiadas e relatório de tamanho.
+- Verificação automatizada das referências da versão de produção.
+
 ## 1.0.0
 
 Primeira versão estável do Projeto Novo Lar.
