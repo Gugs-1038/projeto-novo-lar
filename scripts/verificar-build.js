@@ -1,4 +1,4 @@
-const { access, readFile, stat } = require("node:fs/promises");
+const { access, readFile } = require("node:fs/promises");
 const path = require("node:path");
 
 const raiz = path.resolve(__dirname, "..");
@@ -77,7 +77,10 @@ async function verificarPagina(nome) {
 
 async function totalBytes(ficheiros) {
   const tamanhos = await Promise.all(
-    ficheiros.map(async (ficheiro) => (await stat(caminhoNaRaiz(ficheiro))).size)
+    ficheiros.map(async (ficheiro) => {
+      const conteudo = await readFile(caminhoNaRaiz(ficheiro), "utf8");
+      return Buffer.byteLength(conteudo.replace(/\r\n?/g, "\n"), "utf8");
+    })
   );
   return tamanhos.reduce((total, valor) => total + valor, 0);
 }
@@ -109,9 +112,9 @@ async function executar() {
     ...paginas.map(verificarPagina),
   ]);
 
-  const cssFonte = await stat(caminhoNaRaiz("css/estilos.css"));
-  const cssMinificado = await stat(caminhoNaRaiz("dist/css/estilos.min.css"));
-  if (cssMinificado.size >= cssFonte.size) {
+  const cssFonte = await totalBytes(["css/estilos.css"]);
+  const cssMinificado = await totalBytes(["dist/css/estilos.min.css"]);
+  if (cssMinificado >= cssFonte) {
     throw new Error("O CSS de produção não ficou menor que o CSS fonte.");
   }
 

@@ -1,39 +1,40 @@
 {
   "ferramenta": "esbuild e html-minifier-terser",
+  "criterioTamanho": "ficheiros de texto normalizados com finais de linha LF; imagens excluídas",
   "css": "css/estilos.css para dist/css/estilos.min.css",
   "ficheirosUnicos": {
-    "bytesOrigem": 72788,
+    "bytesOrigem": 71638,
     "bytesDistribuicao": 61035,
-    "reducaoBytes": 11753,
-    "reducaoPercentual": 16.15
+    "reducaoBytes": 10603,
+    "reducaoPercentual": 14.8
   },
   "paginas": [
     {
       "pagina": "index",
-      "bytesOrigem": 60939,
+      "bytesOrigem": 59789,
       "bytesDistribuicao": 42700,
-      "reducaoBytes": 18239,
-      "reducaoPercentual": 29.93
+      "reducaoBytes": 17089,
+      "reducaoPercentual": 28.58
     },
     {
       "pagina": "cadastro",
-      "bytesOrigem": 44429,
+      "bytesOrigem": 43279,
       "bytesDistribuicao": 31993,
-      "reducaoBytes": 12436,
-      "reducaoPercentual": 27.99
+      "reducaoBytes": 11286,
+      "reducaoPercentual": 26.08
     },
     {
       "pagina": "projetos",
-      "bytesOrigem": 31864,
+      "bytesOrigem": 30714,
       "bytesDistribuicao": 24838,
-      "reducaoBytes": 7026,
-      "reducaoPercentual": 22.05
+      "reducaoBytes": 5876,
+      "reducaoPercentual": 19.13
     }
   ],
   "carregamentosAgregados": {
-    "bytesOrigem": 137232,
+    "bytesOrigem": 133782,
     "bytesDistribuicao": 99531,
-    "reducaoBytes": 37701,
-    "reducaoPercentual": 27.47
+    "reducaoBytes": 34251,
+    "reducaoPercentual": 25.6
   }
 }
