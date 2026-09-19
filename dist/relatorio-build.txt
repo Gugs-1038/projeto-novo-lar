@@ -1,0 +1,11 @@
+RELATÓRIO DE BUILD DE PRODUÇÃO
+
+Ferramentas: esbuild e html-minifier-terser
+
+Ficheiros únicos: 72788 bytes para 61035 bytes, redução de 16.15%
+
+index: 60939 bytes para 42700 bytes, redução de 29.93%
+cadastro: 44429 bytes para 31993 bytes, redução de 27.99%
+projetos: 31864 bytes para 24838 bytes, redução de 22.05%
+
+Carregamentos agregados: 137232 bytes para 99531 bytes, redução de 27.47%

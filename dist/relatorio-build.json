@@ -1,0 +1,39 @@
+{
+  "ferramenta": "esbuild e html-minifier-terser",
+  "css": "css/estilos.css para dist/css/estilos.min.css",
+  "ficheirosUnicos": {
+    "bytesOrigem": 72788,
+    "bytesDistribuicao": 61035,
+    "reducaoBytes": 11753,
+    "reducaoPercentual": 16.15
+  },
+  "paginas": [
+    {
+      "pagina": "index",
+      "bytesOrigem": 60939,
+      "bytesDistribuicao": 42700,
+      "reducaoBytes": 18239,
+      "reducaoPercentual": 29.93
+    },
+    {
+      "pagina": "cadastro",
+      "bytesOrigem": 44429,
+      "bytesDistribuicao": 31993,
+      "reducaoBytes": 12436,
+      "reducaoPercentual": 27.99
+    },
+    {
+      "pagina": "projetos",
+      "bytesOrigem": 31864,
+      "bytesDistribuicao": 24838,
+      "reducaoBytes": 7026,
+      "reducaoPercentual": 22.05
+    }
+  ],
+  "carregamentosAgregados": {
+    "bytesOrigem": 137232,
+    "bytesDistribuicao": 99531,
+    "reducaoBytes": 37701,
+    "reducaoPercentual": 27.47
+  }
+}
