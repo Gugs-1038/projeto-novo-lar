@@ -28,7 +28,8 @@ async function executar() {
   const blocos = await Promise.all(
     ficheiros.map(async (ficheiro) => {
       const conteudo = await readFile(path.join(raiz, ficheiro), "utf8");
-      return `===== FICHEIRO: ${ficheiro} =====\n\n${conteudo.trimEnd()}`;
+      const normalizado = conteudo.replace(/\r\n?/g, "\n").trimEnd();
+      return `===== FICHEIRO: ${ficheiro} =====\n\n${normalizado}`;
     })
   );
   const cabecalho = [
@@ -37,16 +38,20 @@ async function executar() {
     "Cada bloco indica o caminho original do respetivo ficheiro.",
   ].join("\n");
   const conteudoFinal = `${cabecalho}\n\n${blocos.join("\n\n")}\n`;
+  const tamanhoComCrLf = conteudoFinal.replace(/\n/g, "\r\n").length;
 
-  if (conteudoFinal.length > limiteCaracteres) {
+  if (
+    conteudoFinal.length > limiteCaracteres ||
+    tamanhoComCrLf > limiteCaracteres
+  ) {
     throw new Error(
-      `O código consolidado excedeu o limite: ${conteudoFinal.length} caracteres.`
+      `O código consolidado excedeu o limite: ${conteudoFinal.length} com LF e ${tamanhoComCrLf} com CRLF.`
     );
   }
 
   await writeFile(destino, conteudoFinal, "utf8");
   console.log(
-    `Código final criado com ${conteudoFinal.length} de ${limiteCaracteres} caracteres.`
+    `Código final criado com ${conteudoFinal.length} caracteres em LF e ${tamanhoComCrLf} em CRLF, dentro do limite de ${limiteCaracteres}.`
   );
 }
 
