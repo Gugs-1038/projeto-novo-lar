@@ -1,5 +1,11 @@
 # Histórico de versões
 
+## 1.1.1 - 2026-09-19
+
+### Correções
+
+- Entradas de CSS e JavaScript processadas em memória para garantir a build limpa em caminhos extensos ou com acesso restrito aos diretórios superiores.
+
 ## 1.1.0 - 2026-09-19
 
 ### Acessibilidade visual
