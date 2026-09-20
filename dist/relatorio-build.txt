@@ -1,0 +1,12 @@
+RELATÓRIO DE BUILD DE PRODUÇÃO
+
+Ferramentas: esbuild e html-minifier-terser
+Critério: ficheiros de texto normalizados com finais de linha LF; imagens excluídas
+
+Ficheiros únicos: 71638 bytes para 61035 bytes, redução de 14.8%
+
+index: 59789 bytes para 42700 bytes, redução de 28.58%
+cadastro: 43279 bytes para 31993 bytes, redução de 26.08%
+projetos: 30714 bytes para 24838 bytes, redução de 19.13%
+
+Carregamentos agregados: 133782 bytes para 99531 bytes, redução de 25.6%

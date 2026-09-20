@@ -94,7 +94,7 @@ function renderizarRota() {
 
 A função real do projeto interpreta o hash, escolhe a configuração correspondente e cria um fragmento a partir do conteúdo inicial ou de elementos template. O método replaceChildren() remove o conteúdo anterior do main#conteudo antes de inserir o novo fragmento. Desse modo, as páginas não se acumulam e os identificadores não ficam duplicados no DOM ativo.
 
-Após a renderização, também são atualizados o título do documento, a meta description, o aria-current do menu e uma região de status para leitores de tela. Nas subrotas, o foco é levado ao título da seção solicitada. O formulário utiliza delegação de eventos no document, permitindo que validação, alerta e toast continuem funcionando mesmo quando o Cadastro é inserido dinamicamente.
+Após a renderização, também são atualizados o título do documento, a meta description, o aria-current do menu e uma região de status para leitores de tela. Nas subrotas, o foco é levado ao título da secção solicitada. O formulário utiliza delegação de eventos no document, permitindo que validação, alerta e toast continuem funcionando mesmo quando o Cadastro é inserido dinamicamente.
 
 Mantive o cabeçalho, o menu e o rodapé como estrutura fixa. Apenas o conteúdo central é substituído, oferecendo uma navegação rápida, histórico funcional e gerenciamento de foco sem retirar as alternativas estáticas para quem estiver sem JavaScript.
 
@@ -163,7 +163,7 @@ Também adotei comunicação por eventos. Depois de inserir uma rota no DOM, o s
 
 Os scripts locais utilizam defer, preservando a ordem declarada no HTML e aguardando a análise do documento. A biblioteca IMask usa async e possui verificação de disponibilidade e fallback, por isso seu carregamento não bloqueia os demais scripts.
 
-Não utilizei import e export porque este é um projeto estático pequeno, preparado para abrir diretamente pelo arquivo index.html, sem servidor ou empacotador. Nesse cenário, scripts separados, IIFEs, APIs mínimas e eventos personalizados oferecem modularidade suficiente, mantêm o código simples de executar e permitem alterar uma funcionalidade sem interferir nas demais.
+Não utilizei import e export nos ficheiros fonte porque o projeto continua preparado para abrir diretamente por html/index.html, sem servidor. Na versão de produção, o esbuild reúne esses scripts em bundles minificados sem alterar a organização original de desenvolvimento. Assim, IIFEs, APIs mínimas e eventos personalizados mantêm a modularidade dos fontes, enquanto o empacotamento fica restrito à build.
 
 14. PRINCIPAIS PROBLEMAS, DIAGNÓSTICOS E SOLUÇÕES
 
@@ -230,3 +230,459 @@ A partir desta etapa, organizei o repositório do Projeto Novo Lar com um fluxo 
 Para registrar uma alteração real, criei feature/documentacao-gitflow a partir de develop. Depois da revisão, essa funcionalidade foi integrada novamente à develop por um merge explícito. Quando o conjunto ficou estável, abri release/1.0.0 para os testes finais e a preparação da primeira versão.
 
 Após a aprovação, a release foi incorporada à main, marcada com a tag v1.0.0 e também devolvida à develop, mantendo as duas linhas atualizadas. Caso surja uma falha urgente em produção, a política será criar uma branch hotfix a partir de main, aplicar e testar a correção e depois integrá-la tanto à main quanto à develop. Mesmo trabalhando individualmente, esse fluxo tornou as alterações mais organizadas, rastreáveis e seguras.
+
+17. REGISTROS DE COMMITS E RELEASE
+
+REGISTRO 1
+
+Mensagem de commit ou tag da release:
+chore: registrar versao inicial do projeto
+
+Descrição e justificativa:
+Criou a base completa do Projeto Novo Lar com HTML, CSS, JavaScript modular, imagens, capturas e validações. O tipo chore identifica uma tarefa estrutural que não representa uma funcionalidade ou correção isolada.
+
+REGISTRO 2
+
+Mensagem de commit ou tag da release:
+docs: documentar fluxo de branches
+
+Descrição e justificativa:
+Adicionou FLUXO-GIT.md e registrou as funções de main, develop, feature, release e hotfix. O tipo docs mostra que a alteração ficou concentrada na documentação do projeto.
+
+REGISTRO 3
+
+Mensagem de commit ou tag da release:
+docs: preparar lancamento 1.0.0
+
+Descrição e justificativa:
+Criou CHANGELOG.md com o resumo das funcionalidades e verificações da primeira entrega. O tipo docs indica a documentação usada para preparar e conferir o lançamento.
+
+REGISTRO 4
+
+Mensagem de commit ou tag da release:
+v1.0.0
+
+Descrição e justificativa:
+Marca a primeira versão estável na main e está associada ao commit release: publicar versao 1.0.0. Adotei MAJOR.MINOR.PATCH: mudanças incompatíveis elevam MAJOR, novas funções compatíveis elevam MINOR e correções compatíveis elevam PATCH.
+
+18. ISSUES, MILESTONE E PULL REQUESTS
+
+Observação de transparência:
+O repositório do Projeto Novo Lar foi desenvolvido localmente e não possui conexão com uma plataforma remota. Por isso, os itens abaixo são registros retrospectivos de tarefas e integrações reais. Os PRs correspondem a merges comprovados no histórico Git.
+
+REGISTRO 1
+
+Tipo:
+Issue
+
+Título:
+Documentar a estratégia GitFlow
+
+Descrição:
+Registro retrospectivo da tarefa concluída na branch feature/documentacao-gitflow. O commit 6063428 criou o arquivo FLUXO-GIT.md e explicou o papel de main, develop, feature, release e hotfix.
+
+REGISTRO 2
+
+Tipo:
+Issue
+
+Título:
+Organizar commits e releases
+
+Descrição:
+Registro retrospectivo da padronização dos commits e do versionamento semântico. A tarefa foi realizada na branch feature/registro-commits-releases e integrada à develop.
+
+REGISTRO 3
+
+Tipo:
+Milestone
+
+Título:
+Primeira entrega estável v1.0.0
+
+Descrição:
+Marco retrospectivo da primeira versão estável. A branch release/1.0.0 preparou o CHANGELOG, foi integrada em main e develop e originou a tag v1.0.0.
+
+REGISTRO 4
+
+Tipo:
+PR
+
+Título:
+Integrar documentação do GitFlow em develop
+
+Descrição:
+Registro equivalente a um PR local entre feature/documentacao-gitflow e develop. O merge 1d6ae3f incorporou a documentação após a revisão, sem alterar diretamente a branch permanente.
+
+REGISTRO 5
+
+Tipo:
+PR
+
+Título:
+Integrar registro de commits e releases em develop
+
+Descrição:
+Registro equivalente a um PR local entre feature/registro-commits-releases e develop. O merge cec41d0 reuniu as regras de commits e versionamento após a revisão.
+
+19. SECÇÕES DO README E EXECUÇÃO LOCAL
+
+SECÇÃO 1
+
+Nome da secção:
+Apresentação do projeto
+
+Descrição e tecnologias mencionadas:
+Apresenta o Projeto Novo Lar, uma SPA acadêmica de proteção animal desenvolvida com HTML5, CSS3 e JavaScript. Resume o objetivo da aplicação e as formas de participação.
+
+SECÇÃO 2
+
+Nome da secção:
+Funcionalidades principais
+
+Descrição e tecnologias mencionadas:
+Resume as rotas por hash, menu responsivo, templates HTML, componentes dinâmicos, validação do formulário, máscaras de entrada, localStorage e retornos visuais acessíveis.
+
+SECÇÃO 3
+
+Nome da secção:
+Tecnologias utilizadas
+
+Descrição e tecnologias mencionadas:
+Detalha o uso de HTML5, CSS3, JavaScript puro, DOM, eventos, Web Storage, IMask 7.6.1 por CDN, esbuild e html-minifier-terser. Também informa que o projeto não utiliza framework, banco de dados ou back end.
+
+SECÇÃO 4
+
+Nome da secção:
+Estrutura do projeto
+
+Descrição e tecnologias mencionadas:
+Explica a função das pastas html, css, js, imagens, capturas, validacao-w3c, validacao-contraste, scripts e dist. Também apresenta os documentos de versionamento, gestão e apoio à entrega.
+
+SECÇÃO 5
+
+Nome da secção:
+Execução, build e testes
+
+Descrição e tecnologias mencionadas:
+Mostra como abrir html/index.html ou iniciar um servidor local com Python. Também explica npm ci, npm run build, a pasta dist, a verificação estrutural e as validações manual, W3C e de contraste.
+
+SECÇÃO 6
+
+Nome da secção:
+Acessibilidade e privacidade
+
+Descrição e tecnologias mencionadas:
+Registra semântica HTML, teclado, foco visível, aria-live e redução de movimentos. Explica que dados pessoais não são enviados nem armazenados no localStorage.
+
+SECÇÃO 7
+
+Nome da secção:
+Versionamento e colaboração
+
+Descrição e tecnologias mencionadas:
+Apresenta o GitFlow com main, develop e branches de apoio, além das mensagens padronizadas, do CHANGELOG e da tag v1.0.0 usada para identificar a primeira entrega estável.
+
+PASSO A PASSO DE INSTALAÇÃO LOCAL
+
+O projeto mantém ficheiros fonte estáticos em html, css e js. Para consultar a versão de desenvolvimento, abra html/index.html em um navegador atualizado. Se preferir um servidor local, execute py -m http.server 8000 na raiz e acesse http://localhost:8000/html/index.html. Caso py não esteja disponível, use python -m http.server 8000.
+
+Para preparar a versão de produção, instale Node.js 20 ou superior, execute npm ci e depois npm run build. A build usa esbuild para gerar bundles e minificar CSS e JavaScript, e html-minifier-terser para minificar HTML. Os ficheiros resultantes ficam em dist, acompanhados de um relatório de tamanho. A IMask 7.6.1 continua carregada por CDN. Sem internet, as máscaras não aparecem, mas o formulário e sua validação continuam funcionando.
+
+Para verificar a aplicação, execute npm run test:build e node validacao-contraste/verificar-contraste.js. Depois visite Início, Projetos e Cadastro, teste o menu, os botões, o histórico do navegador, valores válidos e inválidos no formulário e a restauração da última rota. Os resultados da validação HTML estão em validacao-w3c/resultado.txt, os rácios em validacao-contraste/resultado.txt e a redução medida em dist/relatorio-build.txt.
+
+20. ALTERAÇÕES SEMÂNTICAS E WAI-ARIA
+
+REGISTO 1
+
+Elemento modificado ou tag implementada:
+header, nav, main e footer
+
+Justificação e impacto na acessibilidade:
+Usei landmarks semânticos para separar o cabeçalho, a navegação, o conteúdo principal e o rodapé. Esta estrutura permite que leitores de ecrã identifiquem as áreas da página e avancem diretamente para a informação pretendida.
+
+REGISTO 2
+
+Elemento modificado ou tag implementada:
+nav com aria-label e links com aria-current
+
+Justificação e impacto na acessibilidade:
+A navegação recebeu um nome acessível e o link da página ativa é marcado com aria-current. Na SPA, esse estado é atualizado em cada mudança de rota, ajudando o utilizador a compreender onde se encontra.
+
+REGISTO 3
+
+Elemento modificado ou tag implementada:
+Botões de menu com aria-expanded e aria-controls
+
+Justificação e impacto na acessibilidade:
+Os botões do menu principal e do submenu indicam qual elemento controlam e comunicam se estão abertos ou fechados. O JavaScript atualiza aria-expanded após cada interação, tornando o estado percetível para tecnologias de apoio.
+
+REGISTO 4
+
+Elemento modificado ou tag implementada:
+section, cartões e aside com aria-labelledby
+
+Justificação e impacto na acessibilidade:
+Associei cada bloco relevante ao respetivo título por meio de aria-labelledby. A relação fornece um nome acessível para as secções, os cartões de projetos e o aviso sobre dados, facilitando a compreensão do conteúdo.
+
+REGISTO 5
+
+Elemento modificado ou tag implementada:
+Formulário com label, fieldset, legend, aria-describedby e aria-invalid
+
+Justificação e impacto na acessibilidade:
+Cada campo possui um label associado. fieldset e legend agrupam dados pessoais, contacto e endereço. Em caso de erro, aria-describedby liga o campo com a mensagem explicativa e aria-invalid comunica a falha.
+
+REGISTO 6
+
+Elemento modificado ou tag implementada:
+Mensagens com role alert, role status e aria-live
+
+Justificação e impacto na acessibilidade:
+Os erros do formulário usam role alert para anúncio imediato. Mudanças de rota e confirmações usam role status e aria-live polite, oferecendo retorno sem interromper desnecessariamente a leitura.
+
+REGISTO 7
+
+Elemento modificado ou tag implementada:
+Ícones decorativos com aria-hidden
+
+Justificação e impacto na acessibilidade:
+Corações, setas e outros símbolos puramente visuais receberam aria-hidden true. Assim, os leitores de ecrã ignoram informação decorativa e apresentam apenas os nomes acessíveis dos controlos e conteúdos.
+
+REGISTO 8
+
+Elemento modificado ou tag implementada:
+h1 e main com tabindex negativo e ligação para saltar
+
+Justificação e impacto na acessibilidade:
+Após a navegação na SPA, o título do novo conteúdo recebe tabindex negativo e foco temporário. A ligação para saltar ao conteúdo permite ignorar o menu e conduz utilizadores de teclado diretamente para o main.
+
+21. COMPONENTES AJUSTADOS PARA TECLADO E LEITORES DE ECRÃ
+
+REGISTO 1
+
+Nome do componente:
+Ligação para saltar ao conteúdo
+
+Descrição do ajuste ou problema retificado:
+Foi colocada como primeiro elemento focável e só fica visível ao receber foco. Na SPA, ativa o main com tabindex negativo, permitindo ignorar o cabeçalho e chegar ao conteúdo principal sem percorrer todos os links.
+
+REGISTO 2
+
+Nome do componente:
+Menu principal e submenu
+
+Descrição do ajuste ou problema retificado:
+Os controlos são botões nativos, acionáveis por Enter e Espaço. aria-controls associa cada botão ao menu, aria-expanded comunica o estado e Escape fecha o menu ou submenu, devolvendo o foco ao controlo correspondente.
+
+REGISTO 3
+
+Nome do componente:
+Ordem de foco no documento
+
+Descrição do ajuste ou problema retificado:
+A sequência do DOM segue atalho, marca, controlos de navegação, links, conteúdo principal e rodapé. Não foram usados valores positivos de tabindex nem reposicionamento visual por CSS, mantendo Tab e Shift Tab previsíveis.
+
+REGISTO 4
+
+Nome do componente:
+Indicador visual de foco
+
+Descrição do ajuste ou problema retificado:
+Links, botões e campos recebem contorno de 3 px com afastamento e anel de contraste em focus-visible. Nos cartões, focus-within também reforça a borda e a sombra, tornando o foco percetível sem depender do rato.
+
+REGISTO 5
+
+Nome do componente:
+Navegação dinâmica da SPA
+
+Descrição do ajuste ou problema retificado:
+Após cada mudança de rota, o h1 ou a secção solicitada recebe tabindex negativo e foco programático. A região role status anuncia a nova página, e aria-current identifica o link ativo sem alterar a ordem de tabulação.
+
+REGISTO 6
+
+Nome do componente:
+Formulário de voluntariado
+
+Descrição do ajuste ou problema retificado:
+Os campos têm label, e fieldset com legend organiza os grupos. No envio inválido, o foco vai para o primeiro campo com erro. aria-invalid e aria-describedby ligam o estado e a orientação ao campo, com anúncio educado por aria-live.
+
+REGISTO 7
+
+Nome do componente:
+Alertas e mensagens de estado
+
+Descrição do ajuste ou problema retificado:
+O resumo de falhas usa role alert para aviso imediato. A confirmação usa role status, aria-live polite e aria-atomic true. O toast possui botão nativo com nome acessível para encerramento sem depender de clique com rato.
+
+REGISTO 8
+
+Nome do componente:
+Imagens e ícones
+
+Descrição do ajuste ou problema retificado:
+Imagens informativas possuem texto alternativo, enquanto corações, setas e ícones decorativos recebem aria-hidden true. Isso reduz anúncios repetitivos e mantém a verbalização concentrada no conteúdo e nos controlos.
+
+22. MODOS DE COR E CONTRASTE
+
+ESTRATÉGIA IMPLEMENTADA
+
+Centralizei as cores em variáveis CSS para que os três perfis visuais partilhem a mesma estrutura. O modo claro permanece como padrão. Quando o sistema indica o tema escuro, a regra prefers-color-scheme: dark altera o fundo, as superfícies, os textos, os estados e as bordas sem modificar o HTML. Para quem solicita mais contraste, prefers-contrast: more ativa fundo preto, texto branco, títulos em ciano e foco amarelo. A regra forced-colors: active respeita ainda as cores definidas pelo sistema operativo.
+
+Não foi necessário JavaScript nem armazenamento local, pois a interface acompanha automaticamente as preferências do dispositivo. Também defini cores próprias para o texto dos botões e dos campos de entrada, reforcei as bordas funcionais e tornei a cor dos marcadores de posição explícita. O amarelo nunca comunica um estado sozinho: o foco combina contorno e realce, enquanto as mensagens apresentam texto, ícone ou borda.
+
+Validei os pares com um verificador local que aplica a fórmula de luminância relativa da WCAG 2.1. Os textos normais alcançam pelo menos 4,5:1 e as bordas ou os indicadores visuais superam 3:1. O texto principal atinge 15,73:1 no modo claro, 17,87:1 no modo escuro e 21:1 no perfil de alto contraste.
+
+ELEMENTOS VISUAIS VERIFICADOS
+
+REGISTO 1
+
+Elemento:
+Texto principal no modo claro
+
+Cores utilizadas e rácio obtido:
+Texto #17211C sobre fundo #F7FAF8. Rácio 15,73:1, superior ao mínimo de 4,5:1.
+
+Ferramenta de validação utilizada:
+Verificador local pela fórmula WCAG 2.1
+
+REGISTO 2
+
+Elemento:
+Texto secundário e marcadores de posição
+
+Cores utilizadas e rácio obtido:
+Texto #4D5C54 sobre fundo #F7FAF8. Rácio 6,72:1, adequado ao nível AA.
+
+Ferramenta de validação utilizada:
+Verificador local pela fórmula WCAG 2.1
+
+REGISTO 3
+
+Elemento:
+Títulos no modo claro
+
+Cores utilizadas e rácio obtido:
+Títulos #12372A sobre fundo #F7FAF8. Rácio 12,45:1, adequado ao nível AAA.
+
+Ferramenta de validação utilizada:
+Verificador local pela fórmula WCAG 2.1
+
+REGISTO 4
+
+Elemento:
+Botões principais no modo claro
+
+Cores utilizadas e rácio obtido:
+Texto #FFFFFF sobre botão #12372A. Rácio 13,08:1, adequado ao nível AAA.
+
+Ferramenta de validação utilizada:
+Verificador local pela fórmula WCAG 2.1
+
+REGISTO 5
+
+Elemento:
+Mensagens de sucesso e erro
+
+Cores utilizadas e rácio obtido:
+Sucesso #1B6E37 sobre #EFF9F2: 5,85:1. Erro #B42318 sobre #FFF3F1: 6,06:1. Ambos cumprem AA.
+
+Ferramenta de validação utilizada:
+Verificador local pela fórmula WCAG 2.1
+
+REGISTO 6
+
+Elemento:
+Bordas e indicador de foco
+
+Cores utilizadas e rácio obtido:
+Borda #72867B sobre #FFFFFF: 3,88:1. Contorno #0B281E com realce #FFB703: 9,00:1.
+
+Ferramenta de validação utilizada:
+Verificador local pela fórmula WCAG 2.1
+
+REGISTO 7
+
+Elemento:
+Texto principal no modo escuro
+
+Cores utilizadas e rácio obtido:
+Texto #F4F8F5 sobre fundo #08110D. Rácio 17,87:1, adequado ao nível AAA.
+
+Ferramenta de validação utilizada:
+Verificador local pela fórmula WCAG 2.1
+
+REGISTO 8
+
+Elemento:
+Títulos e botões no modo escuro
+
+Cores utilizadas e rácio obtido:
+Texto #08110D sobre botão #A7D8BC: 12,03:1. Títulos #A7D8BC sobre #08110D: 12,03:1.
+
+Ferramenta de validação utilizada:
+Verificador local pela fórmula WCAG 2.1
+
+REGISTO 9
+
+Elemento:
+Texto no perfil de alto contraste
+
+Cores utilizadas e rácio obtido:
+Texto #FFFFFF sobre fundo #000000. Rácio máximo de 21:1.
+
+Ferramenta de validação utilizada:
+Verificador local pela fórmula WCAG 2.1
+
+REGISTO 10
+
+Elemento:
+Títulos e foco no alto contraste
+
+Cores utilizadas e rácio obtido:
+Títulos #00FFFF sobre #000000: 16,75:1. Texto #000000 sobre foco #FFFF00: 19,56:1.
+
+Ferramenta de validação utilizada:
+Verificador local pela fórmula WCAG 2.1
+
+23. BUILD DE PRODUÇÃO E MINIFICAÇÃO
+
+FERRAMENTA DE BUNDLER E CONFIGURAÇÃO
+
+Utilizei o esbuild 0.25.11, executado por npm run build. O ficheiro scripts/build.js recria a pasta dist, gera um bundle minificado para cada página, minifica o CSS como estilos.min.css e copia as imagens sem as alterar. O html-minifier-terser 7.2.0 minifica os três documentos HTML. As páginas geradas passam a carregar index.min.js, cadastro.min.js ou projetos.min.js, conforme o caso. Cada bundle mantém a ordem dos scripts definida no HTML de origem. A biblioteca IMask 7.6.1 continua a ser carregada externamente por CDN. Os ficheiros fonte permanecem separados em html, css e js para facilitar a manutenção e a avaliação.
+
+PERCENTAGEM DE REDUÇÃO APÓS A MINIFICAÇÃO
+
+Considerando cada ficheiro HTML, CSS e JavaScript apenas uma vez, a build passou de 71638 para 61035 bytes: 10603 bytes a menos, ou 14,80 por cento. Num cenário agregado de uma visita a cada uma das três páginas, em que o CSS partilhado é contado em cada carregamento, o total caiu de 133782 para 99531 bytes, uma redução de 25,60 por cento. Por página, a redução foi de 28,58 por cento em Início, 26,08 por cento em Cadastro e 19,13 por cento em Projetos. As imagens ficaram fora do cálculo por serem copiadas sem minificação. O relatório normaliza os finais de linha para manter a medição igual em qualquer sistema operativo.
+
+DESAFIOS PARA PRESERVAR A LÓGICA
+
+O principal desafio foi preservar a ordem de execução dos módulos, pois a SPA partilha eventos, templates, rotas por hash, localStorage, mensagens WAI-ARIA e APIs públicas entre os scripts. A IMask, carregada de forma assíncrona por CDN, também poderia ficar disponível antes ou depois do bundle. Para evitar falhas, configurei uma entrada separada para cada página, na mesma ordem do HTML de origem. O módulo de integrações verifica se a IMask já existe e volta a iniciar as máscaras no evento load. Após a build, npm run test:build confirma referências, bundles, imagens e redução de tamanho. npm run test:contraste mantém a validação cromática independente.
+
+24. OTIMIZAÇÃO DE IMAGENS
+
+FORMATOS UTILIZADOS E JUSTIFICAÇÃO
+
+Foram utilizados WebP como formato principal e JPEG como alternativa de compatibilidade. O elemento picture apresenta primeiro animal-resgatado.webp e mantém animal-resgatado.jpg no elemento img para navegadores que não suportem WebP. A escolha é adequada a uma fotografia com muitos tons e detalhes: WebP oferece compressão com perda eficiente e conserva boa qualidade visual, enquanto JPEG assegura compatibilidade alargada. Ambos os ficheiros têm 1536 por 1024 píxeis, na proporção 3:2. O WebP ocupa 66468 bytes, contra 154823 bytes do JPEG, o que representa menos 88355 bytes e uma redução de 57,07 por cento sem alteração percetível de nitidez no uso previsto.
+
+GESTÃO DA RESOLUÇÃO FACE AO VIEWPORT
+
+A resolução visual é gerida de forma fluida. O HTML declara width 1536 e height 1024, permitindo ao navegador reservar antecipadamente um espaço com proporção 3:2 e reduzir deslocações do conteúdo. No CSS, as classes imagem-principal e imagem-projeto usam width 100% e height auto, pelo que a imagem acompanha a largura disponível sem ser deformada. A imagem principal ocupa seis colunas. A imagem de Projetos ocupa cinco colunas em ecrãs largos, seis até 1024 píxeis e doze abaixo de 768 píxeis. O conteúdo também recebe limites de largura e margens internas progressivas. Não foram criadas variantes de resolução com srcset e sizes, portanto o mesmo ficheiro de 1536 por 1024 é descarregado em qualquer viewport. Uma evolução possível seria gerar versões de 480, 768, 1024 e 1536 píxeis.
+
+IMPACTO ESTIMADO NO CARREGAMENTO
+
+A conversão de JPEG para WebP reduziu a imagem de 154823 para 66468 bytes, poupando 88355 bytes, ou 57,07 por cento. Como o mesmo endereço é reutilizado, o navegador tende a descarregar a imagem apenas uma vez e a servi-la pela cache nas restantes ocorrências da página. Somando o código minificado da página inicial, o volume local estimado baixa de 197523 para 109168 bytes, uma redução de 44,73 por cento. Na página Projetos, a redução estimada é de 49,18 por cento. Numa ligação de 1 megabit por segundo, a poupança de transferência equivale teoricamente a cerca de 0,71 segundos; a 4 megabits por segundo, cerca de 0,18 segundos. O resultado real depende da latência, cache, servidor e dispositivo, pelo que estes valores representam uma estimativa de rede e não um ensaio Lighthouse.
+
+25. DEPLOY E CÓDIGO FONTE FINAL
+
+PLATAFORMA DE ALOJAMENTO E JUSTIFICAÇÃO
+
+A plataforma escolhida para o deploy é o GitHub Pages. A automatização ficou preparada, mas a publicação ainda depende da criação e ligação de um repositório remoto GitHub. Esta opção adequa-se ao Projeto Novo Lar por ser uma aplicação estática, sem servidor, base de dados ou processamento no back end. A pasta dist contém HTML, CSS, JavaScript e imagens preparados para produção. O serviço oferece alojamento gratuito, HTTPS, distribuição por CDN, integração com o histórico Git e atualização automática após alterações aprovadas na branch main. Isto facilita auditoria, releases e reversão. As referências relativas e a entrada dist/index.html permitem executar a aplicação no endereço próprio do repositório. A IMask continua externa e possui alternativa funcional caso a CDN falhe.
+
+CONFIGURAÇÃO DO AMBIENTE E CI/CD
+
+A configuração local inclui o workflow .github/workflows/deploy-pages.yml, acionado por alterações integradas na branch main ou manualmente. A rotina obtém o código, configura Node.js 24, executa npm ci, npm run build, npm run test:build e npm run test:contraste. Se todas as verificações forem aprovadas, configura o GitHub Pages, envia a pasta dist como artefacto e publica-a. As permissões são contents read, pages write e id-token write, usando o GITHUB_TOKEN temporário do GitHub, sem credenciais no código. Depois de criar o repositório remoto, é necessário enviar main, develop e as tags e selecionar GitHub Actions em Settings, Pages e Source. Uma falha interrompe o fluxo antes do deploy. Como ainda não existe remote configurado, não apresento um endereço público inexistente.
+
+CÓDIGO FONTE FINAL VERSIONADO
+
+Na terceira caixa, cole todo o conteúdo de CODIGO-FONTE-FINAL.txt. A versão atual foi verificada abaixo dos 100000 caracteres permitidos, incluindo finais de linha do Windows. O ficheiro reúne os HTML, CSS, JavaScript, scripts de build e testes, package.json e workflow. Os cabeçalhos simples identificam o caminho de cada ficheiro. package-lock.json, imagens, documentação e dist não foram duplicados porque não são código fonte legível necessário para este campo e fariam o conteúdo ultrapassar o limite. As aspas e sinais existentes no código devem ser mantidos.
