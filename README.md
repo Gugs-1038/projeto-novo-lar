@@ -92,9 +92,9 @@ A verificação manual inclui navegação entre rotas, botões Voltar e Avançar
 
 ## Publicação
 
-O workflow .github/workflows/deploy-pages.yml prepara a publicação automática no GitHub Pages após alterações integradas na branch main. A rotina instala as dependências, cria a build, executa as verificações e publica a pasta dist. A entrada dist/index.html encaminha a raiz do endereço para a aplicação sem perder a pesquisa ou a rota por hash.
+O workflow .github/workflows/deploy-pages.yml publica automaticamente no GitHub Pages após alterações integradas na branch main. A rotina instala as dependências, cria a build, executa as verificações e publica a pasta dist. A entrada dist/index.html encaminha a raiz do endereço para a aplicação sem perder a pesquisa ou a rota por hash.
 
-O repositório local ainda precisa de ser ligado a um repositório GitHub e de ter GitHub Actions selecionado como fonte em Settings e Pages. Enquanto essa etapa externa não for concluída, não existe um endereço público confirmado. O procedimento completo está em DEPLOY.md.
+O repositório público está em https://github.com/Gugs-1038/projeto-novo-lar e a aplicação publicada está em https://gugs-1038.github.io/projeto-novo-lar/. O procedimento completo está em DEPLOY.md.
 
 Para atualizar o ficheiro consolidado destinado ao campo de código fonte da plataforma, execute:
 
