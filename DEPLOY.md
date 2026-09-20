@@ -2,7 +2,7 @@
 
 ## Estado atual
 
-O projeto possui uma build de produção, uma entrada na raiz de dist e um workflow de integração e entrega contínuas em .github/workflows/deploy-pages.yml. O repositório local ainda não possui um remote GitHub configurado. Por esse motivo, não existe um endereço público que possa ser confirmado neste momento.
+O projeto possui uma build de produção, uma entrada na raiz de dist e um workflow de integração e entrega contínuas em .github/workflows/deploy-pages.yml. O remote origin aponta para https://github.com/Gugs-1038/projeto-novo-lar e a publicação está ativa em https://gugs-1038.github.io/projeto-novo-lar/.
 
 ## Plataforma escolhida
 
@@ -22,15 +22,11 @@ O workflow é acionado por push na branch main ou manualmente. A rotina executa 
 
 As permissões do workflow são contents read, pages write e id-token write. A autenticação usa o GITHUB_TOKEN temporário fornecido pelo GitHub e não guarda credenciais no código.
 
-## Ativação no GitHub
+## Configuração aplicada no GitHub
 
-Depois de criar o repositório remoto:
-
-1. Adicione o remote origin ao repositório local.
-2. Envie as branches main e develop e as tags.
-3. Integre a versão aprovada de develop em main conforme o fluxo documentado.
-4. No GitHub, abra Settings, Pages e Build and deployment.
-5. Em Source, selecione GitHub Actions.
-6. Acompanhe a execução na secção Actions e consulte o endereço apresentado no ambiente github-pages.
-
-Até estes passos externos serem concluídos, a configuração permanece preparada e testada localmente, mas o site não deve ser descrito como publicado.
+1. O repositório público projeto-novo-lar foi criado na conta Gugs-1038.
+2. O remote origin foi configurado e as branches GitFlow e tags foram enviadas.
+3. A versão 1.1.1 foi integrada em main e marcada com a tag v1.1.1.
+4. O GitHub Pages foi configurado para usar GitHub Actions como fonte.
+5. O workflow concluiu a build, os testes, o envio do artefacto e o deploy com sucesso.
+6. O endereço público foi verificado com HTTPS, navegação SPA, imagens e validação do formulário.

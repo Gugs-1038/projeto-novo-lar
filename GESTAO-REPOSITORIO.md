@@ -1,6 +1,6 @@
 # Gestão do repositório
 
-O Projeto Novo Lar foi desenvolvido em um repositório local, sem conexão com GitHub, GitLab ou outra plataforma remota. Por isso, não existem objetos online de issue, milestone ou pull request.
+O Projeto Novo Lar foi inicialmente desenvolvido num repositório local e depois publicado em https://github.com/Gugs-1038/projeto-novo-lar. Como as tarefas foram concluídas antes da ligação ao GitHub, ainda não existem objetos online de issue, milestone ou pull request para essas etapas.
 
 Para manter a rastreabilidade sem criar informações fictícias, as tarefas abaixo foram registradas de forma retrospectiva. As branches e os commits de merge existentes representam o fluxo técnico que seria formalizado por pull requests em uma plataforma colaborativa.
 
@@ -30,4 +30,4 @@ Representa a revisão da branch feature/documentacao-gitflow antes da integraç�
 
 Representa a revisão da branch feature/registro-commits-releases antes da integração. O merge cec41d0 incorporou à develop as regras de commits e versionamento.
 
-Ao publicar o projeto em uma plataforma remota, esses registros podem ser convertidos em issues, milestone e pull requests reais, preservando os mesmos títulos, descrições e vínculos com as branches.
+Estes registos podem ser convertidos em issues, milestone e pull requests reais no GitHub, preservando os mesmos títulos, descrições e vínculos com as branches. Até essa conversão, devem ser apresentados como registos retrospectivos e não como objetos online já existentes.
