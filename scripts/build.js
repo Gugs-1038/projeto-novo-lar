@@ -68,15 +68,15 @@ function removerScriptsLocais(html) {
 }
 
 async function gerarBundle(pagina) {
-  const imports = pagina.scriptsFonte
-    .map((ficheiro) => `import "../${ficheiro}";`)
-    .join("\n");
-
-  await build({
-    absWorkingDir: raiz,
+  const fontes = await Promise.all(
+    pagina.scriptsFonte.map((ficheiro) =>
+      readFile(caminhoNaRaiz(ficheiro), "utf8")
+    )
+  );
+  const resultado = await build({
     stdin: {
-      contents: imports,
-      resolveDir: path.join(raiz, "scripts"),
+      contents: fontes.join("\n"),
+      loader: "js",
       sourcefile: `${pagina.nome}.entrada.js`,
     },
     bundle: true,
@@ -84,10 +84,15 @@ async function gerarBundle(pagina) {
     format: "iife",
     legalComments: "none",
     minify: true,
-    outfile: path.join(distribuicao, "js", `${pagina.nome}.min.js`),
     sourcemap: false,
     target: ["es2020"],
+    write: false,
   });
+
+  await writeFile(
+    path.join(distribuicao, "js", `${pagina.nome}.min.js`),
+    resultado.outputFiles[0].contents
+  );
 }
 
 async function gerarHtml(pagina) {
@@ -192,16 +197,25 @@ async function executar() {
     mkdir(path.join(distribuicao, "js"), { recursive: true }),
   ]);
 
-  await build({
-    absWorkingDir: raiz,
-    entryPoints: ["./css/estilos.css"],
+  const cssFonte = await readFile(caminhoNaRaiz("css/estilos.css"), "utf8");
+  const cssResultado = await build({
+    stdin: {
+      contents: cssFonte,
+      loader: "css",
+      sourcefile: "estilos.css",
+    },
+    bundle: true,
     charset: "utf8",
     legalComments: "none",
     minify: true,
-    outfile: path.join(distribuicao, "css", "estilos.min.css"),
     sourcemap: false,
     target: ["es2020"],
+    write: false,
   });
+  await writeFile(
+    path.join(distribuicao, "css", "estilos.min.css"),
+    cssResultado.outputFiles[0].contents
+  );
 
   await Promise.all(paginas.map(gerarBundle));
   await Promise.all(paginas.map(gerarHtml));
