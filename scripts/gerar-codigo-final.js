@@ -29,15 +29,10 @@ async function executar() {
     ficheiros.map(async (ficheiro) => {
       const conteudo = await readFile(path.join(raiz, ficheiro), "utf8");
       const normalizado = conteudo.replace(/\r\n?/g, "\n").trimEnd();
-      return `===== FICHEIRO: ${ficheiro} =====\n\n${normalizado}`;
+      return `FICHEIRO: ${ficheiro}\n\n${normalizado}`;
     })
   );
-  const cabecalho = [
-    "PROJETO NOVO LAR - CÓDIGO FONTE FINAL VERSIONADO",
-    "Conteúdo consolidado para o campo de entrega da plataforma.",
-    "Cada bloco indica o caminho original do respetivo ficheiro.",
-  ].join("\n");
-  const conteudoFinal = `${cabecalho}\n\n${blocos.join("\n\n")}\n`;
+  const conteudoFinal = `${blocos.join("\n\n")}\n`;
   const tamanhoComCrLf = conteudoFinal.replace(/\n/g, "\r\n").length;
 
   if (

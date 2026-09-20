@@ -1,8 +1,4 @@
-PROJETO NOVO LAR - CÓDIGO FONTE FINAL VERSIONADO
-Conteúdo consolidado para o campo de entrega da plataforma.
-Cada bloco indica o caminho original do respetivo ficheiro.
-
-===== FICHEIRO: .github/workflows/deploy-pages.yml =====
+FICHEIRO: .github/workflows/deploy-pages.yml
 
 name: Publicar no GitHub Pages
 
@@ -66,7 +62,7 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v5
 
-===== FICHEIRO: .gitignore =====
+FICHEIRO: .gitignore
 
 .DS_Store
 Thumbs.db
@@ -75,7 +71,7 @@ Desktop.ini
 node_modules/
 .npm-cache/
 
-===== FICHEIRO: package.json =====
+FICHEIRO: package.json
 
 {
   "name": "projeto-novo-lar",
@@ -96,7 +92,7 @@ node_modules/
   }
 }
 
-===== FICHEIRO: html/index.html =====
+FICHEIRO: html/index.html
 
 <!doctype html>
 <html lang="pt-BR" class="sem-js">
@@ -328,7 +324,7 @@ node_modules/
 </body>
 </html>
 
-===== FICHEIRO: html/projetos.html =====
+FICHEIRO: html/projetos.html
 
 <!doctype html>
 <html lang="pt-BR" class="sem-js">
@@ -444,7 +440,7 @@ node_modules/
 </body>
 </html>
 
-===== FICHEIRO: html/cadastro.html =====
+FICHEIRO: html/cadastro.html
 
 <!doctype html>
 <html lang="pt-BR" class="sem-js">
@@ -604,7 +600,7 @@ node_modules/
 </body>
 </html>
 
-===== FICHEIRO: css/estilos.css =====
+FICHEIRO: css/estilos.css
 
 :root {
   color-scheme: light;
@@ -1757,7 +1753,7 @@ input:disabled {
   }
 }
 
-===== FICHEIRO: js/menu.js =====
+FICHEIRO: js/menu.js
 
 (() => {
 document.documentElement.classList.replace("sem-js", "js");
@@ -1848,7 +1844,7 @@ consultaMobile.addEventListener("change", fecharNavegacao);
 window.addEventListener("hashchange", fecharNavegacao);
 })();
 
-===== FICHEIRO: js/formulario.js =====
+FICHEIRO: js/formulario.js
 
 (() => {
 let temporizadorToast;
@@ -2235,7 +2231,7 @@ prepararFormularios();
 window.NovoLarFormulario = Object.freeze({ validarCampo, validarFormulario });
 })();
 
-===== FICHEIRO: js/componentes.js =====
+FICHEIRO: js/componentes.js
 
 (() => {
   const dadosAcoes = [
@@ -2372,7 +2368,7 @@ window.NovoLarFormulario = Object.freeze({ validarCampo, validarFormulario });
   window.NovoLarComponentes = Object.freeze({ renderizarCartoesAjuda });
 })();
 
-===== FICHEIRO: js/persistencia.js =====
+FICHEIRO: js/persistencia.js
 
 (() => {
   const chaveArmazenamento = "projeto-novo-lar:navegacao:v1";
@@ -2493,7 +2489,7 @@ window.NovoLarFormulario = Object.freeze({ validarCampo, validarFormulario });
   });
 })();
 
-===== FICHEIRO: js/integracoes.js =====
+FICHEIRO: js/integracoes.js
 
 (() => {
   const instanciasPorCampo = new WeakMap();
@@ -2556,7 +2552,7 @@ window.NovoLarFormulario = Object.freeze({ validarCampo, validarFormulario });
   window.NovoLarIntegracoes = Object.freeze({ iniciarMascaras });
 })();
 
-===== FICHEIRO: js/spa.js =====
+FICHEIRO: js/spa.js
 
 (() => {
 const conteudo = document.querySelector("#conteudo");
@@ -2775,7 +2771,7 @@ renderizarRota({ moverFoco: false });
 window.NovoLarSPA = Object.freeze({ obterRota, renderizarRota });
 })();
 
-===== FICHEIRO: scripts/build.js =====
+FICHEIRO: scripts/build.js
 
 const { build } = require("esbuild");
 const { minify } = require("html-minifier-terser");
@@ -3055,7 +3051,7 @@ executar().catch((erro) => {
   process.exitCode = 1;
 });
 
-===== FICHEIRO: scripts/verificar-build.js =====
+FICHEIRO: scripts/verificar-build.js
 
 const { access, readFile } = require("node:fs/promises");
 const path = require("node:path");
@@ -3264,7 +3260,7 @@ executar().catch((erro) => {
   process.exitCode = 1;
 });
 
-===== FICHEIRO: scripts/gerar-codigo-final.js =====
+FICHEIRO: scripts/gerar-codigo-final.js
 
 const { readFile, writeFile } = require("node:fs/promises");
 const path = require("node:path");
@@ -3297,15 +3293,10 @@ async function executar() {
     ficheiros.map(async (ficheiro) => {
       const conteudo = await readFile(path.join(raiz, ficheiro), "utf8");
       const normalizado = conteudo.replace(/\r\n?/g, "\n").trimEnd();
-      return `===== FICHEIRO: ${ficheiro} =====\n\n${normalizado}`;
+      return `FICHEIRO: ${ficheiro}\n\n${normalizado}`;
     })
   );
-  const cabecalho = [
-    "PROJETO NOVO LAR - CÓDIGO FONTE FINAL VERSIONADO",
-    "Conteúdo consolidado para o campo de entrega da plataforma.",
-    "Cada bloco indica o caminho original do respetivo ficheiro.",
-  ].join("\n");
-  const conteudoFinal = `${cabecalho}\n\n${blocos.join("\n\n")}\n`;
+  const conteudoFinal = `${blocos.join("\n\n")}\n`;
   const tamanhoComCrLf = conteudoFinal.replace(/\n/g, "\r\n").length;
 
   if (
@@ -3328,7 +3319,7 @@ executar().catch((erro) => {
   process.exitCode = 1;
 });
 
-===== FICHEIRO: validacao-contraste/verificar-contraste.js =====
+FICHEIRO: validacao-contraste/verificar-contraste.js
 
 const pares = [
   ["Claro | Texto principal", "#17211c", "#f7faf8", 4.5],
